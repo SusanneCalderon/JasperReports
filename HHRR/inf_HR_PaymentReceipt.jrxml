@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Recibo de Pago" language="groovy" pageWidth="612" pageHeight="396" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91c80499-e68d-49ef-947f-a0080fa9d852">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="349"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="adempiereChile_Local.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="175"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="820"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Crosstab Data Text"/>
+	<parameter name="AD_Org_ID" class="java.lang.Integer"/>
+	<parameter name="HR_Contract_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Payroll_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Process_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Department_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Job_ID" class="java.math.BigDecimal"/>
+	<parameter name="EmployeeStatus" class="java.lang.String"/>
+	<parameter name="C_BPartner_ID" class="java.math.BigDecimal"/>
+	<parameter name="DateAcct" class="java.sql.Timestamp" isForPrompting="false"/>
+	<parameter name="DateAcct_To" class="java.sql.Timestamp" isForPrompting="false"/>
+	<parameter name="DocStatus" class="java.lang.String"/>
+	<parameter name="HR_ProcessReport_ID" class="java.math.BigDecimal"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="inf_HR_PaymentReceipt_SubReport" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["inf_HR_PaymentReceipt_SubReport.jasper"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ProcessReportName" class="java.lang.String"/>
+	<parameter name="ProcessReportPrintName" class="java.lang.String"/>
+	<parameter name="ProcessReportTextMsg" class="java.lang.String"/>
+	<parameter name="ProcessReportReceiptFooterMsg" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT cl.Name Client, ct.Name Contract, pd.PayrollValue, pd.PayrollName, org.Name Org, COALESCE(pd.HeaderPrintName, pd.ProcessReport) ProcessReport,
+SUM(pd.ConvertedAmt) ConvertedAmt, pd.DocumentNote, pd.BPName, pd.EmployeeStatusName, pd.BPValue, pd.StartDate, pd.EndDate, d.Name EmployeeDepartment, j.Name EmployeeJob, p.Name EmployeePayroll, pd.C_BPartner_ID, pd.DocumentNo, pd.Name ProcessName, pd.ReceiptFooterMsg, dailySalary(pd.C_BPartner_ID) DailySalary, monthlySalary(pd.C_BPartner_ID) MonthlySalary, pd.HR_Process_ID, pr.StartDate PeriodFrom, pr.EndDate PeriodTo, pd.DateAcct
+
+
+,processreportConceptAmount(pd.HR_Process_ID, pd.C_BPartner_ID, 1000307)  as imponibles,
+processreportConceptAmount(pd.HR_Process_ID, pd.C_BPartner_ID, 1000215)  as tributables
+FROM RV_HR_ProcessDetail pd
+INNER JOIN AD_Client cl ON(cl.AD_Client_ID = pd.AD_Client_ID)
+INNER JOIN AD_Org org ON(org.AD_Org_ID = pd.AD_Org_ID)
+INNER JOIN HR_Contract ct ON(ct.HR_Contract_ID = pd.HR_Contract_ID)
+INNER JOIN HR_Employee e ON(e.HR_Employee_ID = pd.HR_Employee_ID)
+LEFT JOIN HR_Payroll p ON(p.HR_Payroll_ID = e.HR_Payroll_ID)
+LEFT JOIN HR_Department d ON(d.HR_Department_ID = pd.HR_Department_ID)
+LEFT JOIN HR_Job j ON(j.HR_Job_ID = pd.HR_Job_ID)
+LEFT JOIN HR_Period pr ON(pr.HR_Period_ID = pd.HR_Period_ID)
+WHERE pd.HR_ProcessReport_ID = $P{HR_ProcessReport_ID}
+AND (pd.AD_Org_ID=$P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+AND (pd.HR_Contract_ID = $P{HR_Contract_ID} OR $P{HR_Contract_ID} IS NULL)
+AND (pd.HR_Payroll_ID = $P{HR_Payroll_ID} OR $P{HR_Payroll_ID} IS NULL)
+AND (pd.HR_Process_ID = $P{HR_Process_ID} OR $P{HR_Process_ID} IS NULL)
+AND (pd.HR_Department_ID=$P{HR_Department_ID} OR $P{HR_Department_ID} IS NULL)
+AND (pd.HR_Job_ID=$P{HR_Job_ID} OR $P{HR_Job_ID} IS NULL)
+AND (pd.EmployeeStatus=$P{EmployeeStatus} OR ($P{EmployeeStatus} IS NULL OR $P{EmployeeStatus} = ''))
+AND (pd.C_BPartner_ID=$P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+AND (pd.DateAcct >= $P{DateAcct} OR COALESCE($P{DateAcct}, Current_Timestamp) = Current_Timestamp)
+AND (pd.DateAcct <= $P{DateAcct_To} OR COALESCE($P{DateAcct_To}, Current_Timestamp) = Current_Timestamp)
+AND (pd.DocStatus=$P{DocStatus} OR ($P{DocStatus} IS NULL OR $P{DocStatus} = ''))
+GROUP BY cl.Name, pd.AD_Org_ID, org.Name, pd.HeaderPrintName, pd.DocumentNote, ct.Name, pd.PayrollValue, pd.BPTaxID, pd.BPName, pd.EmployeeStatusName, pd.PayrollName, 
+pd.ProcessReport, pd.BPValue, pd.StartDate, pd.EndDate, d.Name, j.Name, p.Name, pd.C_BPartner_ID, pd.DocumentNo, pd.Name, pd.ReceiptFooterMsg, pd.HR_Process_ID, pr.StartDate, pr.EndDate, 
+pd.DateAcct,pd.HR_Process_ID, pd.C_BPartner_ID
+ORDER BY pd.DateAcct, pd.DocumentNo, pd.BPName]]>
+	</queryString>
+	<field name="client" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="client"/>
+		<property name="com.jaspersoft.studio.field.label" value="client"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_client"/>
+	</field>
+	<field name="contract" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="contract"/>
+		<property name="com.jaspersoft.studio.field.label" value="contract"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_contract"/>
+	</field>
+	<field name="payrollvalue" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payrollvalue"/>
+		<property name="com.jaspersoft.studio.field.label" value="payrollvalue"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="payrollname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="payrollname"/>
+		<property name="com.jaspersoft.studio.field.label" value="payrollname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="org" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="org"/>
+		<property name="com.jaspersoft.studio.field.label" value="org"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_org"/>
+	</field>
+	<field name="processreport" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="processreport"/>
+		<property name="com.jaspersoft.studio.field.label" value="processreport"/>
+	</field>
+	<field name="convertedamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="convertedamt"/>
+		<property name="com.jaspersoft.studio.field.label" value="convertedamt"/>
+	</field>
+	<field name="documentnote" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentnote"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentnote"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="bpname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bpname"/>
+		<property name="com.jaspersoft.studio.field.label" value="bpname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="employeestatusname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employeestatusname"/>
+		<property name="com.jaspersoft.studio.field.label" value="employeestatusname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="bpvalue" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bpvalue"/>
+		<property name="com.jaspersoft.studio.field.label" value="bpvalue"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="startdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="startdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="startdate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="enddate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="enddate"/>
+		<property name="com.jaspersoft.studio.field.label" value="enddate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="employeedepartment" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employeedepartment"/>
+		<property name="com.jaspersoft.studio.field.label" value="employeedepartment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_department"/>
+	</field>
+	<field name="employeejob" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employeejob"/>
+		<property name="com.jaspersoft.studio.field.label" value="employeejob"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_job"/>
+	</field>
+	<field name="employeepayroll" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employeepayroll"/>
+		<property name="com.jaspersoft.studio.field.label" value="employeepayroll"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_payroll"/>
+	</field>
+	<field name="c_bpartner_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="c_bpartner_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="c_bpartner_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="documentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="processname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="processname"/>
+		<property name="com.jaspersoft.studio.field.label" value="processname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="receiptfootermsg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="receiptfootermsg"/>
+		<property name="com.jaspersoft.studio.field.label" value="receiptfootermsg"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="dailysalary" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="dailysalary"/>
+		<property name="com.jaspersoft.studio.field.label" value="dailysalary"/>
+	</field>
+	<field name="monthlysalary" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="monthlysalary"/>
+		<property name="com.jaspersoft.studio.field.label" value="monthlysalary"/>
+	</field>
+	<field name="hr_process_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="hr_process_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="hr_process_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="periodfrom" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="periodfrom"/>
+		<property name="com.jaspersoft.studio.field.label" value="periodfrom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_period"/>
+	</field>
+	<field name="periodto" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="periodto"/>
+		<property name="com.jaspersoft.studio.field.label" value="periodto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hr_period"/>
+	</field>
+	<field name="dateacct" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="dateacct"/>
+		<property name="com.jaspersoft.studio.field.label" value="dateacct"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_hr_processdetail"/>
+	</field>
+	<field name="imponibles" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="imponibles"/>
+		<property name="com.jaspersoft.studio.field.label" value="imponibles"/>
+	</field>
+	<field name="tributables" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="tributables"/>
+		<property name="com.jaspersoft.studio.field.label" value="tributables"/>
+	</field>
+	<variable name="P_Number" class="java.lang.Integer" resetType="Page" incrementType="Page" calculation="Count">
+		<variableExpression><![CDATA[1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<variable name="DocStatusName" class="java.lang.String">
+		<variableExpression><![CDATA[($P{DocStatus} == null? "":
+    ($P{DocStatus}.equals("CO")? "Completo":
+    ($P{DocStatus}.equals("CL")? "Cerrado":
+    ($P{DocStatus}.equals("IP")? "En Proceso":
+    ($P{DocStatus}.equals("DR")? "Borrador":
+    ($P{DocStatus}.equals("VO")? "Anulado":
+    ($P{DocStatus}.equals("RE")? "Reversado": "")))))))]]></variableExpression>
+	</variable>
+	<group name="BPName" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{hr_process_id} + " - " + $F{c_bpartner_id}]]></groupExpression>
+		<groupHeader>
+			<band height="131">
+				<subreport>
+					<reportElement x="0" y="87" width="571" height="44" uuid="4e84b97c-afda-4b12-9f19-5cde755e600f"/>
+					<subreportParameter name="AD_Org_ID">
+						<subreportParameterExpression><![CDATA[$P{AD_Org_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_Contract_ID">
+						<subreportParameterExpression><![CDATA[$P{HR_Contract_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_Payroll_ID">
+						<subreportParameterExpression><![CDATA[$P{HR_Payroll_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_Process_ID">
+						<subreportParameterExpression><![CDATA[$F{hr_process_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_Department_ID">
+						<subreportParameterExpression><![CDATA[$P{HR_Department_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_Job_ID">
+						<subreportParameterExpression><![CDATA[$P{HR_Job_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="EmployeeStatus">
+						<subreportParameterExpression><![CDATA[$P{EmployeeStatus}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="C_BPartner_ID">
+						<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DateAcct">
+						<subreportParameterExpression><![CDATA[$P{DateAcct}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DateAcct_To">
+						<subreportParameterExpression><![CDATA[$P{DateAcct_To}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="DocStatus">
+						<subreportParameterExpression><![CDATA[$P{DocStatus}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="HR_ProcessReport_ID">
+						<subreportParameterExpression><![CDATA[$P{HR_ProcessReport_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{inf_HR_PaymentReceipt_SubReport}]]></subreportExpression>
+				</subreport>
+				<textField isBlankWhenNull="true">
+					<reportElement x="209" y="0" width="154" height="35" uuid="bbf016e2-37c2-4098-91a7-588766b3d991"/>
+					<textElement markup="none">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{processreport}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="209" height="35" uuid="6529aea4-3b78-4e83-a831-7d34882f7ea0"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{client}
++ ($F{payrollname} != null? "\nNómina: " + $F{payrollname} +  ($F{documentno} != null? " - " + $F{documentno}: ""): "")
+    + ($F{periodfrom} != null && $F{periodto} != null? " (" + new SimpleDateFormat("dd/MM/yyyy").format($F{periodfrom}) + " - " + new SimpleDateFormat("dd/MM/yyyy").format($F{periodto}) + ")": "")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="286" y="35" width="285" height="13" uuid="bc6303fb-0097-4a67-8546-0de252ed29d7"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Departamento]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="286" y="61" width="285" height="13" uuid="ee6558a7-fdf0-4482-b1da-6d9a3c02bd27"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="286" y="48" width="285" height="13" uuid="545421db-e372-49a3-8994-d42018bf44f8"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{employeedepartment}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="286" y="74" width="285" height="13" uuid="cdde093d-fa32-4f77-b0e9-ff817b99475c"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{employeejob}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="61" width="57" height="13" uuid="cea66874-8e98-48a2-b6ad-6b099ff1aa21"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cédula]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="35" width="286" height="13" uuid="2f8d3bda-781d-463f-83c0-301424876474"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre y Apellido]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="48" width="286" height="13" uuid="5bee024a-ed35-4647-a36a-b3051f385670"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bpname}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="74" width="57" height="13" uuid="cf79080f-d711-43a6-80be-d68c5c2d5dd5"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bpvalue}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="57" y="61" width="57" height="13" uuid="0a13f45b-0354-45e9-8ca4-c576ec23a1ab"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[F. Ingreso]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="57" y="74" width="57" height="13" uuid="dc339550-063f-4db6-8350-d13ffd8a98ec"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{startdate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="114" y="61" width="57" height="13" uuid="f7828402-f890-4533-aa80-5b5c22a826f4"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[F. Egreso]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement x="114" y="74" width="57" height="13" uuid="5b819d57-4e75-4ef3-ba4a-7e9b9a39f139"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{enddate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="171" y="61" width="57" height="13" uuid="aee1cf3a-0855-4eaa-bb3b-558bfb090d13"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Imponibles]]></text>
+				</staticText>
+				<textField pattern="###,###,##0.00" isBlankWhenNull="true">
+					<reportElement x="171" y="74" width="57" height="13" uuid="ba58ebe6-59a4-42f8-a892-3951cc0cf6ca"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{imponibles}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="228" y="61" width="58" height="13" uuid="a0076dad-3a24-4ab2-a229-e6f30db00e78"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tributables]]></text>
+				</staticText>
+				<textField pattern="###,###,##0.00" isBlankWhenNull="true">
+					<reportElement x="228" y="74" width="58" height="13" uuid="57057836-8a16-4aeb-8c98-ae056702a4e9"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tributables}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="460" y="0" width="48" height="12" uuid="2ef86779-dbf2-4bd1-8745-71f7a47e2913"/>
+					<textElement markup="none">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Fecha:]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement x="511" y="0" width="61" height="12" uuid="7d9ad6bb-2c4b-4e6d-9ea6-df9aa68e1061"/>
+					<box leftPadding="1" rightPadding="1"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dateacct}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="26">
+				<textField textAdjust="StretchHeight" pattern="###0.00" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="380" height="13" uuid="c387a0a3-c918-4b37-a408-4844ee7abe47"/>
+					<box leftPadding="1" rightPadding="1">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total a Pagar " + $F{bpname}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="###0.00" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="13" width="571" height="13" uuid="4d5c43c3-97f1-4c53-8033-4c993ee9c654"/>
+					<box leftPadding="1" rightPadding="1"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ProcessReportReceiptFooterMsg}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" pattern="###,###,##0.00" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="380" y="0" width="191" height="13" uuid="9c297509-b851-4b85-bbd4-ca81869448c5"/>
+					<box leftPadding="1" rightPadding="1">
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{convertedamt}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageFooter>
+		<band height="13">
+			<textField pattern="">
+				<reportElement x="347" y="0" width="224" height="13" uuid="fbdbd412-d47f-4ed6-8ccd-51a7042f6ce9"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+				</box>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Recibí Conforme (" + new SimpleDateFormat("dd/MM/yyyy h:mm a").format(new java.util.Date()) + ")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

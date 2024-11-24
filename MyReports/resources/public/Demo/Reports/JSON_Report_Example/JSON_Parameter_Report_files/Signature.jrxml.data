@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.5.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Signature" pageWidth="572" pageHeight="230" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cd0caea1-b2af-4184-8478-192a65cc1739">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Test Json Data"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="JSON">
+		<![CDATA[data.Signature]]>
+	</queryString>
+	<field name="Approver" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="Approver"/>
+		<fieldDescription><![CDATA[Approver]]></fieldDescription>
+	</field>
+	<field name="signerId" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="signerId"/>
+		<fieldDescription><![CDATA[signerId]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="230">
+			<image>
+				<reportElement x="73" y="197" width="220" height="31" uuid="208ffed2-a3ad-40d3-810d-a2972f70b14a"/>
+				<imageExpression><![CDATA["repo:signature_"+$F{signerId}+".png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="3" y="3" width="551" height="191" uuid="002e3245-5e4b-4528-93bc-20843539e08f"/>
+				<textFieldExpression><![CDATA["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tristique neque. Aliquam gravida risus sapien, sed porttitor dolor bibendum quis. Proin id accumsan massa. Sed eu rutrum lorem. Proin ut nisi porttitor, tempor elit eget, convallis tellus. Integer blandit metus eu lectus pretium, a commodo sem dignissim. Aliquam porta eu sapien in varius. Etiam blandit finibus sodales. Vivamus erat nunc, aliquam ut ante vitae, hendrerit ultrices velit. Aenean magna velit, ultrices in egestas at, hendrerit non lorem. Integer molestie nisl vel tortor viverra, in rhoncus lectus volutpat. Integer tempus non neque ac congue. Curabitur ac neque vulputate, blandit diam a, congue magna. Integer erat sapien, vehicula et est vitae, vulputate pellentesque risus. Nulla urna ipsum, posuere et purus id, fermentum sodales dui. Maecenas nec suscipit sem, sit amet porta urna. Nullam ipsum dui, condimentum eget sapien non, condimentum malesuada augue. Fusce sodales erat vel diam varius, a rutrum sapien faucibus. Ut sit amet vehicula ex, nec gravida sapien. Aenean dictum placerat elit, et bibendum elit rutrum at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus et ornare est. Morbi dignissim quam at lorem tincidunt ullamcorper. Pellentesque porttitor faucibus viverra. Cras vitae nisl elementum massa imperdiet sagittis a vel odio."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="293" y="197" width="261" height="31" uuid="caddd19d-a170-4f8b-9f2a-f3b3bf43c236"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Approver}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="197" width="71" height="31" uuid="15616da8-f86a-4586-882e-acb64978f336"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Approved By:"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

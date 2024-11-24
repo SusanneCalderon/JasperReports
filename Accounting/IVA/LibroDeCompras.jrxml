@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="shw_LibroDeCompras" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="76667959-5742-4c64-afca-e8708ed62e18">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="178"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="816"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AgrinterRemote.xml"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="datasetClientDaten" uuid="41f0b7a9-0113-448c-a242-9bb7629e7bd0">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PIMENTELLocal.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+		<parameter name="AD_Org_ID" class="java.math.BigDecimal"/>
+		<queryString>
+			<![CDATA[select distinct coalesce(c.description, c.name) as printname, oi.taxid, oi.duns ,i.binarydata as logo
+from ad_OrgInfo oi
+INNER JOIN AD_Client c on oi.ad_Client_ID=c.ad_Client_ID
+left join ad_image i on oi.logo_ID = i.ad_image_ID
+where  oi.AD_Org_ID=$P{AD_Org_ID}]]>
+		</queryString>
+		<field name="printname" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="printname"/>
+		</field>
+		<field name="taxid" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="taxid"/>
+		</field>
+		<field name="duns" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="duns"/>
+		</field>
+		<field name="logo" class="java.lang.Object">
+			<property name="com.jaspersoft.studio.field.label" value="logo"/>
+		</field>
+	</subDataset>
+	<parameter name="C_Period_ID" class="java.math.BigDecimal"/>
+	<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+	<parameter name="C_TaxDeclaration_ID" class="java.math.BigDecimal"/>
+	<parameter name="C_TaxCategory_ID" class="java.math.BigDecimal"/>
+	<parameter name="C_TaxDeclarationType_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[
+Select tdl.line, i.dateacct, bplocal(i.c_bpartner_location_id) as bplocal,
+case when i.docstatus = 'VO' then coalesce(i.poreference, i.documentno) || '_Anulada' ELSE coalesce(i.poreference,I.documentno) END as documentno, 
+ duns, taxid,bp.name as bpname,bp.c_taxgroup_ID, tg.name,
+ case when bplocal(i.c_bpartner_location_id) = 'local'  then COALESCE(shw_searchtaxbaseamt(i.c_invoice_id, 'EXT'::character varying), 0::numeric)*multiplier(dt.docbasetype)  else null end as ventaExtLocal,
+0 as ventaExtImport,
+ case when bplocal(i.c_bpartner_location_id) = 'local'   then  COALESCE(shw_searchtaxbaseamt(i.c_invoice_id, 'IVA'::character varying), 0::numeric)*multiplier(dt.docbasetype)  else null end as ventagravadaLocal,
+ case when bplocal(i.c_bpartner_location_id) = 'CA'   then tdl.taxbaseamt*multiplier(dt.docbasetype)  else null end as ventagravadaCA,
+ case when bplocal(i.c_bpartner_location_id) = 'EXT'  then tdl.taxbaseamt*multiplier(dt.docbasetype)  else null end as ventagravadaEXT,
+-- 
+ case when bplocal(i.c_bpartner_location_id) = 'local'  
+ then COALESCE(shw_searchtaxamt(i.c_invoice_id, 'IVA'::character varying), 0::numeric)*multiplier(dt.docbasetype)  else null end as taxIVALocal,
+ case when bplocal(i.c_bpartner_location_id) <> 'local' then tdl.vatimport*multiplier(dt.docbasetype)  else 0.00 end as taxIVAImport, 
+ COALESCE(shw_searchtaxamt(i.c_invoice_id, 'RET'::character varying), 0::numeric)*multiplier(dt.docbasetype) AS taxret,
+ COALESCE(shw_searchtaxbaseamt(i.c_invoice_id, 'FOV'::character varying), 0::numeric)*multiplier(dt.docbasetype)  AS contribucionesespeciales,
+
+case when dt.c_INvoicetype_id= 1000002 then (i.grandtotal + tdl.vatImport)*multiplier(dt.docbasetype)  else i.grandtotal*multiplier(dt.docbasetype) end as grandtotal,
+ per.name as pername,
+ per.startdate, per.enddate, multiplier(dt.docbasetype), tdl.ad_ORG_ID, dt.docbasetype
+   FROM c_TAxdeclarationline tdl 
+	INNER JOIN c_Invoice i on tdl.c_Invoice_ID=i.c_Invoice_ID	
+   INNER JOIN c_Doctype dt on i.c_Doctype_ID=dt.c_Doctype_ID
+   INNER JOIN C_Taxdeclaration td on tdl.c_Taxdeclaration_ID=td.c_Taxdeclaration_ID
+   INNER JOIN c_Tax tax on tdl.c_Tax_ID=tax.c_Tax_ID
+   INNER JOIN C_Period per on td.c_Period_ID=per.c_Period_ID
+   INNER JOIN c_Bpartner bp on i.c_Bpartner_ID=bp.c_Bpartner_ID
+   LEFT JOIN c_Taxgroup tg on bp.c_Taxgroup_ID=tg.c_Taxgroup_ID
+   where td.c_TaxDeclaration_ID=  $P{C_TaxDeclaration_ID}  and i.docstatus in ('CO','CL')
+   and tax.C_TaxCategory_ID = $P{C_TaxCategory_ID}
+	AND i.c_Doctype_ID IN 
+	(SELECT c_Doctype_ID from c_Doctype dt 
+	 INNER JOIN C_TaxdeclType_Invoicetype dti on dt.c_InvoiceType_ID=dti.c_Invoicetype_ID 
+	 where c_TaxDeclarationtype_ID=$P{C_TaxDeclarationType_ID})]]>
+	</queryString>
+	<field name="line" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="line"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_taxdeclarationline"/>
+	</field>
+	<field name="dateacct" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="dateacct"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="bplocal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bplocal"/>
+	</field>
+	<field name="documentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+	</field>
+	<field name="duns" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="duns"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="taxid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="taxid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="bpname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bpname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="c_taxgroup_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="c_taxgroup_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_taxgroup"/>
+	</field>
+	<field name="ventaextlocal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventaextlocal"/>
+	</field>
+	<field name="ventaextimport" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="ventaextimport"/>
+	</field>
+	<field name="ventagravadalocal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventagravadalocal"/>
+	</field>
+	<field name="ventagravadaca" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventagravadaca"/>
+	</field>
+	<field name="ventagravadaext" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventagravadaext"/>
+	</field>
+	<field name="taxivalocal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxivalocal"/>
+	</field>
+	<field name="taxivaimport" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxivaimport"/>
+	</field>
+	<field name="taxret" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxret"/>
+	</field>
+	<field name="contribucionesespeciales" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="contribucionesespeciales"/>
+	</field>
+	<field name="grandtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="grandtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_c_invoice"/>
+	</field>
+	<field name="pername" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="pername"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_period"/>
+	</field>
+	<field name="startdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="startdate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_period"/>
+	</field>
+	<field name="enddate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="enddate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_period"/>
+	</field>
+	<field name="multiplier" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="multiplier"/>
+	</field>
+	<field name="ad_org_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ad_org_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_taxdeclarationline"/>
+	</field>
+	<field name="docbasetype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="docbasetype"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<sortField name="dateacct"/>
+	<sortField name="line"/>
+	<sortField name="documentno"/>
+	<variable name="ventaextlocal1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventaextlocal}]]></variableExpression>
+	</variable>
+	<variable name="ventaextimport1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventaextimport}]]></variableExpression>
+	</variable>
+	<variable name="ventagravadalocal1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventagravadalocal}]]></variableExpression>
+	</variable>
+	<variable name="ventagravadaca1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventagravadaca}]]></variableExpression>
+	</variable>
+	<variable name="ventagravadaext1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventagravadaext}]]></variableExpression>
+	</variable>
+	<variable name="taxivalocal1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxivalocal}]]></variableExpression>
+	</variable>
+	<variable name="taxivaimport1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxivaimport}]]></variableExpression>
+	</variable>
+	<variable name="contribucionesespeciales1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{contribucionesespeciales}]]></variableExpression>
+	</variable>
+	<variable name="grandtotal1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+	</variable>
+	<variable name="taxret1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxret}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="732" height="30" uuid="2219571d-d035-44d4-b875-3e0f7ecf12fa"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Libro de Compras al Contribuyente]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="40" width="732" height="30" uuid="7be65ac4-5e59-4267-b70d-c51afbcedf58"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{pername}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch"/>
+	</detail>
+	<pageFooter>
+		<band height="13" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50"/>
+	</lastPageFooter>
+</jasperReport>

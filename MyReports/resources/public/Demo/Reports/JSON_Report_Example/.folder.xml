@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<folder exportedWithPermissions="false">
+    <parent>/public/Demo/Reports</parent>
+    <name>JSON_Report_Example</name>
+    <label>JSON Report Example</label>
+    <description></description>
+    <creationDate>2020-02-17T05:46:15.999-07:00</creationDate>
+    <updateDate>2020-02-17T05:46:15.999-07:00</updateDate>
+    <resource>JSON_Parameter_Report</resource>
+    <resource>signature_1.png</resource>
+    <resource>signature_2.png</resource>
+    <resource>signature_3.png</resource>
+</folder>

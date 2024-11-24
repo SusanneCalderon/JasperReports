@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SHW_LibroVentasContribuyenteNEU_subreport1" pageWidth="752" pageHeight="572" orientation="Landscape" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="ba07d348-0d1f-457e-8b2f-cb566f744d35">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapterAgrinter.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="C_TaxDeclaration_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[select seqno,salestype, salestype || ' a ' ||customertype as activitytype, customertype, 
+round(coalesce((select sum(taxbaseamt) from shw_SalesTax_Summary sts 
+				where src.seqNo=sts.seqno and c_Taxdeclaration_ID=  $P{C_TaxDeclaration_ID}  ),0),2) as taxbaseamt
+,round(coalesce((select sum(taxamt) from shw_SalesTax_Summary sts where src.seqNo=sts.seqno  and c_Taxdeclaration_ID= $P{C_TaxDeclaration_ID}),0), 2) as taxamt
+, round(coalesce((select sum(retencion) from shw_SalesTax_Summary sts where src.seqNo=sts.seqno  and c_Taxdeclaration_ID= $P{C_TaxDeclaration_ID}),0),2)  as retencion
+, round(coalesce((select sum(percepcion) from shw_SalesTax_Summary sts where src.seqNo=sts.seqno  and c_Taxdeclaration_ID= $P{C_TaxDeclaration_ID}),0),2)  as percepcion
+
+
+ from shw_SalesReportClasses src]]>
+	</queryString>
+	<field name="seqno" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="seqno"/>
+	</field>
+	<field name="salestype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="salestype"/>
+	</field>
+	<field name="activitytype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="activitytype"/>
+	</field>
+	<field name="customertype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="customertype"/>
+	</field>
+	<field name="taxbaseamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxbaseamt"/>
+	</field>
+	<field name="taxamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxamt"/>
+	</field>
+	<field name="retencion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="retencion"/>
+	</field>
+	<field name="percepcion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="percepcion"/>
+	</field>
+	<sortField name="seqno"/>
+	<variable name="taxbaseamt1" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxbaseamt}]]></variableExpression>
+	</variable>
+	<variable name="taxamt1" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxamt}]]></variableExpression>
+	</variable>
+	<variable name="retencion1" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{retencion}]]></variableExpression>
+	</variable>
+	<variable name="percepcion1" class="java.math.BigDecimal" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{percepcion}]]></variableExpression>
+	</variable>
+	<variable name="taxbaseamt2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxbaseamt}]]></variableExpression>
+	</variable>
+	<variable name="taxamt2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxamt}]]></variableExpression>
+	</variable>
+	<variable name="retencion2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{retencion}]]></variableExpression>
+	</variable>
+	<variable name="percepcion2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{percepcion}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{salestype}]]></groupExpression>
+		<groupFooter>
+			<band height="12">
+				<printWhenExpression><![CDATA[$F{seqno}.longValue()!=70]]></printWhenExpression>
+				<textField>
+					<reportElement x="0" y="0" width="290" height="12" uuid="7fd2693e-83bc-457d-b868-95f5357e3fdc"/>
+					<textElement textAlignment="Left">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Suma ".concat($F{salestype})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="290" y="0" width="60" height="12" uuid="ab0a8aa6-fe8a-49de-8b68-17057facd8d5"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{taxbaseamt1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="350" y="0" width="60" height="12" uuid="a7d32eec-a318-4b0b-9be9-3cb125a5db0b"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{taxamt1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="632" y="0" width="59" height="12" uuid="ee69aee7-eb05-41bd-813d-f3d542774a2d"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{retencion1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#">
+					<reportElement x="690" y="0" width="62" height="12" uuid="cb23becf-5669-4432-a087-aa007b0a6472"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{percepcion1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="0" width="752" height="1" uuid="985ba609-299e-4038-b461-18bce5bc367f"/>
+					<graphicElement>
+						<pen lineStyle="Dotted"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="752" height="36" uuid="8ffaf107-8635-46a5-bac9-db918a8293c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Ventas del Mes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="290" y="13" width="60" height="13" uuid="7bccc9b4-baf4-4f41-b5ca-805a9b3cbf73">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Venta neta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="13" width="60" height="13" uuid="b5de379c-6cd5-4843-bdf3-04a73445147d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc75bf32-b6c7-4793-ac59-cd81173cc320"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Débito fiscal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="632" y="13" width="60" height="13" uuid="1728d1ee-836f-4cf7-acab-4ffa29a42922">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc75bf32-b6c7-4793-ac59-cd81173cc320"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Retención]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="692" y="13" width="60" height="13" uuid="0a4c4f4d-6687-410d-8883-c2ad41f3fa5c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc75bf32-b6c7-4793-ac59-cd81173cc320"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Precepción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="120" height="13" uuid="c5019c3c-246e-410e-9e0d-2f6a59a79e90">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Propia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="0" width="120" height="13" uuid="cfcb5bc6-d84b-4175-b0fc-6cbe44382cc3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="132" height="13" uuid="aab76c88-37d7-458a-b93a-b284949ee79e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Propia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="13" width="72" height="13" uuid="1c93bf6d-f699-4c45-9772-d76e41c0572e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Venta neta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="13" width="72" height="13" uuid="1b16feff-3452-48cf-9e45-cac85744062d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc75bf32-b6c7-4793-ac59-cd81173cc320"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Débito fiscal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="11">
+			<textField>
+				<reportElement x="0" y="0" width="240" height="11" uuid="8898ec5a-41cf-4300-bd7e-ee9f1ba2b2bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52f99fb3-2a54-4c14-a06b-aacba3b36894"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{seqno}.longValue()==70? $F{customertype}.concat(" ").concat($F{salestype}):$F{activitytype}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="290" y="0" width="60" height="11" uuid="7a2a0413-74ed-4e3e-a35f-5cd959af57c3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5a490504-3d66-4fa4-9d00-0cb3aff0f0c6"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxbaseamt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="350" y="0" width="60" height="11" uuid="b7be9624-d60f-4210-8b3e-f6ae939ed4c8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc75bf32-b6c7-4793-ac59-cd81173cc320"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxamt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="692" y="0" width="60" height="11" uuid="3c197c24-7ecc-4c7c-bced-e7afba2efbd0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a7531a10-474a-41ba-bb35-ffa637b26a6f"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{percepcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="632" y="0" width="60" height="11" uuid="45c31b1a-fec9-4cf7-a28c-e2bc45490310">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="270dc6f1-f97d-49f6-a372-4a7f4a9cca8c"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retencion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="47" splitType="Stretch">
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="290" y="0" width="60" height="30" uuid="451cbb17-3f21-4024-b64a-5b18fcade58a"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{taxbaseamt2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="350" y="0" width="60" height="30" uuid="bbad8072-61e7-471e-9066-c6798a3429f3"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{taxamt2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="632" y="0" width="60" height="30" uuid="842dfce6-c2ba-4831-b63e-18a9ec54c7b1"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{retencion2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="692" y="0" width="60" height="30" uuid="82b9aa5c-94bd-482d-8623-b5b78412b3f6"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{percepcion2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reportUnit exportedWithPermissions="false">
+    <folder>/public/Demo/Reports/JSON_Report_Example</folder>
+    <name>JSON_Parameter_Report</name>
+    <version>3</version>
+    <label>JSON Parameter Report</label>
+    <description>Report where data is provided via a parameter, in JSON format.</description>
+    <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+    <updateDate>2020-04-06T12:09:36.119-06:00</updateDate>
+    <mainReport>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" dataFile="main_jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>main_jrxml</name>
+            <version>1</version>
+            <label>Main jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-02-11T12:44:21.180-07:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </mainReport>
+    <inputControl>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" xsi:type="inputControl">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>jsonData</name>
+            <version>1</version>
+            <label>jsonData</label>
+            <creationDate>2020-04-06T12:09:36.119-06:00</creationDate>
+            <updateDate>2020-04-06T12:09:36.119-06:00</updateDate>
+            <type>2</type>
+            <mandatory>false</mandatory>
+            <readOnly>false</readOnly>
+            <visible>true</visible>
+            <dataType>
+                <localResource exportedWithPermissions="false" xsi:type="dataType">
+                    <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files/jsonData_files</folder>
+                    <name>myDatatype</name>
+                    <version>0</version>
+                    <label>myDatatype</label>
+                    <creationDate>2020-04-06T12:09:36.119-06:00</creationDate>
+                    <updateDate>2020-04-06T12:09:36.119-06:00</updateDate>
+                    <type>1</type>
+                    <strictMin>false</strictMin>
+                    <strictMax>false</strictMax>
+                </localResource>
+            </dataType>
+        </localResource>
+    </inputControl>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="PhysicianDetail.jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>PhysicianDetail.jrxml</name>
+            <version>1</version>
+            <label>PhysicianDetail.jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-02-11T12:44:21.180-07:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" dataFile="Positive.png.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Positive.png</name>
+            <version>2</version>
+            <label>Positive.png</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-04-06T12:09:35.419-06:00</updateDate>
+            <fileType>img</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="Final_Results_Summary.jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Final_Results_Summary.jrxml</name>
+            <version>2</version>
+            <label>Final Results Summary.jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-04-06T12:09:35.133-06:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" dataFile="Negtive.png.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Negtive.png</name>
+            <version>2</version>
+            <label>Negtive.png</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-04-06T12:09:35.364-06:00</updateDate>
+            <fileType>img</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="Signature.jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Signature.jrxml</name>
+            <version>1</version>
+            <label>Signature.jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-02-11T12:44:21.180-07:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="Patient_Summary.jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Patient_Summary.jrxml</name>
+            <version>1</version>
+            <label>Patient Summary.jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-02-11T12:44:21.180-07:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false"
+            dataFile="Historic_Results.jrxml.data" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>Historic_Results.jrxml</name>
+            <version>1</version>
+            <label>Historic Results.jrxml</label>
+            <creationDate>2020-02-11T12:44:21.180-07:00</creationDate>
+            <updateDate>2020-02-11T12:44:21.180-07:00</updateDate>
+            <fileType>jrxml</fileType>
+        </localResource>
+    </resource>
+    <resource>
+        <localResource
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            exportedWithPermissions="false" xsi:type="fileResource">
+            <folder>/public/Demo/Reports/JSON_Report_Example/JSON_Parameter_Report_files</folder>
+            <name>signature_2.png</name>
+            <version>0</version>
+            <label>signature_2.png</label>
+            <description></description>
+            <creationDate>2020-02-17T05:50:28.187-07:00</creationDate>
+            <updateDate>2020-02-17T05:50:28.187-07:00</updateDate>
+            <referenceUri>/public/Demo/Reports/JSON_Report_Example/signature_2.png</referenceUri>
+        </localResource>
+    </resource>
+    <inputControlRenderingView></inputControlRenderingView>
+    <alwaysPromptControls>true</alwaysPromptControls>
+    <controlsLayout>1</controlsLayout>
+</reportUnit>

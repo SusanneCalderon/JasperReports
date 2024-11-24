@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.5.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PhysicianDetail" pageWidth="186" pageHeight="206" columnWidth="180" leftMargin="3" rightMargin="3" topMargin="3" bottomMargin="3" uuid="b518f8ee-e541-46a2-abeb-f8d83855aa06">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Test Json Data"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="json">
+		<![CDATA[data.orderingPhysician]]>
+	</queryString>
+	<field name="name" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="name"/>
+		<fieldDescription><![CDATA[name]]></fieldDescription>
+	</field>
+	<field name="id" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="id"/>
+		<fieldDescription><![CDATA[id]]></fieldDescription>
+	</field>
+	<field name="clinic" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="clinic"/>
+		<fieldDescription><![CDATA[clinic]]></fieldDescription>
+	</field>
+	<field name="NPI" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="NPI"/>
+		<fieldDescription><![CDATA[NPI]]></fieldDescription>
+	</field>
+	<field name="addr1" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="addr1"/>
+		<fieldDescription><![CDATA[addr1]]></fieldDescription>
+	</field>
+	<field name="additionalRpts" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="additionalRpts"/>
+		<fieldDescription><![CDATA[additionalRpts]]></fieldDescription>
+	</field>
+	<field name="reportDate" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="reportDate"/>
+		<fieldDescription><![CDATA[reportDate]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="180" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="80" y="20" width="100" height="40" uuid="275c06c8-bb26-4b8e-9908-5ef9743164e2">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE($F{name}," (",$F{id},") " )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="80" height="20" uuid="cd3717f4-510d-49b0-8a9e-d10884a676d2">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Name:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="60" width="100" height="20" uuid="c80c21f3-9b81-4877-8900-36b79f073647">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clinic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="80" height="20" uuid="d1e877fd-970e-47ea-9faa-f546205a1216">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Clinic:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="80" width="100" height="20" uuid="b306fa3d-96fa-4dd6-bb2c-6afa6950d832">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NPI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="80" width="80" height="20" uuid="842c8fcb-2c88-4daf-9ebf-d90c60c37bc9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[NPI:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="100" width="100" height="40" uuid="94020478-a710-4f0f-b532-69087b96098b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{addr1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="80" height="20" uuid="90edba0f-b939-4e18-bdd6-eec16585445f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Address:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="140" width="100" height="20" uuid="dce6e6c7-838d-4273-9bce-1009b1542d22">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{additionalRpts}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="140" width="80" height="20" uuid="c3654335-cc65-4136-b5c4-73b7975f69fe"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Additional Reports:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="160" width="100" height="20" uuid="74e623e5-fa45-450c-b815-77f2b050503f">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reportDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="160" width="80" height="20" uuid="56e3df0d-804e-48af-8bec-ceca4ecdf67c">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="180" height="20" uuid="ef637f02-0ccd-4eb2-abd9-b521a6e0b733">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ordering Physician"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<noData>
+		<band height="50">
+			<textField>
+				<reportElement x="10" y="0" width="161" height="41" uuid="470bac53-64aa-4fc2-a57d-14ebddc839a2"/>
+				<textFieldExpression><![CDATA["No Physician Provided"]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

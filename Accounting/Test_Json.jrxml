@@ -1,0 +1,32 @@
+"<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Atestado" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25dce969-32ae-4951-b8c6-6e55c8817291">
+    <parameter name="jsonString" class="java.lang.String">
+        <defaultValueExpression><![CDATA["{"a": [ {"b": { "val": "val1"}}, {"b": { "val": "val2" }}]}"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="JSON_INPUT_STREAM" class="java.io.InputStream">
+        <defaultValueExpression><![CDATA[new java.io.ByteArrayInputStream($P{jsonString}.getBytes("UTF8"))]]></defaultValueExpression>
+    </parameter>
+    <queryString language="JSON">
+        <![CDATA[a.b]]>
+    </queryString>
+    <field name="value" class="java.lang.String">
+        <fieldDescription><![CDATA[val]]></fieldDescription>
+    </field>
+    <columnHeader>
+        <band height="31" splitType="Stretch">
+            <staticText>
+                <reportElement x="150" y="0" width="100" height="30" uuid="b33a123d-8987-4da4-b21b-1f9ccc50e92d"/>
+                <text><![CDATA[value]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="30" splitType="Stretch">
+            <textField>
+                <reportElement x="150" y="0" width="100" height="30" uuid="14c51219-5ce2-47ce-abb9-71bc11a6f28c"/>
+                <textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>"

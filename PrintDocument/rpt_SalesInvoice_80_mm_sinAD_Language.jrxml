@@ -1,0 +1,1357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Factura CxC" pageWidth="204" pageHeight="792" whenNoDataType="BlankPage" columnWidth="176" leftMargin="14" rightMargin="14" topMargin="5" bottomMargin="5" isFloatColumnFooter="true" isIgnorePagination="true" uuid="17add857-fb2b-459b-80fd-b35ed842a67f">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PimentelLokal.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Total" uuid="21fda901-2651-4150-8b2d-3e456d120cfc">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Impala (LVE)"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="C_Invoice_ID" class="java.math.BigDecimal">
+			<defaultValueExpression><![CDATA[$P{REPORT_CONTEXT}.getParameterValue("RECORD_ID")]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+ROUND((cit.TaxBaseamt * COALESCE(currencyrate(i.c_currency_id, asd.c_currency_id, COALESCE(da.dateinvoiced, i.dateinvoiced), i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedTaxBaseamt,
+cit.TaxBaseamt,
+cit.TaxAmt,
+ROUND((cit.TaxAmt * COALESCE(currencyrate(i.c_currency_id, asd.c_currency_id, COALESCE(da.dateinvoiced, i.dateinvoiced), i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedTaxAmt,
+COALESCE(t.Description, t.Name) AS Tax,
+cc.CurSymbol AS Currency,
+ccb.CurSymbol as ConvertedCurrency,
+t.TaxIndicator
+FROM C_InvoiceTax cit
+INNER JOIN C_Tax t ON(t.C_Tax_ID = cit.C_Tax_ID)
+INNER JOIN C_Invoice i ON(i.C_Invoice_ID = cit.C_Invoice_ID)
+INNER JOIN AD_ClientInfo ci ON(ci.AD_Client_ID = i.AD_Client_ID)
+INNER JOIN C_AcctSchema asd ON (ci.c_acctschema1_id = asd.c_acctschema_id)
+INNER JOIN C_Currency cc ON(i.C_Currency_ID = cc.C_Currency_ID)
+--LEFT JOIN C_Conversion_Rate ccr ON(i.C_Currency_ID = ccr.C_Currency_ID and i.C_ConversionType_ID = ccr.C_ConversionType_ID)
+LEFT JOIN C_Currency ccb ON(asd.C_Currency_ID = ccb.C_Currency_ID)
+LEFT JOIN C_Invoice da ON(da.C_Invoice_ID = i.InvoiceToAllocate_ID)
+WHERE cit.C_Invoice_ID = $P{C_Invoice_ID}
+GROUP BY cit.TaxBaseAmt, cit.TaxAmt, t.Name,cc.CurSymbol,t.Description,i.c_currency_id, asd.c_currency_id,i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id, cc.stdprecision, ccb.CurSymbol,t.TaxIndicator,da.dateinvoiced
+ORDER BY t.Name ASC]]>
+		</queryString>
+		<field name="taxbaseamt" class="java.math.BigDecimal"/>
+		<field name="taxamt" class="java.math.BigDecimal"/>
+		<field name="tax" class="java.lang.String"/>
+		<field name="currency" class="java.lang.String"/>
+		<field name="convertedTaxBaseamt" class="java.math.BigDecimal"/>
+		<field name="convertedTaxAmt" class="java.math.BigDecimal"/>
+		<field name="ConvertedCurrency" class="java.lang.String"/>
+		<field name="TaxIndicator" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Tipo de Pago" uuid="ce61c1f4-2245-4246-8608-e15642e44267">
+		<parameter name="C_Invoice_ID" class="java.math.BigDecimal">
+			<defaultValueExpression><![CDATA[$P{REPORT_CONTEXT}.getParameterValue("RECORD_ID")]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[Select
+CASE
+when pa.tendertype='A' then 'Transferencia (ACH)'
+when pa.tendertype='C' then 'Tarjeta De Crédito'
+when pa.tendertype='D' then 'Débito Directo'
+when pa.tendertype='K' then 'Cheque'
+when pa.tendertype='M' then 'Credit Memo'
+when pa.tendertype='P' then 'Pago Móvil'
+when pa.tendertype='T' then 'Cuenta'
+when pa.tendertype='X' then 'Caja'
+when pa.tendertype='Z' then 'Zelle'
+end tendertype,
+al.amount,
+al.discountamt,
+al.writeoffamt,
+al.overunderamt,
+ba.AccountNo,
+b.Name,
+pa.R_PnRef
+from C_AllocationLine al
+INNER JOIN C_payment pa ON (al.C_payment_ID=pa.C_payment_ID)
+LEFT JOIN  C_BankAccount ba ON (pa.C_BankAccount_ID=ba.C_BankAccount_ID)
+LEFT JOIN  C_Bank b ON (b.C_Bank_ID=ba.C_Bank_ID)
+WHERE al.C_Invoice_ID=$P{C_Invoice_ID}]]>
+		</queryString>
+		<field name="tendertype" class="java.lang.String"/>
+		<field name="amount" class="java.math.BigDecimal"/>
+		<field name="discountamt" class="java.math.BigDecimal"/>
+		<field name="writeoffamt" class="java.math.BigDecimal"/>
+		<field name="overunderamt" class="java.math.BigDecimal"/>
+		<group name="tendertype">
+			<groupExpression><![CDATA[$F{tendertype}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Tipo de Pago Ingreso" whenResourceMissingType="Empty" uuid="1639e442-fa25-4a8e-9bb6-7e38c0410169">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Pimentel_Aktuell_Local.xml"/>
+		<parameter name="C_Order_ID" class="java.math.BigDecimal"/>
+		<queryString language="plsql">
+			<![CDATA[Select
+CASE
+ when pa.tendertype= 'A' then 'Transferencia (ACH)'
+when pa.tendertype='C' then 'Tarjeta De Crédito'
+when pa.tendertype='D' then 'Débito Directo'
+when pa.tendertype='K' then 'Cheque'
+when pa.tendertype='M' then 'Credit Memo'
+when pa.tendertype='P' then 'Pago Móvil'
+when pa.tendertype='T' then 'Cuenta'
+when pa.tendertype='X' then 'Efectivo'
+when pa.tendertype='Z' then 'Zelle'
+end tendertype,
+sum(pa.payamt) as amount,
+ba.AccountNo,
+b.Name,
+pa.R_PnRef, pa.c_payment_id, cu.iso_code, cu.cursymbol
+from  C_payment pa
+LEFT JOIN  C_BankAccount ba ON (pa.C_BankAccount_ID=ba.C_BankAccount_ID)
+LEFT JOIN  C_Bank b ON (b.C_Bank_ID=ba.C_Bank_ID)
+LEFT JOIN  C_Currency cu ON (cu.C_Currency_ID= pa.C_Currency_ID)
+WHERE pa.C_ORDER_ID=  $P{C_Order_ID} AND isReceipt = 'Y'
+GROUP BY pa.tendertype,ba.AccountNo,b.Name,pa.R_PnRef,pa.c_payment_id,cu.iso_code, cu.cursymbol
+ORDER BY pa.tendertype]]>
+		</queryString>
+		<field name="tendertype" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="tendertype"/>
+		</field>
+		<field name="amount" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		</field>
+		<field name="accountno" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="accountno"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_bankaccount"/>
+		</field>
+		<field name="name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="name"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_bank"/>
+		</field>
+		<field name="r_pnref" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="r_pnref"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_payment"/>
+		</field>
+		<field name="c_payment_id" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="c_payment_id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_payment"/>
+		</field>
+		<field name="iso_code" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="iso_code"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_currency"/>
+		</field>
+		<field name="cursymbol" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="cursymbol"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="c_currency"/>
+		</field>
+	</subDataset>
+	<subDataset name="Tipo de Pago Cambio" uuid="7f2fc674-ca13-438e-8bd7-8a3c20739165">
+		<parameter name="C_Order_ID" class="java.math.BigDecimal"/>
+		<queryString language="SQL">
+			<![CDATA[Select
+CASE
+ when pa.tendertype= 'A' then 'Transferencia (ACH)'
+when pa.tendertype='C' then 'Tarjeta De Crédito'
+when pa.tendertype='D' then 'Débito Directo'
+when pa.tendertype='K' then 'Cheque'
+when pa.tendertype='M' then 'Credit Memo'
+when pa.tendertype='P' then 'Pago Móvil'
+when pa.tendertype='T' then 'Cuenta'
+when pa.tendertype='X' then 'Efectivo'
+when pa.tendertype='Z' then 'Zelle'
+end tendertype,
+sum(pa.payamt) as amount,
+ba.AccountNo,
+b.Name,
+pa.R_PnRef, pa.c_payment_id, cu.iso_code, cu.cursymbol
+from  C_payment pa
+LEFT JOIN  C_BankAccount ba ON (pa.C_BankAccount_ID=ba.C_BankAccount_ID)
+LEFT JOIN  C_Bank b ON (b.C_Bank_ID=ba.C_Bank_ID)
+LEFT JOIN  C_Currency cu ON (cu.C_Currency_ID= pa.C_Currency_ID)
+WHERE pa.C_Order_ID= $P{C_Order_ID} AND pa.isReceipt = 'N'
+GROUP BY pa.tendertype,ba.AccountNo,b.Name,pa.R_PnRef,pa.c_payment_id,cu.iso_code, cu.cursymbol
+ORDER BY pa.tendertype]]>
+		</queryString>
+		<field name="tendertype" class="java.lang.String"/>
+		<field name="amount" class="java.math.BigDecimal"/>
+		<field name="accountno" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="r_pnref" class="java.lang.String"/>
+		<field name="c_payment_id" class="java.math.BigDecimal"/>
+		<field name="iso_code" class="java.lang.String"/>
+		<field name="cursymbol" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Tipo de pago3" uuid="91bbfdc8-bbd2-45c5-8014-9fff9d334807">
+		<parameter name="C_Invoice_ID" class="java.math.BigDecimal">
+			<defaultValueExpression><![CDATA[$P{REPORT_CONTEXT}.getParameterValue("RECORD_ID")]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[Select
+CASE
+ when pa.tendertype= 'A' then 'ACH'
+when pa.tendertype='C' then 'TDC'
+when pa.tendertype='D' then 'DD'
+when pa.tendertype='K' then 'CHQ'
+when pa.tendertype='M' then 'CR'
+when pa.tendertype='P' then 'PM'
+when pa.tendertype='T' then 'CT'
+when pa.tendertype='X' then 'CJ'
+when pa.tendertype='Z' then 'ZLL'
+end tendertype,
+sum(pa.payamt) as amount,
+ba.AccountNo,
+COALESCE(b.Name, '') as Name,
+pa.R_PnRef, pa.c_payment_id, cu.iso_code, cu.cursymbol,
+CASE
+when pa.tendertype='X' then ''
+else pa.DocumentNo
+end as DocumentNo
+from  C_payment pa
+LEFT JOIN  C_BankAccount ba ON (pa.C_BankAccount_ID=ba.C_BankAccount_ID)
+LEFT JOIN  C_Bank b ON (b.C_Bank_ID=pa.C_Bank_ID)
+LEFT JOIN  C_Currency cu ON (cu.C_Currency_ID= pa.C_Currency_ID)
+WHERE pa.C_Invoice_ID=$P{C_Invoice_ID}
+GROUP BY pa.tendertype,ba.AccountNo,b.Name,pa.R_PnRef,pa.c_payment_id,cu.iso_code, cu.cursymbol
+ORDER BY pa.tendertype]]>
+		</queryString>
+		<field name="tendertype" class="java.lang.String"/>
+		<field name="amount" class="java.math.BigDecimal"/>
+		<field name="accountno" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="r_pnref" class="java.lang.String"/>
+		<field name="c_payment_id" class="java.math.BigDecimal"/>
+		<field name="iso_code" class="java.lang.String"/>
+		<field name="cursymbol" class="java.lang.String"/>
+		<field name="documentno" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="RECORD_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Invoice_ID" class="java.math.BigDecimal" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{RECORD_ID}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ORACLE_REF_CURSOR" class="interface java.sql.ResultSet" isForPrompting="false"/>
+	<parameter name="CURRENT_LANG" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  
+
+i.DocumentNo,
+	i.DateInvoiced,
+  	i.DocStatus,
+  	i.Description,
+  	i.Created,
+  	COALESCE(co.DocumentNo, rma.DocumentNo) AS OrderDocumentNo,
+   	i.DateOrdered,
+  	dt.PrintName AS DocumentType,
+   	dt.DocumentNote AS DocumentTypeNote,
+  	i.TotalLines,
+	ROUND((i.TotalLines * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedTotalLines,
+    i.GrandTotal,
+	ROUND((i.GrandTotal * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedGrandTotal,
+    i.IsPaid,
+    COALESCE(u.Name, '') AS SalesRepName,
+    (CASE WHEN bp.IsEmployee = 'Y' THEN (COALESCE(bp.Name, '') || ' ' || COALESCE(bp.Name2, '')) ELSE bp.Name END) AS BPName,
+    (CASE WHEN bp.IsEmployee = 'N' THEN (bp.Name2) ELSE null END) AS BPName2,
+    COALESCE(bp.TaxID, bp.Value) AS BPTaxID,
+    COALESCE(l.Address1, '') || COALESCE(', ' || l.Address2, '') || COALESCE(', ' || l.Address3, '') || COALESCE(', ' || l.Address4, '') || COALESCE(', ' || l.City, '') || COALESCE(' - ' || r.Name, '') BPAddress,
+    COALESCE(dl.Address1, '') || COALESCE(', ' || dl.Address2, '') || COALESCE(', ' || dl.Address3, '') || COALESCE(', ' || dl.Address4, '') || COALESCE(', ' || dl.City, '') || COALESCE(' - ' || dl.RegionName, '') BPDeliveryAddress,
+	COALESCE(mp.Value,'') AS ProductKey,
+   	COALESCE(mp.Name, cch.Name, '') || COALESCE(' ' || cil.Description, '') AS ProductName,
+    cil.Description LineDescription,
+    SUM(cil.QtyEntered) QtyEntered,
+    SUM(cil.QtyInvoiced) QtyInvoiced,
+	COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1) AS rate,
+	cct.name as conversionType,
+    cil.PriceList PriceList,
+	ROUND(((cil.PriceList * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1))), cc.stdprecision) AS convertedPriceList,
+    cil.PriceEntered,
+	ROUND((cil.PriceEntered * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedPriceEntered,
+   	(CASE WHEN cil.PriceList = 0 THEN cil.PriceEntered ELSE cil.PriceList END) AS Price,
+	(CASE WHEN cil.PriceList = 0
+		 THEN ROUND((cil.PriceEntered * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision)
+		 ELSE ROUND((cil.PriceList * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) END) AS convertedPrice,
+ 	cil.PriceActual,
+	ROUND(((cil.PriceActual) * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)) ,cc.stdprecision) AS convertedPriceActual,
+ 	ABS(((cil.PriceActual - cil.PriceList) / CASE WHEN cil.PriceList = 0 THEN 1 ELSE cil.PriceList END) * 100) Discount,
+	sum(cil.LineNetAmt) LineNetAmt,
+	ROUND((sum(cil.LineNetAmt)  * COALESCE(currencyrate(i.c_currency_id, olc.c_currency_id, i.dateinvoiced, i.c_conversiontype_id, i.ad_client_id, i.ad_org_id), 1)),cc.stdprecision) AS convertedLineNetAmt,
+    sum(cil.LineNetAmt + (cil.LineNetAmt * ct.Rate)) LineTotalAmt,
+    cc.CurSymbol AS Currency,
+	ccb.CurSymbol as ConvertedCurrency,
+	asd.C_Currency_ID as acctSchemaCurrency,
+	i.C_Currency_ID as invoiceCurrency,
+	ct.Name AS Tax,
+	ct.TaxIndicator,
+ 	(i.DateInvoiced + pt.NetDays) DueDate,
+  	u.Description SalesRep,
+ 	bpl.Phone,
+  	dt.DocBaseType,
+  	pt.Name PaymentTerm,
+  	--COALESCE(umtrl.UOMSymbol, uom.UOMSymbol) as UOMWeight,
+ 	mp.Weight as ProductWeight,
+ 	i.POReference,
+ 	mp.UnitsPerPack,
+  	mp.UnitsPerPallet,
+	
+        org.Name as OrgName,
+	    COALESCE(ol.Address1, '') || COALESCE(', ' || ol.Address2, '') || COALESCE(', ' || ol.Address3, '') || COALESCE(', ' || ol.Address4, '') || COALESCE(', ' || ol.City, '') || COALESCE(' - ' || olr.Name, '') OrgAddress,
+	    oi.TAXID as OrgTAXID,
+	    wa.Name as Warehouse,
+(SELECT 
+SUM(CASE
+        WHEN um.stdprecision = 0 AND il.M_Product_ID > 0 THEN il.Qtyentered
+		ELSE il.Qtyentered * 1
+    END)
+FROM C_InvoiceLine il
+LEFT JOIN M_Product p ON (p.M_Product_ID = il.M_Product_ID)
+LEFT JOIN C_UOM um ON (p.C_UOM_ID = um.C_UOM_ID)
+WHERE il.c_invoice_id =  $P{RECORD_ID} ) AS ProductQuantities,
+(SELECT 
+COUNT(il.C_InvoiceLine_ID)
+FROM C_InvoiceLine il
+WHERE il.c_invoice_id =  $P{RECORD_ID} ) AS invocielinesqty,
+cam.name as Channel,
+
+pos.CashDrawer,
+c.name as razaosocial,
+c.description as giro,
+oi.duns,
+    pos.posAuthorizationCode, pos.posResolutionNo, pos.ticketNoFrom, pos.ticketNoTo, pos.startdate, dt.description as doctypedescription, oi.printname as orgprintname, ci.printname as clientprintname, oi.phone as orgphone,
+   COALESCE(shw_searchtaxamt(i.c_Invoice_ID, 'IVA') + shw_searchtaxbaseamt(i.c_Invoice_ID, 'IVA'), 0.00) as ventaGravada,
+   COALESCE(shw_searchtaxamt(i.c_Invoice_ID, 'EXT') + shw_searchtaxbaseamt(i.c_Invoice_ID, 'EXT'), 0.00)  as ventaExenta,
+   COALESCE(shw_searchtaxamt(i.c_Invoice_ID, 'NSUJ') + shw_searchtaxbaseamt(i.c_Invoice_ID, 'NSUJ'),0.00)  as ventaNoSujeta,	
+   COALESCE(shw_discountAmt(i.c_Invoice_ID),0.00) AS discountamt, i.c_Order_ID, ci.slogan, getdate() as timenow
+   
+   FROM C_Invoice i
+   INNER JOIN C_DocType dt  ON(dt.C_DocType_ID = i.C_DocType_ID)
+   INNER JOIN C_InvoiceLine cil ON(i.C_Invoice_ID = cil.C_Invoice_ID)
+   INNER JOIN C_BPartner bp ON(i.C_BPartner_ID = bp.C_BPartner_ID)
+   LEFT JOIN C_BPartner_Location bpl ON(i.C_BPartner_Location_ID = bpl.C_BPartner_Location_ID)
+   LEFT JOIN C_Location l ON(bpl.C_Location_ID = l.C_Location_ID)
+   LEFT JOIN C_Region r ON (r.C_Region_ID=l.C_Region_ID)
+   INNER JOIN AD_ClientInfo ci ON(ci.AD_Client_ID = i.AD_Client_ID)
+   INNER JOIN AD_Client c ON (i.AD_Client_ID=c.AD_Client_ID)
+   INNER JOIN C_AcctSchema asd ON (ci.c_acctschema1_id = asd.c_acctschema_id)   
+   LEFT JOIN C_ConversionType cct ON (i.C_ConversionType_ID = cct.C_ConversionType_ID)
+   
+   LEFT JOIN C_UOM uom ON(uom.C_UOM_ID = cil.C_UOM_ID)
+   LEFT JOIN C_UOM_TRL umtrl on (uom.C_UOM_ID = umtrl.C_UOM_ID)
+   --LEFT JOIN C_UOM uomr ON(uomr.C_UOM_ID = ci.Report_UOM_Weight_ID)
+   LEFT JOIN AD_User u ON(u.AD_User_ID = i.SalesRep_ID)
+   LEFT JOIN AD_User cu ON(cu.AD_User_ID = i.CreatedBy)
+   --LEFT JOIN C_Invoice da ON(da.C_Invoice_ID = i.InvoiceToAllocate_ID)
+   LEFT JOIN C_PaymentTerm pt ON(i.C_PaymentTerm_ID = pt.C_PaymentTerm_ID)
+   LEFT JOIN C_Currency cc ON(i.C_Currency_ID = cc.C_Currency_ID)
+   LEFT JOIN C_Order co ON(i.C_Order_ID = co.C_Order_ID)
+   LEFT JOIN M_Warehouse wa ON (co.M_Warehouse_ID=wa.M_Warehouse_ID)
+   LEFT JOIN C_POS pos ON (co.C_POS_ID=pos.C_POS_ID)   
+   LEFT JOIN M_RMA rma ON(rma.M_RMA_ID = i.M_RMA_ID)
+   LEFT JOIN C_BPartner_Location dbpl ON(co.C_BPartner_Location_ID = dbpl.C_BPartner_Location_ID)
+   LEFT JOIN C_Location dl ON(dbpl.C_Location_ID = dl.C_Location_ID)
+   LEFT JOIN M_Product mp ON(cil.M_Product_ID = mp.M_Product_ID)
+   LEFT JOIN C_Charge cch ON(cil.C_Charge_ID = cch.C_Charge_ID)
+   LEFT JOIN C_Tax ct ON(cil.C_Tax_ID = ct.C_Tax_ID)
+   LEFT JOIN (SELECT il.C_Invoice_ID, SUM(p.Weight * il.QtyInvoiced) Weight
+        FROM C_InvoiceLine il
+        LEFT JOIN M_Product p ON(p.M_Product_ID = il.M_Product_ID)
+        GROUP BY il.C_Invoice_ID) pw ON(pw.C_Invoice_ID = i.C_Invoice_ID)
+        LEFT JOIN AD_Org org On (org.AD_Org_ID = i.AD_Org_ID)
+        LEFT JOIN AD_OrgInfo oi ON(oi.AD_Org_ID = org.AD_Org_ID)
+        LEFT JOIN C_Location ol ON(ol.C_Location_ID = oi.C_Location_ID)
+        LEFT JOIN C_Region olr ON (olr.C_Region_ID=ol.C_Region_ID)
+        LEFT JOIN C_Country olc ON (olc.C_Country_ID=ol.C_Country_ID)
+        LEFT JOIN C_Currency ccb ON(olc.c_currency_id = ccb.C_Currency_ID)
+        LEFT JOIN M_Shipper oms ON(oms.M_Shipper_ID = co.M_Shipper_ID)
+        LEFT JOIN C_Campaign cam  ON(cam.C_Campaign_ID = i.C_Campaign_ID)
+WHERE i.C_Invoice_ID=  $P{RECORD_ID} 
+AND umtrl.AD_Language ='es_SV'
+GROUP BY ProductKey,ProductName,LineDescription,i.grandtotal,i.ispaid, SalesRepName,bp.name, 
+bp.name2,BPTaxID,l.address1,l.address2,l.address3,l.address4,l.city,l.regionname, i.documentno,
+i.dateinvoiced,i.docstatus,i.description,OrderDocumentNo,i.dateordered, DocumentType,DocumentTypeNote, 
+i.TotalLines,cil.PriceList,cil.PriceEntered,Price,cil.PriceActual,Discount, Currency, 
+Tax, ct.TaxIndicator, DueDate, SalesRep, bpl.Phone, dt.DocBaseType, PaymentTerm,  ProductWeight, i.POReference, 
+mp.UnitsPerPack, mp.UnitsPerPallet,  i.c_currency_id, asd.c_currency_id, i.c_conversiontype_id, 
+i.ad_client_id, i.ad_org_id, cc.stdprecision , ccb.cursymbol , cct.name,cu.Name,r.name,bp.isemployee,dbpl.name, 
+dl.Address1, dl.Address2, dl.Address3, dl.Address4, dl.City,dl.RegionName, org.Name,ol.Address1, ol.Address2, 
+ol.Address3, ol.Address4, ol.City, olr.Name, oi.TAXID,wa.Name,olc.c_currency_id, oms.Name,cam.name,i.Created,
+mp.C_TaxCategory_ID, pos.cashdrawer,c.name,c.description,oi.duns,pos.posAuthorizationCode,pos.posResolutionNo,pos.ticketNoFrom, pos.ticketNoTo, pos.startdate,dt.description,orgprintname,clientprintname,orgphone, i.c_Invoice_ID,slogan,timenow
+ORDER BY ProductKey;]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="dateinvoiced" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="dateinvoiced"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="docstatus" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="docstatus"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="created" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="created"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="orderdocumentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orderdocumentno"/>
+	</field>
+	<field name="dateordered" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="dateordered"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="documenttype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="documenttype"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<field name="documenttypenote" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="documenttypenote"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<field name="totallines" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="totallines"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="convertedtotallines" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedtotallines"/>
+	</field>
+	<field name="grandtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="grandtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="convertedgrandtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedgrandtotal"/>
+	</field>
+	<field name="ispaid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ispaid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="salesrepname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="salesrepname"/>
+	</field>
+	<field name="bpname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bpname"/>
+	</field>
+	<field name="bpname2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bpname2"/>
+	</field>
+	<field name="bptaxid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bptaxid"/>
+	</field>
+	<field name="bpaddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bpaddress"/>
+	</field>
+	<field name="bpdeliveryaddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="bpdeliveryaddress"/>
+	</field>
+	<field name="productkey" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="productkey"/>
+	</field>
+	<field name="productname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="productname"/>
+	</field>
+	<field name="linedescription" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="linedescription"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="qtyentered" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="qtyentered"/>
+	</field>
+	<field name="qtyinvoiced" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="qtyinvoiced"/>
+	</field>
+	<field name="rate" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="rate"/>
+	</field>
+	<field name="conversiontype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="conversiontype"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_conversiontype"/>
+	</field>
+	<field name="pricelist" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="pricelist"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="convertedpricelist" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedpricelist"/>
+	</field>
+	<field name="priceentered" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="priceentered"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="convertedpriceentered" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedpriceentered"/>
+	</field>
+	<field name="price" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="price"/>
+	</field>
+	<field name="convertedprice" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedprice"/>
+	</field>
+	<field name="priceactual" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="priceactual"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="convertedpriceactual" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedpriceactual"/>
+	</field>
+	<field name="discount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="discount"/>
+	</field>
+	<field name="linenetamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="linenetamt"/>
+	</field>
+	<field name="convertedlinenetamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="convertedlinenetamt"/>
+	</field>
+	<field name="linetotalamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="linetotalamt"/>
+	</field>
+	<field name="currency" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="currency"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_currency"/>
+	</field>
+	<field name="convertedcurrency" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="convertedcurrency"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_currency"/>
+	</field>
+	<field name="acctschemacurrency" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="acctschemacurrency"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_acctschema"/>
+	</field>
+	<field name="invoicecurrency" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="invoicecurrency"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="tax" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tax"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_tax"/>
+	</field>
+	<field name="taxindicator" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="taxindicator"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_tax"/>
+	</field>
+	<field name="duedate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="duedate"/>
+	</field>
+	<field name="salesrep" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="salesrep"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_user"/>
+	</field>
+	<field name="phone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="phone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner_location"/>
+	</field>
+	<field name="docbasetype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="docbasetype"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<field name="paymentterm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="paymentterm"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_paymentterm"/>
+	</field>
+	<field name="productweight" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="productweight"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="poreference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="poreference"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="unitsperpack" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="unitsperpack"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="unitsperpallet" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="unitsperpallet"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="orgname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orgname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_org"/>
+	</field>
+	<field name="orgaddress" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orgaddress"/>
+	</field>
+	<field name="orgtaxid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orgtaxid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+	</field>
+	<field name="warehouse" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="warehouse"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_warehouse"/>
+	</field>
+	<field name="productquantities" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="productquantities"/>
+	</field>
+	<field name="invocielinesqty" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="invocielinesqty"/>
+	</field>
+	<field name="channel" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="channel"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_campaign"/>
+	</field>
+	<field name="cashdrawer" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cashdrawer"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="razaosocial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="razaosocial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_client"/>
+	</field>
+	<field name="giro" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="giro"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_client"/>
+	</field>
+	<field name="duns" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="duns"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+	</field>
+	<field name="posauthorizationcode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="posauthorizationcode"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="posresolutionno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="posresolutionno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="ticketnofrom" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ticketnofrom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="ticketnoto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ticketnoto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="startdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="startdate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_pos"/>
+	</field>
+	<field name="doctypedescription" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="doctypedescription"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<field name="orgprintname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orgprintname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+	</field>
+	<field name="clientprintname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="clientprintname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_clientinfo"/>
+	</field>
+	<field name="orgphone" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orgphone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+	</field>
+	<field name="ventagravada" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventagravada"/>
+	</field>
+	<field name="ventaexenta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventaexenta"/>
+	</field>
+	<field name="ventanosujeta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventanosujeta"/>
+	</field>
+	<field name="discountamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="discountamt"/>
+	</field>
+	<field name="c_order_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="c_order_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="slogan" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="slogan"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_clientinfo"/>
+	</field>
+	<field name="timenow" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="timenow"/>
+	</field>
+	<variable name="discount" class="java.math.BigDecimal" incrementType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{discount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="142" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="79" width="176" height="11" uuid="d119ca30-09d6-4c99-8b52-8def4061b690">
+					<property name="ireport.zoom" value="3.0"/>
+					<property name="ireport.x" value="0"/>
+					<property name="ireport.y" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ADempiere"/>
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.report.description" value=""/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Resolución ".concat($F{posresolutionno})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="68" width="176" height="11" uuid="90416bd3-6346-417e-b115-9d394c4ce24b">
+					<property name="ireport.zoom" value="3.0"/>
+					<property name="ireport.x" value="0"/>
+					<property name="ireport.y" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ADempiere"/>
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.report.description" value=""/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de Autorización: " + new SimpleDateFormat("dd/MM/yyyy").format($F{startdate})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="90" width="176" height="22" uuid="69442ae6-335b-4cec-84a1-f7866053c491">
+					<property name="ireport.zoom" value="3.0"/>
+					<property name="ireport.x" value="0"/>
+					<property name="ireport.y" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ADempiere"/>
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.report.description" value=""/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2">
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Serie Autorizada No  " + $F{ticketnofrom}+ "\n" + "al " + $F{ticketnoto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="46" width="176" height="11" uuid="ef83cf67-e2b8-4c91-ad69-abed9a19d6a1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NIT: ".concat($F{orgtaxid}).concat(" NRC: ").concat($F{duns})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" x="0" y="57" width="176" height="11" uuid="7da3ba19-904a-418c-aa79-8316668f930e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["GIRO: ".concat($F{giro})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="35" width="176" height="11" uuid="7a8427be-5981-4461-be76-6bb9ad7d47cc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orgaddress}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="13" width="176" height="11" uuid="ddc9f1df-9b02-4c61-9132-ce50c2d988af">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$F{orderdocumentno} != null]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{razaosocial}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="0" y="112" width="176" height="25" uuid="1801a5fc-bfd2-47ce-87f6-d93d8fd51639">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ticket No: " + $F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="176" height="13" uuid="dc13e33c-3e98-411d-89a4-3b64a1cdcd23">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{orderdocumentno} != null]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{clientprintname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="24" width="90" height="11" uuid="6df42a92-06d3-4e29-8575-31b021eb6748">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$F{orderdocumentno} != null]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orgprintname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="24" width="86" height="11" uuid="4a77d6f0-04da-488d-bed2-e758395c7227">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$F{orderdocumentno} != null]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  Cel: " + $F{orgphone}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="23">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<elementGroup>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement style="table 1_TH" positionType="Float" stretchType="ContainerHeight" x="1" y="0" width="9" height="22" isPrintWhenDetailOverflows="true" uuid="d6c186ad-0058-4fb9-bc39-6e3a55a38cc6">
+						<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box topPadding="1">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Justified" verticalAlignment="Top" markup="styled">
+						<font fontName="SansSerif" size="7" isBold="false"/>
+						<paragraph leftIndent="0" rightIndent="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new DecimalFormat("###,###").format($F{qtyinvoiced})]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="150" y="0" width="26" height="22" uuid="2434b329-aca0-4069-bb5b-757b823dd05c">
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box topPadding="1" rightPadding="1"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+					<paragraph rightIndent="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{convertedpriceactual}.multiply($F{qtyinvoiced})]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="table 1_TH" positionType="Float" stretchType="ContainerHeight" x="10" y="0" width="140" height="11" isPrintWhenDetailOverflows="true" uuid="1f071fc1-bb3f-4062-b476-64ff6fdabca7">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" markup="styled">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+					<paragraph leftIndent="0" rightIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productname}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="table 1_TH" positionType="Float" stretchType="ContainerHeight" x="10" y="12" width="140" height="11" isPrintWhenDetailOverflows="true" uuid="0b56c5bc-dc15-4631-a0f6-7fb79a985429">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top" markup="styled">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+					<paragraph leftIndent="0" rightIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cód: " + $F{productkey} + " Precio/Unid. $: " +
+new DecimalFormat("###,##0.00").format($F{convertedpriceactual})]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="299" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="120" y="12" width="56" height="11" uuid="2e654d02-8387-45ff-af95-3187260aefdd">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventagravada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="12" width="120" height="11" uuid="d113b590-b696-4e17-bfda-5611478a6a52"/>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta Gravada: (" + $F{convertedcurrency} + ")"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="106" width="176" height="16" uuid="ea32bcfc-d92e-4f45-b1b9-7448fdd0c36b">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad Artículos:  " + new DecimalFormat("##,#00").format($F{productquantities})
++ " Cantidad Líneas:  " + new DecimalFormat("###,#00").format($F{invocielinesqty})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="0" y="57" width="120" height="11" uuid="9723224b-33b0-4fc3-aee3-26c0c9af8541"/>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL A PAGAR (" + $F{currency} + ")"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="120" y="57" width="56" height="11" uuid="d2aa2444-f1ed-45e9-9d4d-69a5dfe0153e">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="24" width="120" height="11" uuid="509e7bbd-35a4-4908-bd99-b088eb69379c"/>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta Exenta: (" + $F{convertedcurrency} + ")"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="120" y="24" width="56" height="11" uuid="dd6a669d-4939-43f4-9024-cdb225074a4c">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventaexenta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="35" width="120" height="11" uuid="d82cb993-8e0e-49a3-8bc4-429233509a01"/>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Venta No Sujeta: (" + $F{convertedcurrency} + ")"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="120" y="35" width="56" height="11" uuid="86b694b5-c088-46fe-8a08-80379f5d8d37">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventanosujeta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" mode="Transparent" x="0" y="46" width="120" height="11" uuid="fcc8506e-2385-4b7e-a1e4-c1f3b3748afb"/>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Descuento: (" + $F{convertedcurrency} + ")"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="120" y="46" width="56" height="11" uuid="f20a4f58-eb68-44e7-87a8-9190ce91b026">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+				</reportElement>
+				<box rightPadding="2">
+					<pen lineColor="#FFFFFF"/>
+					<topPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.5" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.5" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{discountamt}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement stretchType="ElementGroupHeight" x="0" y="68" width="176" height="11" uuid="5fbd57c2-faf1-4077-9597-7542eef9adf5">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Tipo de Pago Ingreso" uuid="732fc72f-fec3-438b-b19a-4655794d9d19">
+						<datasetParameter name="C_Order_ID">
+							<datasetParameterExpression><![CDATA[$F{c_order_id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="11" width="176">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="11" uuid="ff1f6191-b0ab-4ed2-b3b9-e20777d15404">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Pago/Tipo  (" + $F{cursymbol} + ") "+ $F{tendertype}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="118" y="0" width="56" height="11" uuid="d76ad34f-db86-4ea1-95e3-1d853371a192">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="0" y="79" width="176" height="11" uuid="44fcfe56-6527-4d10-97d9-e9871f2da5c2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Tipo de Pago Cambio" uuid="d36b6eee-57af-4f33-ab08-9ccd3f9414e1">
+						<datasetParameter name="C_Order_ID">
+							<datasetParameterExpression><![CDATA[$F{c_order_id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="11" width="176">
+						<textField>
+							<reportElement x="0" y="0" width="120" height="11" uuid="3283f8fb-c2de-4d25-afab-6f2728ecd529">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Cambio  (" + $F{cursymbol} + ") "+ $F{tendertype}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="118" y="0" width="56" height="11" uuid="781b1ac4-9500-4e9e-9188-70846db15474">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Right">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField textAdjust="StretchHeight" pattern="#,##0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="122" width="176" height="16" uuid="a9438c4c-16ee-44ba-8600-97224394dcde">
+					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cashdrawer} + 
+" Vendedor: " + $F{salesrepname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="138" width="176" height="16" uuid="d2676fe7-270e-4432-8c29-df2d1f3e91fd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Emisión: " + new SimpleDateFormat("dd/MM/yyyy").format($F{timenow})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="154" width="176" height="33" uuid="6fb0df82-216c-476b-9e80-c798eae5355c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gracias por su compra \n\n" 
++ $F{clientprintname} + " "
++ $F{slogan}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="35" y="187" width="136" height="30" uuid="dd1768cf-6d97-438f-83ac-fc7ff743066b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{orderdocumentno}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="217" width="176" height="30" uuid="f4706f56-2be3-464c-967e-c547961fb3a9"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Se aceptan cambios y devoluciones \n "
++ " solamente presentando este ticket."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="176" height="1" uuid="83f7e035-c2f8-4ef0-95dc-a234b54df9e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Z_SHW_LibroVentasContribuyenteNEU_subreport1" language="groovy" pageWidth="752" pageHeight="572" orientation="Landscape" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" uuid="ba07d348-0d1f-457e-8b2f-cb566f744d35">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SA_Remote.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="C_TaxDeclaration_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[select '2' as type, tp.name as tdType, 
+case when  i.C_InvoiceType_ID=1000006 then sum(export) - sum(cuentaajena) else 0 end as export,
+ case when i.C_InvoiceType_ID=1000006 then  0 else sum(totallines )  end as totallines ,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(grandtotal)  end as grandtotal,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(gravada) end  as ventagravada,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(iva)  end as taxiva,
+ sum(nosujeto)   as ventnosujeta, 
+ sum(cuentaajena)   as cuentaajena,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(exenta) end  as ventaext,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(retencion) end  as taxret,
+  i.c_InvoiceType_ID, it.name as invoicetype,
+  sum(gravada) +  sum(nosujeto) + sum(exenta) as ventatotal, 
+  
+  it.name as docbase
+from rv_Taxdeclaration_Details i
+INNER JOIN c_Invoicetype it on i.c_Invoicetype_ID=it.c_Invoicetype_ID
+INNER JOIN c_Taxdeclarationtype tp on i.c_Taxdeclarationtype_ID= tp.c_Taxdeclarationtype_ID
+--inner join c_doctype dt on i.c_doctype_ID = dt.c_doctype_ID
+--inner join c_period per on i.dateacct between per.startdate and per.enddate and per.ad_client_ID = i.ad_client_ID
+
+
+left join ad_ref_list rl2 on rl2.value = i.docbasetype and  rl2.AD_Reference_ID=183
+left join ad_ref_list_trl rlt2 on rlt2.ad_ref_list_ID = rl2.ad_ref_list_ID and rlt2.ad_language = 'es_SV'
+
+where  i.c_Invoicetype_ID is not null
+and i.c_Taxdeclaration_ID=   $P{C_TaxDeclaration_ID} AND i.c_TAxdeclarationtype_ID=1000003
+group by c_Taxdeclaration_ID, it.name, i.c_InvoiceType_ID,rlt2.name,tp.name
+
+UNION ALL
+select '1' as type, tp.name as tdType,
+case when  i.C_InvoiceType_ID=1000006 then sum(grandtotal) else 0 end as export,
+ case when i.C_InvoiceType_ID=1000006 then  0 else sum(totallines )  end as totallines ,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(grandtotal)  end as grandtotal,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(gravada) end  as ventagravada,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(iva)  end as taxiva,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(nosujeto)  end as ventnosujeta,
+ sum(cuentaajena)   as cuentaajena,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(exenta) end  as ventaext,
+ case when i.C_InvoiceType_ID=1000006 then  0 else  sum(retencion) end  as taxret,
+  i.c_InvoiceType_ID, it.name as invoicetype,
+  sum(gravada) +  sum(nosujeto) + sum(exenta) as ventatotal,rlt2.name as docbase
+from rv_Taxdeclaration_Details i
+INNER JOIN c_Invoicetype it on i.c_Invoicetype_ID=it.c_Invoicetype_ID
+INNER JOIN c_Taxdeclarationtype tp on i.c_Taxdeclarationtype_ID= tp.c_Taxdeclarationtype_ID
+--inner join c_doctype dt on i.c_doctype_ID = dt.c_doctype_ID
+--inner join c_period per on i.dateacct between per.startdate and per.enddate and per.ad_client_ID = i.ad_client_ID
+
+
+left join ad_ref_list rl2 on rl2.value = i.docbasetype and  rl2.AD_Reference_ID=183
+left join ad_ref_list_trl rlt2 on rlt2.ad_ref_list_ID = rl2.ad_ref_list_ID and rlt2.ad_language = 'es_SV'
+
+where  i.c_Invoicetype_ID is not null
+and i.c_Taxdeclaration_ID= $P{C_TaxDeclaration_ID}    AND i.c_TAxdeclarationtype_ID=1000004 
+group by c_Taxdeclaration_ID, it.name, i.c_InvoiceType_ID,rlt2.name,tp.name]]>
+	</queryString>
+	<field name="type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="type"/>
+	</field>
+	<field name="tdtype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tdtype"/>
+	</field>
+	<field name="export" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="export"/>
+	</field>
+	<field name="totallines" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="totallines"/>
+	</field>
+	<field name="grandtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="grandtotal"/>
+	</field>
+	<field name="ventagravada" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventagravada"/>
+	</field>
+	<field name="taxiva" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxiva"/>
+	</field>
+	<field name="ventnosujeta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventnosujeta"/>
+	</field>
+	<field name="cuentaajena" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="cuentaajena"/>
+	</field>
+	<field name="ventaext" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventaext"/>
+	</field>
+	<field name="taxret" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="taxret"/>
+	</field>
+	<field name="c_invoicetype_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="c_invoicetype_id"/>
+	</field>
+	<field name="invoicetype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="invoicetype"/>
+	</field>
+	<field name="ventatotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ventatotal"/>
+	</field>
+	<field name="docbase" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="docbase"/>
+	</field>
+	<sortField name="invoicetype"/>
+	<sortField name="docbase"/>
+	<variable name="ventagravada_1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventagravada}]]></variableExpression>
+	</variable>
+	<variable name="taxiva_1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxiva}]]></variableExpression>
+	</variable>
+	<variable name="ventnosujeta_1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventnosujeta}]]></variableExpression>
+	</variable>
+	<variable name="ventaext_1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventaext}]]></variableExpression>
+	</variable>
+	<variable name="export_1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{export}]]></variableExpression>
+	</variable>
+	<variable name="ventagravada_2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventagravada}]]></variableExpression>
+	</variable>
+	<variable name="taxiva_2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxiva}]]></variableExpression>
+	</variable>
+	<variable name="ventnosujeta_2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventnosujeta}]]></variableExpression>
+	</variable>
+	<variable name="ventaext_2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventaext}]]></variableExpression>
+	</variable>
+	<variable name="export_2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{export}]]></variableExpression>
+	</variable>
+	<variable name="cuentaajena1" class="java.math.BigDecimal" resetType="Group" resetGroup="InvoiceType" calculation="Sum">
+		<variableExpression><![CDATA[$F{cuentaajena}]]></variableExpression>
+	</variable>
+	<variable name="cuentaajena2" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{cuentaajena}]]></variableExpression>
+	</variable>
+	<group name="InvoiceType">
+		<groupExpression><![CDATA[$F{invoicetype}]]></groupExpression>
+		<groupFooter>
+			<band height="20">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField pattern="#,##0.00">
+					<reportElement x="290" y="0" width="70" height="20" uuid="13fbd948-b30c-4b81-bf57-651f7217db04"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ventagravada_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="560" y="0" width="70" height="20" uuid="ea205771-12d5-487b-be92-57cce33205b8"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ventaext_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="360" y="0" width="70" height="20" uuid="882b4cc2-6850-4f03-8dc1-01afd230c35b"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{taxiva_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="430" y="0" width="70" height="20" uuid="c902789a-66a4-4af6-9446-b291c5d448ae"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ventnosujeta_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="630" y="0" width="70" height="20" uuid="79eb2efe-4484-4e04-9cdd-a78737ab8bf9"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{export_1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="140" y="0" width="150" height="20" uuid="6e934898-8ea5-4efe-be7d-83416e63c40b"/>
+					<box>
+						<topPen lineWidth="0.75"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total:" .concat($F{invoicetype})]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="500" y="0" width="60" height="20" uuid="15b9f4e7-d407-4755-a927-0ea91d6a1eff">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{cuentaajena1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="752" height="36" uuid="8ffaf107-8635-46a5-bac9-db918a8293c4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Ventas del Mes]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="290" y="0" width="70" height="20" uuid="5791d8b9-e8f8-4ae8-8a3c-ccd0ce7843f0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Venta gravada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="70" height="20" uuid="fb358b96-7073-4ba2-aeb3-1c95d9a9b450"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="70" height="20" uuid="8140f75d-6f23-47cf-8f55-e36f48b31658"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Venta no sujeta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="0" width="70" height="20" uuid="0596af6e-87b6-4003-92fe-29f29f84792b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Venta exenta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="0" width="70" height="20" uuid="f981dcbd-ebb7-4e4b-93a9-00e03db78e05"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Exportación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="60" height="20" uuid="d84f565a-f2ce-47af-954e-746364283d11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cuenta ajena]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="140" y="0" width="150" height="20" uuid="262f157f-9a3d-413e-b829-23863c3ec86a"/>
+				<textFieldExpression><![CDATA[$F{docbase}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement isPrintRepeatedValues="false" x="30" y="0" width="110" height="20" uuid="7ce763d1-e1c8-4679-a388-e54ff7114440"/>
+				<textFieldExpression><![CDATA[$F{tdtype}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="290" y="0" width="70" height="20" uuid="2acab88e-1485-468b-8715-e2439eb772e7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ventagravada}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="360" y="0" width="70" height="20" uuid="acbc7a0d-2f71-4379-baec-efac4fea2f20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{taxiva}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="430" y="0" width="70" height="20" uuid="b7db9bf4-9ccf-4db5-aa11-1b2d56446d51"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ventnosujeta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="560" y="0" width="70" height="20" uuid="733fc914-6f2f-4bdb-b0bd-71f3db825688"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ventaext}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="630" y="0" width="70" height="20" uuid="565d9681-83bc-4602-a2f7-1e8f847126f7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{export}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="500" y="2" width="60" height="20" uuid="ef6b0b22-fb9e-463c-bcfd-4afc00bc8f7e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cuentaajena}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="41" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="290" y="0" width="70" height="20" uuid="72337b2b-ece6-489f-9764-7114093e1eae"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventagravada_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="360" y="0" width="70" height="20" uuid="ad355372-1f76-4a31-92e6-7a1458bee571"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{taxiva_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="430" y="0" width="70" height="20" uuid="f0013779-a917-416b-80e3-e58175307143"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventnosujeta_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="560" y="0" width="70" height="20" uuid="936fabe2-d756-4f40-93e8-35b93340dc9f"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ventaext_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="630" y="0" width="70" height="20" uuid="7eaf5107-4c16-49bf-8885-bb2cb450f09d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{export_2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="140" y="0" width="150" height="20" uuid="b0f08bf2-ab7b-4948-b64d-56df2cd77c41"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement>
+					<font size="10" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="500" y="0" width="60" height="20" uuid="685e7e6a-889b-4e37-8947-5951e2124de7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cuentaajena2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

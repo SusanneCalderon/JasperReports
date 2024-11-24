@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Retaceo_NEU" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="d35093e5-4ac2-40c6-9fbb-b1d485ffaec8">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA.xml"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA["C:\\Users\\SHW_User\\Adempiere_Proyectos\\ProyectoGegasa\\Reportes\\Buchhaltung\\"]]></parameterDescription>
+	</parameter>
+	<parameter name="C_ElementValue_ID" class="java.math.BigDecimal"/>
+	<parameter name="AD_USER_ID" class="java.lang.Integer">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT 
+ DISTINCT ON (iol.m_Inoutline_ID) iol.m_Inoutline_ID,
+--iol.m_Inoutline_ID,
+  iol.c_Project_ID, pj.name as project, p.value, p.name, 
+ (iol.movementqty) as movementqty, (ivl.priceactual) as priceactual,
+  (ivl.linenetamt) as linenetamt,
+  (io.movementdate) as movementdate,
+  io.c_project_id, 
+  iol.m_product_id, 
+  io.documentno,i.documentno,
+  coalesce((select lcaamount from RV_LandedcostSum where m_inoutline_id = iol.m_inoutline_id and lctypevalue like 'CFAC'), 0)  as cfac,
+  coalesce((select lcaamount from RV_LandedcostSum where m_inoutline_id = iol.m_inoutline_id and lctypevalue like 'CREG'), 0)   as creg,
+  coalesce((select lcaamount from RV_LandedcostSum where m_inoutline_id = iol.m_inoutline_id and lctypevalue like 'COTR') , 0) as cotr,
+  coalesce((select lcaamount from RV_LandedcostSum where m_inoutline_id = iol.m_inoutline_id and lctypevalue like 'DAI') , 0) as cdai,
+  coalesce((select lcaamount from RV_LandedcostSum where m_inoutline_id = iol.m_inoutline_id and lctypevalue like 'CREB') , 0) as creb
+  ,
+  (select name from ad_user where ad_user_ID =  $P{AD_USER_ID}  ) as user
+
+FROM
+   m_inoutline iol
+   inner join m_inout io on iol.m_inout_id = io.m_inout_id
+   INNER JOIN m_Matchinv mi on iol.m_INoutline_ID=mi.m_Inoutline_ID and mi.reversal_ID is null
+   inner join c_invoiceline ivl on mi.c_INvoiceline_ID=ivl.c_Invoiceline_ID
+   inner join c_invoice i on ivl.c_invoice_id = i.c_invoice_id
+   inner join m_product p on iol.m_product_id = p.m_product_id
+   INNER JOIN C_Project pj ON iol.C_Project_ID=pj.c_Project_ID
+   LEFT join c_elementvalue ev on iol.user4_ID=ev.c_elementvalue_ID 
+where iol.C_Project_ID =   $P{RECORD_ID}    and io.docstatus = 'CO']]>
+	</queryString>
+	<field name="m_inoutline_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="m_inoutline_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="m_inoutline_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inoutline"/>
+	</field>
+	<field name="c_project_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="c_project_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="c_project_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inoutline"/>
+	</field>
+	<field name="project" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="project"/>
+		<property name="com.jaspersoft.studio.field.label" value="project"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_project"/>
+	</field>
+	<field name="value" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value"/>
+		<property name="com.jaspersoft.studio.field.label" value="value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="movementqty" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="movementqty"/>
+		<property name="com.jaspersoft.studio.field.label" value="movementqty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inoutline"/>
+	</field>
+	<field name="priceactual" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="priceactual"/>
+		<property name="com.jaspersoft.studio.field.label" value="priceactual"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="linenetamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="linenetamt"/>
+		<property name="com.jaspersoft.studio.field.label" value="linenetamt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="movementdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="movementdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="movementdate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inout"/>
+	</field>
+	<field name="COLUMN_10" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="c_project_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="c_project_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inout"/>
+	</field>
+	<field name="m_product_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="m_product_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="m_product_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inoutline"/>
+	</field>
+	<field name="documentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_inout"/>
+	</field>
+	<field name="COLUMN_13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="cfac" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cfac"/>
+		<property name="com.jaspersoft.studio.field.label" value="cfac"/>
+	</field>
+	<field name="creg" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="creg"/>
+		<property name="com.jaspersoft.studio.field.label" value="creg"/>
+	</field>
+	<field name="cotr" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cotr"/>
+		<property name="com.jaspersoft.studio.field.label" value="cotr"/>
+	</field>
+	<field name="cdai" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="cdai"/>
+		<property name="com.jaspersoft.studio.field.label" value="cdai"/>
+	</field>
+	<field name="creb" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="creb"/>
+		<property name="com.jaspersoft.studio.field.label" value="creb"/>
+	</field>
+	<field name="user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="user"/>
+		<property name="com.jaspersoft.studio.field.label" value="user"/>
+	</field>
+	<variable name="totalcost" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{movementqty}.multiply( $F{priceactual})
+.add($F{creb}).add($F{cfac}).add($F{creg})
+.add($F{cdai}).add($F{cotr})]]></variableExpression>
+	</variable>
+	<variable name="sum_FOB" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{movementqty}.multiply( $F{priceactual} )).
+add($F{creb})]]></variableExpression>
+	</variable>
+	<variable name="creb_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{creb}]]></variableExpression>
+	</variable>
+	<variable name="cfac_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cfac}]]></variableExpression>
+	</variable>
+	<variable name="sum_cif" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[($F{movementqty}.multiply( $F{priceactual} )).
+add($F{creb}).
+add($F{cfac})]]></variableExpression>
+	</variable>
+	<variable name="cif" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{movementqty}.multiply( $F{priceactual})
+.add($F{creb})
+.add($F{cfac})]]></variableExpression>
+	</variable>
+	<variable name="cdai_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cdai}]]></variableExpression>
+	</variable>
+	<variable name="creb_2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{creb}]]></variableExpression>
+	</variable>
+	<variable name="cotr_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cotr}]]></variableExpression>
+	</variable>
+	<variable name="sum_totalcost" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{totalcost}]]></variableExpression>
+	</variable>
+	<variable name="creg_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{creg}]]></variableExpression>
+	</variable>
+	<variable name="Linenetamt" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{movementqty}.multiply( $F{priceactual})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="750" height="29" uuid="c927d737-88af-4e05-af2f-cb755cf7bc78"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Retaceo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="750" height="24" uuid="b4af6467-dd42-462b-8ab9-d6d883907350"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{project}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="24" width="750" height="20" uuid="21cbe010-ca81-4ccf-aafe-b1355c166fe6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Generado por ".concat($F{user})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-7" x="331" y="0" width="34" height="20" uuid="98f64c60-0bac-49e4-a79b-d6bed6f230a7"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rebajas
+s. Compras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="596" y="0" width="53" height="20" uuid="21900bcc-18c3-401f-9643-fa05520b0cf0"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otros
+Costos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="40" y="0" width="204" height="20" uuid="2bcc16fb-8857-48ba-a3f2-869a8347e297"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="2" y="0" width="38" height="20" uuid="26dd4d5d-268c-4718-8cd6-89247dffed9f"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="696" y="0" width="40" height="20" uuid="6ab9fb19-fb05-4232-95b0-3855d96a4f7e"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Costos
+Unitarios]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="244" y="0" width="50" height="20" uuid="2e913fce-bbe5-4403-a7c2-02733cce444e"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cant.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="294" y="0" width="37" height="20" uuid="793da2a1-643c-4be8-bdb7-85e76954db5a"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Precio
+Unit.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="414" y="0" width="38" height="20" uuid="ea1c2542-9708-4709-9668-7f30b2bc36d9"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Costo de
+Fact.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="500" y="0" width="48" height="20" uuid="e59b674a-5699-4080-83c2-d0e80e02ed2a"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[DAI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="548" y="0" width="48" height="20" uuid="999b8a5d-d0d0-4e69-87e1-9b25d0fb9ac7"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Costo
+de Reg.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="365" y="0" width="49" height="20" uuid="f27f530e-f998-498f-8dbe-f9ae2a78ebb0"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Costo FOB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="452" y="0" width="47" height="20" uuid="71221416-8ced-4547-bd2c-80c82ab5b085"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Costo CIF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="649" y="0" width="47" height="20" uuid="b7dec16e-220a-4e0b-8730-3fe4787570ed"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-11" x="596" y="0" width="53" height="13" uuid="3c49ee3f-cd3f-4c3a-a052-f961d22c9c6b">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cotr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="414" y="0" width="38" height="13" uuid="2169971a-71bc-46bf-b5c7-d6cdf184cd58"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cfac}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-9" x="500" y="0" width="48" height="13" uuid="ab48e4f7-ade7-4313-ac8d-af18b240478f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cdai}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="294" y="0" width="37" height="13" uuid="ab172699-5598-4547-a4e6-0b4c58f6870e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{priceactual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-10" x="548" y="0" width="48" height="13" uuid="c2866598-b8f7-453d-9fe1-4ec13a445a1b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{creg}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="331" y="0" width="34" height="13" uuid="20651a87-314c-4c11-bdc5-54ffcb39519e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{creb}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="244" y="0" width="50" height="13" uuid="d5a2e067-0ccc-44a6-9191-da2aafaec375"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movementqty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-14" x="696" y="0" width="40" height="13" uuid="0ac8b133-af95-4d6e-910f-429b26bfd0be"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalcost}.divide($F{movementqty}, 2)]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="2" y="0" width="242" height="13" uuid="83386f00-d220-4ff5-a891-bc8942f6ec2f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{value}.concat( " " ).concat($F{name})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="365" y="0" width="49" height="13" uuid="0056ec6d-a17e-4f61-bf40-d6c633faa0c5">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Linenetamt}.add( $F{creb})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="452" y="0" width="47" height="13" uuid="4d23b5cc-5015-4506-8f49-6e77b7feb042">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Linenetamt}.add( $F{creb}).add($F{cfac})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-11" x="649" y="0" width="47" height="13" uuid="423c5c1c-2e84-4a29-8099-28e239222996">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalcost}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="35" splitType="Stretch">
+			<textField evaluationTime="Page" pattern="#,##0.00">
+				<reportElement x="649" y="0" width="49" height="16" uuid="6af8a094-4207-4469-92cf-ac24ce13edb9"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_totalcost}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="596" y="0" width="53" height="16" uuid="557457c5-796f-4946-be0f-81d65eeefcef"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cotr_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="2" y="0" width="363" height="16" uuid="a0ebccca-ecf4-46c3-9f53-2ea6bd24e07a"/>
+				<box topPadding="1">
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{creb_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="414" y="0" width="40" height="16" uuid="72031032-ecbb-4fbb-a405-1f83633be641"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cfac_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="365" y="0" width="49" height="16" uuid="d1e82767-4a41-4cc9-acf4-f5c114fd2e01"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_FOB}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="454" y="0" width="46" height="16" uuid="1de582b9-e731-4ecd-a95a-d300c6afff26"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_cif}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="500" y="0" width="48" height="16" uuid="ef0f46bc-0d42-4c12-8b17-34917a49b474"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cdai_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="548" y="0" width="48" height="16" uuid="775cec55-9ecc-437f-9eb6-7dca49accba0"/>
+				<box topPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{creg_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="220" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="200" uuid="6b686004-f3d1-4452-bea3-ec9c9f3a9550"/>
+				<subreportParameter name="RECORD_ID">
+					<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Retaceo_NEU_SubReport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

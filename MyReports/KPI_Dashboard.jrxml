@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="KPI_Dashboard" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9a564110-e062-46d1-8b52-5e9d6b80a49c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Chile_Remote.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="311"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="682"/>
+	<subDataset name="Dataset1" uuid="a901d2b4-b4bd-498f-972b-5f8c25afd850">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Chile_Remote.xml"/>
+		<queryString language="SQL">
+			<![CDATA[Select dateacctyear, (amtacctdr - amtacctcr) as Balance
+FROM rv_fact_acct_summary_kpi
+WHERE AD_Client_ID=1000000
+AND isrevenueoperation = 'Y'
+--GROUP BY dateacctyear]]>
+		</queryString>
+		<field name="dateacctyear" class="java.sql.Date">
+			<property name="com.jaspersoft.studio.field.name" value="dateacctyear"/>
+			<property name="com.jaspersoft.studio.field.label" value="dateacctyear"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="rv_fact_acct_summary_kpi"/>
+		</field>
+		<field name="balance" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="balance"/>
+			<property name="com.jaspersoft.studio.field.label" value="balance"/>
+		</field>
+		<group name="balance">
+			<groupExpression><![CDATA[$F{balance}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="dateacctyearFrom" class="java.sql.Date"/>
+	<parameter name="dateacctyearTo" class="java.sql.Date"/>
+	<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select y.dateacctyear , revenue, expenseOperation, coalesce(revenue, 0) - coalesce(expenseOperation,0) as EBIT,
+CASE WHEN COALESCE(revenue,0)<> 0 THEN  (coalesce(revenue, 0) - coalesce(expenseOperation,0))/COALESCE(revenue,0)
+ELSE 0 END AS ebitMargin,
+curassets,curliabilities,
+CASE WHEN COALESCE(curliabilities,0) <> 0 THEN COALESCE(curassets,0)/COALESCE(curliabilities,0) ELSE 0 END
+AS currentAssetRatio,
+labourcostDirect,labourcostadmin,
+CASE WHEN COALESCE(labourcostDirect,0) <> 0 THEN COALESCE(labourcostDirect,0)/COALESCE(labourcostadmin,0)
+ELSE 0 END AS ratioLabourCost,
+CASE WHEN (COALESCE(labourcostDirect,0) + COALESCE(labourcostadmin,0)) <> 0 THEN
+COALESCE(REVENUE,0)/(COALESCE(labourcostDirect,0) + COALESCE(labourcostadmin,0)) ELSE 0 END AS labourAssetturnover
+FROM KPI_Years y
+LEFT JOIN  
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctcr - amtacctdr) as revenue
+FROM rv_fact_acct_summary_kpi fa
+WHERE isrevenueoperation = 'Y' 
+GROUP BY dateacctyear, ad_Client_ID) rev ON y.dateacctyear = rev.dateacctyear 
+AND rev.ad_Client_ID=y.ad_Client_ID
+LEFT JOIN
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctdr - amtacctcr) as expenseOperation
+FROM rv_fact_acct_summary_kpi fa
+WHERE (isCOGS = 'Y' OR islabourcostdirect = 'Y' OR isotheroperatingexpenses = 'Y' OR isdepreciation = 'Y')
+GROUP BY dateacctyear, ad_Client_ID) expOp  ON y.dateacctyear = expOp.dateacctyear and expOp.ad_Client_ID=y.ad_Client_ID
+
+
+LEFT JOIN
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctdr - amtacctcr) as labourcostDirect
+FROM rv_fact_acct_summary_kpi fa
+WHERE (islabourcostdirect = 'Y')
+GROUP BY dateacctyear, ad_Client_ID) LabourDirect  ON y.dateacctyear = LabourDirect.dateacctyear and expOp.ad_Client_ID=y.ad_Client_ID
+
+
+LEFT JOIN
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctdr - amtacctcr) as curassets 
+FROM rv_fact_acct_summary_kpi fa
+WHERE (isCurrentassets = 'Y')
+GROUP BY dateacctyear, ad_Client_ID) curassets  ON y.dateacctyear = curassets.dateacctyear and expOp.ad_Client_ID=y.ad_Client_ID
+
+
+
+LEFT JOIN
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctcr - amtacctdr) as curliabilities
+FROM rv_fact_acct_summary_kpi fa
+WHERE (isCurrentliabilities = 'Y')
+GROUP BY dateacctyear, ad_Client_ID) currlib  ON y.dateacctyear = currlib.dateacctyear and expOp.ad_Client_ID=y.ad_Client_ID
+
+
+LEFT JOIN
+(SELECT ad_Client_ID,dateacctyear, sum(amtacctdr - amtacctcr) as labourcostadmin 
+FROM rv_fact_acct_summary_kpi fa
+WHERE (islabourcostadministration = 'Y')
+GROUP BY dateacctyear, ad_Client_ID) islabourcostadmin  ON y.dateacctyear = islabourcostadmin.dateacctyear and expOp.ad_Client_ID=y.ad_Client_ID
+
+WHERE y.ad_Client_ID= $P{AD_CLIENT_ID}  AND y.dateacctyear BETWEEN  $P{dateacctyearFrom} AND $P{dateacctyearTo} 
+ORDER BY dateacctyear]]>
+	</queryString>
+	<field name="dateacctyear" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="dateacctyear"/>
+		<property name="com.jaspersoft.studio.field.label" value="dateacctyear"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="kpi_years"/>
+	</field>
+	<field name="revenue" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="revenue"/>
+		<property name="com.jaspersoft.studio.field.label" value="revenue"/>
+	</field>
+	<field name="expenseoperation" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="expenseoperation"/>
+		<property name="com.jaspersoft.studio.field.label" value="expenseoperation"/>
+	</field>
+	<field name="ebit" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ebit"/>
+		<property name="com.jaspersoft.studio.field.label" value="ebit"/>
+	</field>
+	<field name="ebitmargin" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ebitmargin"/>
+		<property name="com.jaspersoft.studio.field.label" value="ebitmargin"/>
+	</field>
+	<field name="curassets" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="curassets"/>
+		<property name="com.jaspersoft.studio.field.label" value="curassets"/>
+	</field>
+	<field name="curliabilities" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="curliabilities"/>
+		<property name="com.jaspersoft.studio.field.label" value="curliabilities"/>
+	</field>
+	<field name="currentassetratio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="currentassetratio"/>
+		<property name="com.jaspersoft.studio.field.label" value="currentassetratio"/>
+	</field>
+	<field name="labourcostdirect" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="labourcostdirect"/>
+		<property name="com.jaspersoft.studio.field.label" value="labourcostdirect"/>
+	</field>
+	<field name="labourcostadmin" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="labourcostadmin"/>
+		<property name="com.jaspersoft.studio.field.label" value="labourcostadmin"/>
+	</field>
+	<field name="ratiolabourcost" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ratiolabourcost"/>
+		<property name="com.jaspersoft.studio.field.label" value="ratiolabourcost"/>
+	</field>
+	<field name="labourassetturnover" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="labourassetturnover"/>
+		<property name="com.jaspersoft.studio.field.label" value="labourassetturnover"/>
+	</field>
+	<sortField name="dateacctyear"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="572" splitType="Stretch">
+			<timeSeriesChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="20" width="380" height="200" uuid="1f354457-7af3-4684-9fcd-3cadd86c2680"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<chartTitle>
+						<titleExpression><![CDATA["Ingresos, Costos/Gastos, EBIT"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<timeSeriesDataset timePeriod="Year">
+					<dataset resetType="Report"/>
+					<timeSeries>
+						<seriesExpression><![CDATA["Ingresos de Operacion"]]></seriesExpression>
+						<timePeriodExpression><![CDATA[$F{dateacctyear}]]></timePeriodExpression>
+						<valueExpression><![CDATA[$F{revenue}]]></valueExpression>
+						<labelExpression><![CDATA["Ingresos de Operacion"]]></labelExpression>
+					</timeSeries>
+					<timeSeries>
+						<seriesExpression><![CDATA["Costos y Gastos de Operacion"]]></seriesExpression>
+						<timePeriodExpression><![CDATA[$F{dateacctyear}]]></timePeriodExpression>
+						<valueExpression><![CDATA[$F{expenseoperation}]]></valueExpression>
+						<labelExpression><![CDATA["Costos y Gastos de Operacion"]]></labelExpression>
+					</timeSeries>
+					<timeSeries>
+						<seriesExpression><![CDATA["EBIT"]]></seriesExpression>
+						<timePeriodExpression><![CDATA[$F{dateacctyear}]]></timePeriodExpression>
+						<valueExpression><![CDATA[$F{ebit}]]></valueExpression>
+						<labelExpression><![CDATA["EBIT"]]></labelExpression>
+					</timeSeries>
+				</timeSeriesDataset>
+				<timeSeriesPlot>
+					<plot/>
+					<timeAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</timeAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</timeSeriesPlot>
+			</timeSeriesChart>
+			<timeSeriesChart>
+				<chart evaluationTime="Report">
+					<reportElement x="380" y="20" width="370" height="200" uuid="7093b146-0e09-469b-b0b2-d016a81f965a"/>
+					<chartTitle>
+						<titleExpression><![CDATA["EBIT Margen"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<timeSeriesDataset timePeriod="Year">
+					<dataset resetType="Report"/>
+					<timeSeries>
+						<seriesExpression><![CDATA["EBIT Margen"]]></seriesExpression>
+						<timePeriodExpression><![CDATA[$F{dateacctyear}]]></timePeriodExpression>
+						<valueExpression><![CDATA[$F{ebitmargin}.multiply(new BigDecimal(100) )]]></valueExpression>
+						<labelExpression><![CDATA["EBIT%"]]></labelExpression>
+					</timeSeries>
+				</timeSeriesDataset>
+				<timeSeriesPlot>
+					<plot/>
+					<timeAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</timeAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</timeSeriesPlot>
+			</timeSeriesChart>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="280" width="380" height="292" uuid="03d1a377-d68c-4fc4-865b-20d0fb98ce7d"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Activos/Pasivos Corrientes"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Report"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["CurrentAssetRatio"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{dateacctyear}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{currentassetratio}]]></valueExpression>
+						<labelExpression><![CDATA[""]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="380" y="280" width="370" height="292" uuid="d66ab868-89c6-45a7-a9bf-58082eecf8e4"/>
+					<chartTitle>
+						<titleExpression><![CDATA["Rotacion de Activos Laborales"]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset resetType="Report"/>
+					<categorySeries>
+						<seriesExpression><![CDATA["labourAssetturnover"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{dateacctyear}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{labourassetturnover}]]></valueExpression>
+						<labelExpression><![CDATA["Labour Asset Turnover"]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<staticText>
+				<reportElement x="380" y="250" width="370" height="30" uuid="8c5d81ba-ac5e-4d1b-b966-e4fe87efac90"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Valor que mide la eficiencia de costo de trabajo en relación a los ingresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="250" width="370" height="30" uuid="0093d00d-c601-4beb-b08d-f4ce166f2190"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Indicador para la liquidez, debe estar entre 0.8 y 1.2]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

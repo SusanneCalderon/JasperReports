@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Retaceo_SR" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="d8613fb2-cca9-47e1-b9ca-411221d9f0b6">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="C_ElementValue_ID" class="java.math.BigDecimal"/>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select 
+il.c_invoiceline_id,il.line, lt.name as costtypeName,lt.value as CosttypeValue, sum(lca.amt) as distrAmt,
+bp.name as bpname, i.documentno, i.dateinvoiced, sum(lca.base) as linenetamt, c.name as charge
+from adempiere.c_invoice i
+INNER JOIN C_Invoiceline il on i.c_Invoice_ID=il.c_Invoice_ID 
+INNER JOIN C_charge c on il.c_charge_ID=c.c_Charge_ID
+INNER JOIN (select distinct c_INvoiceline_ID, c_Landedcosttype_ID from C_Landedcost) lc on lc.c_Invoiceline_ID = il.c_Invoiceline_ID
+INNER JOIN C_LandedcostAllocation lca on il.c_Invoiceline_ID = lca.c_Invoiceline_ID
+INNER JOIN C_Landedcosttype lt on lc.c_Landedcosttype_ID=lt.c_Landedcosttype_ID
+INNER JOIN C_Bpartner bp on i.c_Bpartner_ID=bp.c_Bpartner_ID
+where i.C_Project_ID =   $P{RECORD_ID}   and i.docstatus not in ('VO', 'RE')
+
+group by 
+il.c_invoiceline_id,il.line, lt.name ,lt.value ,
+bp.name , i.documentno, i.dateinvoiced,c.name]]>
+	</queryString>
+	<field name="c_invoiceline_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="c_invoiceline_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="c_invoiceline_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="line" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="line"/>
+		<property name="com.jaspersoft.studio.field.label" value="line"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
+	</field>
+	<field name="costtypename" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="costtypename"/>
+		<property name="com.jaspersoft.studio.field.label" value="costtypename"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_landedcosttype"/>
+	</field>
+	<field name="costtypevalue" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="costtypevalue"/>
+		<property name="com.jaspersoft.studio.field.label" value="costtypevalue"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_landedcosttype"/>
+	</field>
+	<field name="distramt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="distramt"/>
+		<property name="com.jaspersoft.studio.field.label" value="distramt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_landedcostallocation"/>
+	</field>
+	<field name="bpname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bpname"/>
+		<property name="com.jaspersoft.studio.field.label" value="bpname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="documentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="dateinvoiced" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="dateinvoiced"/>
+		<property name="com.jaspersoft.studio.field.label" value="dateinvoiced"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="linenetamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="linenetamt"/>
+		<property name="com.jaspersoft.studio.field.label" value="linenetamt"/>
+	</field>
+	<field name="charge" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="charge"/>
+		<property name="com.jaspersoft.studio.field.label" value="charge"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_charge"/>
+	</field>
+	<sortField name="costtypename"/>
+	<sortField name="bpname"/>
+	<sortField name="documentno"/>
+	<variable name="sum_LinenetAmt" class="java.math.BigDecimal" resetType="Group" resetGroup="costtype" calculation="Sum">
+		<variableExpression><![CDATA[$F{distramt}]]></variableExpression>
+	</variable>
+	<group name="costtype">
+		<groupExpression><![CDATA[$F{costtypename}]]></groupExpression>
+		<groupHeader>
+			<band height="11" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-1" x="6" y="0" width="90" height="11" uuid="a4fd5844-d8c1-4138-b6f0-834aa8cdfa56"/>
+					<textElement>
+						<font size="8" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{costtypename}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20" splitType="Stretch">
+				<line>
+					<reportElement key="line-1" x="606" y="1" width="90" height="1" uuid="fa29ec78-b3d1-4fbe-bb7e-c3822791546d"/>
+				</line>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-7" x="606" y="1" width="90" height="11" uuid="0daeceee-d0e8-4069-8e67-c1748cbf82ef"/>
+					<textElement textAlignment="Right">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sum_LinenetAmt}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="26" y="0" width="158" height="13" uuid="376c3d40-b754-41cf-a95e-6db941240747"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Proveedor/Acreedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="316" y="0" width="84" height="13" uuid="3d377bbd-2d33-4172-a902-1e6def539f51"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No. de Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="400" y="0" width="46" height="13" uuid="33d8acbe-5ad0-463a-b159-932d55320350"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="606" y="0" width="90" height="13" uuid="7125db1e-e739-4626-8a64-079c5c53087c"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Monto Distribuido]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-2" x="0" y="14" width="732" height="3" uuid="2d04ceca-3988-4b7d-80b2-ab06988e3325"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" positionType="Float" isPrintRepeatedValues="false" x="316" y="1" width="84" height="11" uuid="69848e25-dfb8-45e8-895c-66a7a2b03236"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="400" y="1" width="46" height="11" uuid="61dc5c90-9fb6-4d61-a4cd-2629403e6e74"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" isPrintRepeatedValues="false" x="26" y="1" width="289" height="11" uuid="01e1c717-9254-4923-99c4-68f3a7e6109c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bpname}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="false">
+				<reportElement key="textField-5" x="606" y="0" width="90" height="11" uuid="e318148a-96b1-45b2-8394-154d4258531c"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{distramt}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-3" positionType="Float" x="470" y="1" width="130" height="11" uuid="43978f9f-08f4-4738-aa1e-e5cf5a384192"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{charge}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

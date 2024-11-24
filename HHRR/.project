@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>HHRR</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>net.sf.jasperreports.builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>net.sf.jasperreports.nature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>inf_HR_PaymentReceipt.jasper</name>
+			<type>1</type>
+			<location>C:/Users/SHW_User/Downloads/inf_HR_PaymentReceipt.jasper</location>
+		</link>
+		<link>
+			<name>inf_HR_PaymentReceipt_SubReport.jasper</name>
+			<type>1</type>
+			<location>C:/Users/SHW_User/Downloads/inf_HR_PaymentReceipt_SubReport.jasper</location>
+		</link>
+	</linkedResources>
+</projectDescription>

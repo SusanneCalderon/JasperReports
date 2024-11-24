@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraInternaciona" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="a55f38c7-54e2-42f7-bdd6-891751b3b444">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SAPROD_Local.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="Header" uuid="978f72a1-fb0e-41e9-9d67-38944d635aa2">
+		<parameter name="RECORD_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select documentno,o.description,
+o.dateordered,o.datepromised,
+bp.value, bp.name, coalesce(l.address1, '') as address1,
+coalesce(l.address2, '') as address2, coalesce(l.city, '') as city , coalesce(c.name, '') as countryname,
+coalesce(bpc.name, '') as contactname, coalesce(bpc.email, '') as email, rl.name as deliveryname, pt.name as pt_name,
+coalesce(bp1.name, '') as salesrepname,
+im.binarydata as logo, bpc.phone, bpc.fax,
+coalesce(l1.address1, '') as org_address1,
+coalesce(l1.city, '') as org_city,
+coalesce(l1.address2, '') as org_address2,
+coalesce(c1.name, '') as org_country,
+coalesce(cli.phone, '') as  org_phon, coalesce(cli.fax, '') as org_fax, O.GRANDTOTAL, cli.taxid, cli.duns, cli.printname, dt.printname as doctypename, o.created, rlt1.name as docstatus, bp2.name as supervisor
+
+
+from c_order o
+inner join c_doctype dt on o.c_doctypetarget_ID = dt.c_doctype_ID
+inner join c_bpartner bp on o.c_bpartner_ID = bp.c_bpartner_ID
+JOIN adempiere.c_bpartner_location bpl ON o.c_bpartner_location_id = bpl.c_bpartner_location_id
+JOIN adempiere.c_location l ON bpl.c_location_id = l.c_location_id
+inner join c_country c on l.c_country_ID = c.c_country_ID
+LEFT JOIN adempiere.ad_user bpc ON o.ad_user_id = bpc.ad_user_id
+left join ad_ref_list rl on rl.value = o.DeliveryViaRule and  AD_Reference_ID=152
+left join c_paymentterm pt on o.c_paymentterm_ID = pt.c_paymentterm_ID
+left join ad_user u1 on o.salesrep_ID = u1.ad_user_ID
+left join c_bpartner bp1 on u1.c_bpartner_ID = bp1.c_bpartner_ID
+inner join ad_clientinfo cli on o.ad_client_ID = cli.ad_client_ID
+--left join ad_orginfo oli on o.ad_org_ID = oli.ad_org_ID
+left JOIN adempiere.c_location l1 ON cli.c_location_id = l1.c_location_id
+left join c_country c1 on l1.c_country_ID = c1.c_country_ID
+left join ad_image im on cli.logo_ID = im.ad_image_ID
+inner join ad_ref_list rl1 on o.docstatus = rl1.value and rl1.AD_Reference_ID=131
+inner join ad_ref_list_trl rlt1 on rl1.ad_ref_list_ID = rlt1.ad_ref_list_ID and rlt1.ad_language = 'es_SV'
+left join c_project pr on o.c_project_ID = pr.c_project_ID
+left join ad_user u2 on pr.supervisor_ID = u2.ad_user_ID
+left join c_bpartner bp2 on u2.c_bpartner_ID = bp2.c_bpartner_ID
+
+ where o.c_order_ID = $P{RECORD_ID}]]>
+		</queryString>
+		<field name="documentno" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="dateordered" class="java.sql.Timestamp"/>
+		<field name="datepromised" class="java.sql.Timestamp"/>
+		<field name="value" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="address1" class="java.lang.String"/>
+		<field name="address2" class="java.lang.String"/>
+		<field name="city" class="java.lang.String"/>
+		<field name="countryname" class="java.lang.String"/>
+		<field name="contactname" class="java.lang.String"/>
+		<field name="email" class="java.lang.String"/>
+		<field name="deliveryname" class="java.lang.String"/>
+		<field name="pt_name" class="java.lang.String"/>
+		<field name="salesrepname" class="java.lang.String"/>
+		<field name="logo" class="java.lang.Object"/>
+		<field name="phone" class="java.lang.String"/>
+		<field name="fax" class="java.lang.String"/>
+		<field name="org_address1" class="java.lang.String"/>
+		<field name="org_city" class="java.lang.String"/>
+		<field name="org_address2" class="java.lang.String"/>
+		<field name="org_country" class="java.lang.String"/>
+		<field name="org_phon" class="java.lang.String"/>
+		<field name="org_fax" class="java.lang.String"/>
+		<field name="grandtotal" class="java.math.BigDecimal"/>
+		<field name="taxid" class="java.lang.String"/>
+		<field name="duns" class="java.lang.String"/>
+		<field name="printname" class="java.lang.String"/>
+		<field name="doctypename" class="java.lang.String"/>
+		<field name="created" class="java.sql.Timestamp"/>
+		<field name="docstatus" class="java.lang.String"/>
+		<field name="supervisor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Footer" uuid="61fedd8b-d304-4fc6-b94b-8d067e0dde71">
+		<parameter name="RECORD_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select documentno,o.description,
+o.dateordered,o.datepromised,
+bp.value, bp.name, coalesce(l.address1, '') as address1,
+coalesce(l.address2, '') as address2, coalesce(l.city, '') as city , coalesce(c.name, '') as countryname,
+coalesce(bpc.name, '') as contactname, coalesce(bpc.email, '') as email, rl.name as deliveryname, pt.name as pt_name,
+coalesce(bp1.name, '') as salesrepname,
+ bpc.phone, bpc.fax,
+coalesce(l1.address1, '') as org_address1,
+coalesce(l1.city, '') as org_city,
+coalesce(l1.address2, '') as org_address2,
+coalesce(c1.name, '') as org_country,
+coalesce(cli.phone, '') as  org_phon, coalesce(cli.fax, '') as org_fax,
+ol.volume, ol.weight, ol.Bultos, pr.documentodetransporte, pr.referenciadedeclaracion, ol.line, pr.name as projectname, pr.value as projectvalue,
+
+coalesce(Destination_Directory, coalesce(l1.city,'') || ' ' || coalesce(l1.address1, '') || ' ' || coalesce(c1.name, '')) as Destination_Directory,
+coalesce(Origen_Directory, coalesce(l.city, '') || ' ' || coalesce(l.address1, '') || ' ' || coalesce(c.name, '')) as Origen_Directory, PR.Provider
+
+from c_order o
+inner join c_orderline ol on o.c_order_ID = ol.c_order_ID
+inner join c_bpartner bp on o.c_bpartner_ID = bp.c_bpartner_ID
+JOIN adempiere.c_bpartner_location bpl ON o.c_bpartner_location_id = bpl.c_bpartner_location_id
+JOIN adempiere.c_location l ON bpl.c_location_id = l.c_location_id
+inner join c_country c on l.c_country_ID = c.c_country_ID
+LEFT JOIN adempiere.ad_user bpc ON o.ad_user_id = bpc.ad_user_id
+left join ad_ref_list rl on rl.value = o.DeliveryViaRule and  AD_Reference_ID=152
+left join c_paymentterm pt on o.c_paymentterm_ID = pt.c_paymentterm_ID
+left join ad_user u1 on o.salesrep_ID = u1.ad_user_ID
+left join c_bpartner bp1 on u1.c_bpartner_ID = bp1.c_bpartner_ID
+inner join ad_clientinfo cli on o.ad_client_ID = cli.ad_client_ID
+--left join ad_orginfo oli on o.ad_org_ID = oli.ad_org_ID
+left JOIN adempiere.c_location l1 ON cli.c_location_id = l1.c_location_id
+left join c_country c1 on l1.c_country_ID = c1.c_country_ID
+inner join c_project pr on ol.c_project_ID = pr.c_project_ID
+ where o.c_order_ID = $P{RECORD_ID}]]>
+		</queryString>
+		<field name="documentno" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="dateordered" class="java.sql.Timestamp"/>
+		<field name="datepromised" class="java.sql.Timestamp"/>
+		<field name="value" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="address1" class="java.lang.String"/>
+		<field name="address2" class="java.lang.String"/>
+		<field name="city" class="java.lang.String"/>
+		<field name="countryname" class="java.lang.String"/>
+		<field name="contactname" class="java.lang.String"/>
+		<field name="email" class="java.lang.String"/>
+		<field name="deliveryname" class="java.lang.String"/>
+		<field name="pt_name" class="java.lang.String"/>
+		<field name="salesrepname" class="java.lang.String"/>
+		<field name="phone" class="java.lang.String"/>
+		<field name="fax" class="java.lang.String"/>
+		<field name="org_address1" class="java.lang.String"/>
+		<field name="org_city" class="java.lang.String"/>
+		<field name="org_address2" class="java.lang.String"/>
+		<field name="org_country" class="java.lang.String"/>
+		<field name="org_phon" class="java.lang.String"/>
+		<field name="org_fax" class="java.lang.String"/>
+		<field name="volume" class="java.math.BigDecimal"/>
+		<field name="weight" class="java.math.BigDecimal"/>
+		<field name="bultos" class="java.math.BigDecimal"/>
+		<field name="documentodetransporte" class="java.lang.String"/>
+		<field name="referenciadedeclaracion" class="java.lang.String"/>
+		<field name="line" class="java.math.BigDecimal"/>
+		<field name="projectname" class="java.lang.String"/>
+		<field name="projectvalue" class="java.lang.String"/>
+		<field name="destination_directory" class="java.lang.String"/>
+		<field name="origen_directory" class="java.lang.String"/>
+		<field name="provider" class="java.lang.String"/>
+		<sortField name="line"/>
+	</subDataset>
+	<subDataset name="LastPage" uuid="fa0014b3-ed45-4649-bd8d-ecb071b17967">
+		<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select name as user from ad_user where ad_user_ID=$P{AD_USER_ID}]]>
+		</queryString>
+		<field name="user" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="LastPage_1" uuid="b60dfa1c-520c-4f15-804a-91a9b53f1661">
+		<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select name as user from ad_user where ad_user_ID=$P{AD_USER_ID}]]>
+		</queryString>
+		<field name="user" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.math.BigDecimal" isForPrompting="false">
+		<parameterDescription><![CDATA["http://192.168.30.32:8080/reports/"
+
+"/home/westfalia/Adempiere_Projekte/ProyectoSistemasAéreos/Reports/ReportsSADEVEL/DocumentPrint/20150325/"]]></parameterDescription>
+		<defaultValueExpression><![CDATA["/home/westfalia/Adempiere_Projekte/ProyectoSistemasAéreos/Reports/ReportsSADEVEL/DocumentPrint/20150325/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+	<parameter name="C_InvoiceBatch_ID" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select ibl.description,project_providerpo(i.c_invoice_ID) as providerpo,
+project_provider(i.c_invoice_ID) as provider,
+
+bp.name,ibl.workitemid,
+i.c_invoice_ID,
+ib.documentno as quedanDocumentno,
+i.documentno as xav_FacturasCodigos,
+u.name as contacto,(select name as user from ad_user where ad_user_ID=$P{AD_USER_ID}) as createdby,
+ci.name as printname,
+(i.totallines) as linenetamt,  ib.datereceived, im.binarydata as logo, ib.datedoc, i.grandtotal,
+(select name from hr_employee where hr_job_ID in
+	(select hr_Job_ID from hr_job where name = 'Jefe de Comercio Exterior') and ad_client_ID=ib.ad_Client_ID
+) as manager
+
+
+from
+c_invoice i
+inner join c_invoicebatchline ibl on i.c_invoice_ID = ibl.c_invoice_ID
+inner join c_invoicebatch ib on ibl.c_invoicebatch_ID = ib.c_invoicebatch_ID
+left join c_bpartner bp on i.c_bpartner_ID = bp.c_bpartner_ID
+left join ad_user u on ib.ad_user_ID = u.ad_user_ID
+left join ad_client ci on i.ad_client_ID = ci.ad_client_ID
+left join ad_clientinfo cf on ci.ad_client_ID = cf.ad_client_ID
+left join ad_image im on cf.logo_ID = im.ad_image_ID
+where ib.c_invoicebatch_ID = $P{C_InvoiceBatch_ID}]]>
+	</queryString>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicebatchline"/>
+	</field>
+	<field name="providerpo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="providerpo"/>
+	</field>
+	<field name="provider" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="provider"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_bpartner"/>
+	</field>
+	<field name="workitemid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="workitemid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicebatchline"/>
+	</field>
+	<field name="c_invoice_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="c_invoice_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="quedandocumentno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="quedandocumentno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicebatch"/>
+	</field>
+	<field name="xav_facturascodigos" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="xav_facturascodigos"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="contacto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="contacto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_user"/>
+	</field>
+	<field name="createdby" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="createdby"/>
+	</field>
+	<field name="printname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="printname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_client"/>
+	</field>
+	<field name="linenetamt" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="linenetamt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="datereceived" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="datereceived"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicebatch"/>
+	</field>
+	<field name="logo" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="logo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ad_image"/>
+	</field>
+	<field name="datedoc" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="datedoc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicebatch"/>
+	</field>
+	<field name="grandtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="grandtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
+	</field>
+	<field name="manager" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="manager"/>
+	</field>
+	<sortField name="xav_facturascodigos"/>
+	<variable name="SumTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{linenetamt}]]></variableExpression>
+	</variable>
+	<variable name="linenetamt_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{linenetamt}]]></variableExpression>
+	</variable>
+	<variable name="linenetamt_2" class="java.math.BigDecimal" resetType="Group" resetGroup="ProveedorQA" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+	</variable>
+	<group name="ProveedorQA" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{name}]]></groupExpression>
+		<groupHeader>
+			<band height="45">
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="572" height="20" uuid="7fbffd4f-9651-4af7-86f4-cd8145e82dd7"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" Detalle de documentos entregados a ".concat($F{name})
+.concat(" por CFS ")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="520" y="23" width="45" height="22" uuid="7d07f071-527b-4eb2-956e-e14f99cc6fa0"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="675" y="23" width="75" height="22" uuid="33735941-daa6-4b8d-84c0-2aed7f97a938"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[work item onbase]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="456" y="23" width="64" height="22" uuid="ddde9966-0d5e-4877-aebd-21183033ac60"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[# Doc]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="565" y="23" width="110" height="22" uuid="23699de4-c045-4931-8a1b-ef691f559079"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observaciones]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="23" width="355" height="22" uuid="bffee903-433f-482c-bca1-8c1850986f47"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Pedido]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="355" y="23" width="66" height="22" uuid="502e5ae5-ef2e-4afd-a0f5-a5b1cf216225"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Exportador]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="421" y="23" width="35" height="22" uuid="d641a7e4-b056-4d95-a473-b7f42de2f1d1"/>
+					<box>
+						<bottomPen lineWidth="0.75"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prov.
+local]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<textField>
+					<reportElement x="520" y="1" width="45" height="20" uuid="cdc02596-637f-4734-a811-ca9191fbb502"/>
+					<box>
+						<topPen lineWidth="0.75" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{linenetamt_2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="752" height="20" uuid="cbee777b-1d4a-476a-adc3-ad92d1d4dbf8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quedandocumentno}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="67" height="40" uuid="7a8d4660-6c00-4a86-8444-4d22a78187d8"/>
+				<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy" isBlankWhenNull="true">
+				<reportElement x="326" y="20" width="100" height="20" uuid="7f6d1d32-872b-4d5f-b71e-59edeed2abb8"/>
+				<textFieldExpression><![CDATA[$F{datedoc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="520" y="0" width="45" height="16" uuid="8f6269f1-3a2d-41b3-bdc8-5d646eaa8cbd"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="675" y="0" width="75" height="16" uuid="0226ad7d-3bda-474f-8d32-b0db5625c9eb"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{workitemid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="565" y="0" width="110" height="16" uuid="b63987df-e877-4d9a-8169-0765d02c6d60"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="355" height="16" uuid="946d3be0-2e65-4f7f-a52c-7360a5abf04a"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{providerpo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="355" y="0" width="66" height="16" uuid="8be630df-96de-41bd-a0fb-03d350329646"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{provider}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="421" y="0" width="35" height="16" uuid="3c36ec13-ced9-4ca0-9820-cada46ccfec2"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{printname}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="456" y="0" width="64" height="16" uuid="9082131e-3cd3-452f-b5fd-52fb829b8d91"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{xav_facturascodigos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="101">
+			<textField>
+				<reportElement x="13" y="36" width="258" height="16" uuid="56c20fc7-84d8-4bfc-83bd-4ce5865d9ed5"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdby}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="16" width="258" height="20" uuid="59715ea6-d6a9-49d4-8732-ff2f6a845fae"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Liquidación elaborada por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="13" y="52" width="258" height="20" uuid="a84dc4e7-e176-40eb-b2fd-af0edf78222b"/>
+				<textElement verticalAlignment="Top">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ejecutivo Administrativo "
+.concat($F{printname})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="403" y="80" width="158" height="20" uuid="70a4934c-1503-4027-a362-95120cf1b56e"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Fecha de recibido en ventanilla]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="403" y="52" width="296" height="20" uuid="9bd6e234-f6f2-4982-9976-0d50f73ccc5d"/>
+				<textElement verticalAlignment="Top">
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Jefe de Comercio Exterior"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="403" y="36" width="296" height="16" uuid="387da8d0-1e51-45b3-8524-ca7f19f28f4d"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{manager}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="403" y="16" width="296" height="20" uuid="9f70bddb-7240-49e3-ab9b-b8775d3dc8cf"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Liquidación valorada por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="80" width="173" height="20" uuid="8330eb36-f512-4a3f-ab6d-463fca8280c5"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Fecha de entregado en ventanilla]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="186" y="80" width="85" height="20" uuid="19ace62e-5450-45a3-a68c-4dab92a4c8d3"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{datereceived}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="561" y="100" width="138" height="1" uuid="1eaebab8-7dc3-4f88-b683-bb8026ed78d2"/>
+			</line>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

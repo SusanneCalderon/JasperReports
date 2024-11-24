@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Detalle de Nómina" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91c80499-e68d-49ef-947f-a0080fa9d852">
+	<property name="ireport.zoom" value="1.7715610000000108"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Chile.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Crosstab Data Text" hTextAlign="Center" hImageAlign="Center"/>
+	<parameter name="AD_Org_ID" class="java.lang.Integer"/>
+	<parameter name="HR_Contract_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Payroll_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Process_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Department_ID" class="java.math.BigDecimal"/>
+	<parameter name="HR_Job_ID" class="java.math.BigDecimal"/>
+	<parameter name="EmployeeStatus" class="java.lang.String"/>
+	<parameter name="C_BPartner_ID" class="java.math.BigDecimal"/>
+	<parameter name="DateAcct" class="java.sql.Timestamp"/>
+	<parameter name="DateAcct_To" class="java.sql.Timestamp"/>
+	<parameter name="DocStatus" class="java.lang.String"/>
+	<parameter name="HR_ProcessReport_ID" class="java.math.BigDecimal"/>
+	<parameter name="ProcessReportName" class="java.lang.String"/>
+	<parameter name="ProcessReportPrintName" class="java.lang.String"/>
+	<parameter name="ProcessReportTextMsg" class="java.lang.String"/>
+	<parameter name="ProcessReportReceiptFooterMsg" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT cl.Name Client, ct.Name Contract, TO_CHAR(pd.DateAcct, 'MM/YYYY') MonthValue, pd.PayrollValue, pd.PayrollName, org.Name Org, COALESCE(pd.HeaderPrintName, pd.ProcessReport) ProcessReport, pd.ConceptValue, pd.CategoryValue, pd.PrintName, (pd.SeqNo || '@' || pd.PrintName) ConceptName,
+SUM(pd.ConvertedAmt) ConvertedAmt, pd.DocumentNote, pd.IsSummarized, COUNT(DISTINCT pd.C_BPartner_ID) BParter_Count, cbp.BParter_Count BParter_Count_PR, cbc.BParter_Count BParter_Count_CT, cba.BParter_Count BParter_Count_A
+FROM RV_HR_ProcessDetail pd
+INNER JOIN AD_Client cl ON(cl.AD_Client_ID = pd.AD_Client_ID)
+INNER JOIN AD_Org org ON(org.AD_Org_ID = pd.AD_Org_ID)
+INNER JOIN HR_Contract ct ON(ct.HR_Contract_ID = pd.HR_Contract_ID)
+INNER JOIN (SELECT pd.HR_Payroll_ID, COUNT(DISTINCT pd.C_BPartner_ID) BParter_Count
+		FROM RV_HR_ProcessDetail pd
+		WHERE pd.HR_ProcessReport_ID = $P{HR_ProcessReport_ID}
+		AND (pd.AD_Org_ID=$P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+		AND (pd.HR_Contract_ID = $P{HR_Contract_ID} OR $P{HR_Contract_ID} IS NULL)
+		AND (pd.HR_Payroll_ID = $P{HR_Payroll_ID} OR $P{HR_Payroll_ID} IS NULL)
+		AND (pd.HR_Process_ID = $P{HR_Process_ID} OR $P{HR_Process_ID} IS NULL)
+		AND (pd.HR_Department_ID=$P{HR_Department_ID} OR $P{HR_Department_ID} IS NULL)
+		AND (pd.HR_Job_ID=$P{HR_Job_ID} OR $P{HR_Job_ID} IS NULL)
+		AND (pd.EmployeeStatus=$P{EmployeeStatus} OR ($P{EmployeeStatus} IS NULL OR $P{EmployeeStatus} = ''))
+		AND (pd.C_BPartner_ID=$P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+		AND (pd.DateAcct >= $P{DateAcct} OR COALESCE($P{DateAcct}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DateAcct <= $P{DateAcct_To} OR COALESCE($P{DateAcct_To}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DocStatus=$P{DocStatus} OR ($P{DocStatus} IS NULL OR $P{DocStatus} = ''))
+GROUP BY pd.HR_Payroll_ID) cbp ON(cbp.HR_Payroll_ID = pd.HR_Payroll_ID)
+INNER JOIN (SELECT pd.HR_Contract_ID, COUNT(DISTINCT pd.C_BPartner_ID) BParter_Count
+		FROM RV_HR_ProcessDetail pd
+		WHERE pd.HR_ProcessReport_ID = $P{HR_ProcessReport_ID}
+		AND (pd.AD_Org_ID=$P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+		AND (pd.HR_Contract_ID = $P{HR_Contract_ID} OR $P{HR_Contract_ID} IS NULL)
+		AND (pd.HR_Payroll_ID = $P{HR_Payroll_ID} OR $P{HR_Payroll_ID} IS NULL)
+		AND (pd.HR_Process_ID = $P{HR_Process_ID} OR $P{HR_Process_ID} IS NULL)
+		AND (pd.HR_Department_ID=$P{HR_Department_ID} OR $P{HR_Department_ID} IS NULL)
+		AND (pd.HR_Job_ID=$P{HR_Job_ID} OR $P{HR_Job_ID} IS NULL)
+		AND (pd.EmployeeStatus=$P{EmployeeStatus} OR ($P{EmployeeStatus} IS NULL OR $P{EmployeeStatus} = ''))
+		AND (pd.C_BPartner_ID=$P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+		AND (pd.DateAcct >= $P{DateAcct} OR COALESCE($P{DateAcct}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DateAcct <= $P{DateAcct_To} OR COALESCE($P{DateAcct_To}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DocStatus=$P{DocStatus} OR ($P{DocStatus} IS NULL OR $P{DocStatus} = ''))
+		GROUP BY pd.HR_Contract_ID) cbc ON(cbc.HR_Contract_ID = pd.HR_Contract_ID)
+LEFT JOIN HR_Period pr ON(pr.HR_Period_ID = pd.HR_Period_ID)
+, (SELECT COUNT(DISTINCT pd.C_BPartner_ID) BParter_Count
+		FROM RV_HR_ProcessDetail pd
+		WHERE pd.HR_ProcessReport_ID = $P{HR_ProcessReport_ID}
+		AND (pd.AD_Org_ID=$P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+		AND (pd.HR_Contract_ID = $P{HR_Contract_ID} OR $P{HR_Contract_ID} IS NULL)
+		AND (pd.HR_Payroll_ID = $P{HR_Payroll_ID} OR $P{HR_Payroll_ID} IS NULL)
+		AND (pd.HR_Process_ID = $P{HR_Process_ID} OR $P{HR_Process_ID} IS NULL)
+		AND (pd.HR_Department_ID=$P{HR_Department_ID} OR $P{HR_Department_ID} IS NULL)
+		AND (pd.HR_Job_ID=$P{HR_Job_ID} OR $P{HR_Job_ID} IS NULL)
+		AND (pd.EmployeeStatus=$P{EmployeeStatus} OR ($P{EmployeeStatus} IS NULL OR $P{EmployeeStatus} = ''))
+		AND (pd.C_BPartner_ID=$P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+		AND (pd.DateAcct >= $P{DateAcct} OR COALESCE($P{DateAcct}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DateAcct <= $P{DateAcct_To} OR COALESCE($P{DateAcct_To}, Current_Timestamp) = Current_Timestamp)
+		AND (pd.DocStatus=$P{DocStatus} OR ($P{DocStatus} IS NULL OR $P{DocStatus} = ''))) cba
+WHERE pd.HR_ProcessReport_ID = $P{HR_ProcessReport_ID}
+AND (pd.AD_Org_ID=$P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+AND (pd.HR_Contract_ID = $P{HR_Contract_ID} OR $P{HR_Contract_ID} IS NULL)
+AND (pd.HR_Payroll_ID = $P{HR_Payroll_ID} OR $P{HR_Payroll_ID} IS NULL)
+AND (pd.HR_Process_ID = $P{HR_Process_ID} OR $P{HR_Process_ID} IS NULL)
+AND (pd.HR_Department_ID=$P{HR_Department_ID} OR $P{HR_Department_ID} IS NULL)
+AND (pd.HR_Job_ID=$P{HR_Job_ID} OR $P{HR_Job_ID} IS NULL)
+AND (pd.EmployeeStatus=$P{EmployeeStatus} OR ($P{EmployeeStatus} IS NULL OR $P{EmployeeStatus} = ''))
+AND (pd.C_BPartner_ID=$P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+AND (pd.DateAcct >= $P{DateAcct} OR COALESCE($P{DateAcct}, Current_Timestamp) = Current_Timestamp)
+AND (pd.DateAcct <= $P{DateAcct_To} OR COALESCE($P{DateAcct_To}, Current_Timestamp) = Current_Timestamp)
+AND (pd.DocStatus=$P{DocStatus} OR ($P{DocStatus} IS NULL OR $P{DocStatus} = ''))
+GROUP BY cl.Name, pd.AD_Org_ID, org.Name, pd.ProcessReport, pd.ConceptValue,
+pd.CategoryValue, pd.PrintName, pd.SeqNo, pd.DocumentNote, ct.Name, pd.PayrollValue, pd.PayrollName, cbp.BParter_Count, cbc.BParter_Count, cba.BParter_Count, pd.IsSummarized, TO_CHAR(pd.DateAcct, 'MM/YYYY'), pd.HeaderPrintName
+
+ORDER BY ct.Name, pd.PayrollName, pd.AD_Org_ID, pd.SeqNo]]>
+	</queryString>
+	<field name="client" class="java.lang.String"/>
+	<field name="contract" class="java.lang.String"/>
+	<field name="monthvalue" class="java.lang.String"/>
+	<field name="payrollvalue" class="java.lang.String"/>
+	<field name="payrollname" class="java.lang.String"/>
+	<field name="org" class="java.lang.String"/>
+	<field name="processreport" class="java.lang.String"/>
+	<field name="conceptvalue" class="java.lang.String"/>
+	<field name="categoryvalue" class="java.lang.String"/>
+	<field name="printname" class="java.lang.String"/>
+	<field name="conceptname" class="java.lang.String"/>
+	<field name="convertedamt" class="java.math.BigDecimal"/>
+	<field name="documentnote" class="java.lang.String"/>
+	<field name="issummarized" class="java.lang.String"/>
+	<field name="bparter_count" class="java.lang.Long"/>
+	<field name="bparter_count_pr" class="java.lang.Long"/>
+	<field name="bparter_count_ct" class="java.lang.Long"/>
+	<field name="bparter_count_a" class="java.lang.Long"/>
+	<variable name="P_Number" class="java.lang.Integer" resetType="Page" incrementType="Page" calculation="Count">
+		<variableExpression><![CDATA[1]]></variableExpression>
+		<initialValueExpression><![CDATA[1]]></initialValueExpression>
+	</variable>
+	<variable name="EmployeeStatus" class="java.lang.String" resetType="None">
+		<variableExpression><![CDATA[($P{EmployeeStatus} == null? ""
+    : $P{EmployeeStatus}.equals("AC")? "Activo"
+    : $P{EmployeeStatus}.equals("TP")? "Período de Prueba"
+    : $P{EmployeeStatus}.equals("RP")? "Reposo"
+    : $P{EmployeeStatus}.equals("RT")? "Retirado"
+    : $P{EmployeeStatus}.equals("SP")? "Suspendido"
+    : $P{EmployeeStatus}.equals("VC")? "Vacaciones"
+    : "")]]></variableExpression>
+	</variable>
+	<variable name="DocStatusName" class="java.lang.String">
+		<variableExpression><![CDATA[($P{DocStatus} == null? "":
+    ($P{DocStatus}.equals("CO")? "Completo":
+    ($P{DocStatus}.equals("CL")? "Cerrado":
+    ($P{DocStatus}.equals("IP")? "En Proceso":
+    ($P{DocStatus}.equals("DR")? "Borrador":
+    ($P{DocStatus}.equals("VO")? "Anulado":
+    ($P{DocStatus}.equals("RE")? "Reversado": "")))))))]]></variableExpression>
+	</variable>
+	<group name="Payroll">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="66" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="209" y="0" width="154" height="48" uuid="bbf016e2-37c2-4098-91a7-588766b3d991"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ProcessReportName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="465" y="12" width="41" height="12" uuid="5cca0034-3d52-4c39-b373-ae014801629e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="510" y="1" width="61" height="12" uuid="c77d5ce9-7232-4ace-aa4d-28db8d10d012"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="465" y="1" width="41" height="12" uuid="61de88dd-329a-4622-80f6-860a1bdd9b7e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="h.mm.ss a">
+				<reportElement x="510" y="12" width="61" height="12" uuid="2f20c151-2cca-4542-9996-adc8f9333e94"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="209" height="12" uuid="6529aea4-3b78-4e83-a831-7d34882f7ea0"/>
+				<textElement verticalAlignment="Top">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{client} +
+($P{AD_Org_ID} != null? "\nOrganización: " + $F{org}: "") +
+($P{HR_Contract_ID} != null? "\nContrato: " + $F{contract}: "") +
+($P{HR_Process_ID} != null? "\nNómina: " + $F{payrollname}: "") +
+($P{DateAcct} != null? "\nFecha: " + new SimpleDateFormat("dd/MM/yyyy").format($P{DateAcct}): "") +
+($P{DateAcct_To} != null? " Al " + new SimpleDateFormat("dd/MM/yyyy").format($P{DateAcct_To}): "") +
+($P{DocStatus} != null && $P{DocStatus}.length() > 0? "\nEstado de Documento: " + $V{DocStatusName}: "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="48" width="572" height="12" uuid="2c73c797-18e9-4394-8f96-1fd93bc2f769"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ProcessReportTextMsg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="510" y="24" width="21" height="12" uuid="59831165-2ffd-49c4-b494-48624cfe7b66"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="531" y="24" width="40" height="12" uuid="763f183e-4d58-4ef8-a987-847eebf408e5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="465" y="24" width="41" height="12" uuid="62f0212d-5751-42ea-8abc-579b60bb2ada"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="23" width="154" height="20" uuid="fd80b351-56bc-4ac2-bfb6-5370748c7631"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ProcessReportPrintName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<summary>
+		<band height="64" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="572" height="64" uuid="1a02a06f-3f61-44a5-81ce-fd80cfe8ef5c"/>
+				<crosstabParameter name="qty_employee_a" class="java.lang.Integer">
+					<parameterValueExpression><![CDATA[$F{bparter_count_a}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="12" uuid="3d829441-9fa8-4e04-ad07-ecce3196295d"/>
+							<box leftPadding="1">
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Mes"]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="60" y="0" width="60" height="12" uuid="08354aa0-c0e2-4e14-93ff-98715e407592"/>
+							<box leftPadding="1">
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Contrato"]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="120" y="0" width="100" height="12" uuid="e24a38ef-203e-4e1e-9c58-302ff8dcc24e"/>
+							<box leftPadding="1">
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Nómina"]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="220" y="0" width="20" height="12" uuid="cf6ad713-b6fe-4f26-897b-b5f1b5109126"/>
+							<box rightPadding="1">
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Cant."]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="monthvalue" width="60" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{monthvalue}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="36" uuid="d64784c9-7530-4cf0-9387-b05814005450"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{monthvalue}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="220" height="12" forecolor="#FFFFFF" uuid="62b42726-134f-4099-82a5-26542f47b231"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA["Total General"]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="220" y="0" width="20" height="12" forecolor="#FFFFFF" uuid="44db2aae-42c4-47bf-b977-628be1206321"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{qty_employee_a}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="contract" width="60" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{contract}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="24" uuid="aabb1837-07bc-482b-99ef-17ac56b557ad"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{contract}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="160" height="12" uuid="685416c1-c195-499f-9b39-960763649b0e"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="SansSerif" size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA["Total " + $V{monthvalue}]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="160" y="0" width="20" height="12" uuid="7a316efd-f086-46fd-9bec-ef69a7641d39"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{measure_qty_employee_ct}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="payroll" width="100" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{payrollname}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#E6F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="12" uuid="d608f8a0-974b-4df2-a068-5a61c7b35994"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{payroll}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="12" uuid="b30799e6-3f03-48f8-9d08-e2fb425188cb"/>
+								<box leftPadding="1"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA["Total " + $V{contract}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="100" y="0" width="20" height="12" uuid="6bd766b7-182b-43ff-8c8e-225ed20825e1"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{measure_qty_employee_pr}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="qty_employee" width="20" totalPosition="End">
+					<bucket class="java.lang.Long">
+						<bucketExpression><![CDATA[$F{bparter_count}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#E6F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="20" height="12" uuid="af1c9d8e-e1b8-4589-87d8-0dc41602e8b4"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{qty_employee}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="conceptname" height="12" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{conceptname}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="12" uuid="88cc7fde-edbc-4d99-9e75-c691f00efd2d"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{conceptname}.substring($V{conceptname}.lastIndexOf("@") + 1)]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="40" height="12" uuid="3e3954e6-c829-467d-be7f-f6dbc2cb3e99"/>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="5"/>
+								</textElement>
+								<text><![CDATA[Total]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="conceptamtMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{convertedamt}]]></measureExpression>
+				</measure>
+				<measure name="measure_qty_employee_pr" class="java.lang.Long">
+					<measureExpression><![CDATA[$F{bparter_count_pr}]]></measureExpression>
+				</measure>
+				<measure name="measure_qty_employee_ct" class="java.lang.Long">
+					<measureExpression><![CDATA[$F{bparter_count_ct}]]></measureExpression>
+				</measure>
+				<measure name="summarizedAmtmeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[($F{issummarized} != null && $F{issummarized}.equals("Y")? $F{convertedamt}: new BigDecimal(0))]]></measureExpression>
+				</measure>
+				<crosstabCell width="40" height="12">
+					<cellContents backcolor="#808080" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="12" uuid="0bea3247-154b-40c5-a1af-ae584cbd5d0b"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{conceptamtMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" columnTotalGroup="conceptname">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="12" uuid="b1a1a786-22b7-4b5e-9655-ef099d1df7ae"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{summarizedAmtmeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="0" rowTotalGroup="qty_employee">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell width="40" height="0" rowTotalGroup="qty_employee" columnTotalGroup="conceptname">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="payroll">
+					<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.5"/>
+							<leftPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="12" uuid="6d5d9629-c771-4987-b7c6-12fdec912b0b"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{conceptamtMeasure_payroll_ALL}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="payroll" columnTotalGroup="conceptname">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.5"/>
+							<leftPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="40" height="12" uuid="6687210d-e31e-43fa-a916-8770539f8732"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{summarizedAmtmeasure_monthvalue_conceptname_ALL}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="contract">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField textAdjust="StretchHeight" pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="12" uuid="c5bca05e-8497-42db-b6b1-72fdeb794e9e"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{conceptamtMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="contract" columnTotalGroup="conceptname">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField textAdjust="StretchHeight" pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="12" uuid="ebdf4264-77bc-43ac-b4d5-0b82f705fb5f"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{summarizedAmtmeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="monthvalue">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField textAdjust="StretchHeight" pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="12" forecolor="#FFFFFF" uuid="ee6d2fa9-1831-4d1e-9470-92f49cf5c510"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{conceptamtMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="40" height="12" rowTotalGroup="monthvalue" columnTotalGroup="conceptname">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField textAdjust="StretchHeight" pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="12" forecolor="#FFFFFF" uuid="27f7dea7-5ad7-493d-a252-92d54e9d5b54"/>
+							<box rightPadding="1"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{summarizedAmtmeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

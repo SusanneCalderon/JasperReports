@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="shw_LibroDeCompras" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="76667959-5742-4c64-afca-e8708ed62e18">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="GEGASAPROD_026.xml"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="C_Period_ID" class="java.math.BigDecimal"/>
+	<parameter name="AD_Client_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[select lc.*, i.dateinvoiced as realdate ,
+(select startdate from c_period where c_period_ID = $P{C_Period_ID}) as perioddate
+from adempiere.z_shw_libro_de_compras lc
+inner join c_invoice i on lc.c_invoice_ID = i.c_invoice_ID
+
+where lc.c_period_id = $P{C_Period_ID}
+and  lc.ad_client_id = $P{AD_Client_ID}]]>
+	</queryString>
+	<field name="ad_client_id" class="java.math.BigDecimal"/>
+	<field name="ad_org_id" class="java.math.BigDecimal"/>
+	<field name="c_period_id" class="java.math.BigDecimal"/>
+	<field name="duns" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="extcompras" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="impca" class="java.math.BigDecimal"/>
+	<field name="impext" class="java.math.BigDecimal"/>
+	<field name="impfuera" class="java.math.BigDecimal"/>
+	<field name="ivacompras" class="java.math.BigDecimal"/>
+	<field name="ivaimp" class="java.math.BigDecimal"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="taxiva" class="java.math.BigDecimal"/>
+	<field name="taxret" class="java.math.BigDecimal"/>
+	<field name="col_0" class="java.math.BigDecimal"/>
+	<field name="col_1" class="java.math.BigDecimal"/>
+	<field name="col_2" class="java.math.BigDecimal"/>
+	<field name="col_3" class="java.math.BigDecimal"/>
+	<field name="col_4" class="java.math.BigDecimal"/>
+	<field name="col_5" class="java.math.BigDecimal"/>
+	<field name="c_invoice_id" class="java.math.BigDecimal"/>
+	<field name="updatedby" class="java.math.BigDecimal"/>
+	<field name="updated" class="java.sql.Timestamp"/>
+	<field name="createdby" class="java.math.BigDecimal"/>
+	<field name="created" class="java.sql.Timestamp"/>
+	<field name="deleteold" class="java.lang.String"/>
+	<field name="processed" class="java.lang.String"/>
+	<field name="nosujcompras" class="java.math.BigDecimal"/>
+	<field name="realdate" class="java.sql.Timestamp"/>
+	<field name="perioddate" class="java.sql.Timestamp"/>
+	<sortField name="dateinvoiced"/>
+	<sortField name="documentno"/>
+	<variable name="v_extcompras" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{extcompras}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{extcompras}]]></initialValueExpression>
+	</variable>
+	<variable name="v_ivacompras" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ivacompras}]]></variableExpression>
+	</variable>
+	<variable name="v_impca" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{impca}]]></variableExpression>
+	</variable>
+	<variable name="v_impfuera" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{impfuera}]]></variableExpression>
+	</variable>
+	<variable name="v_taxiva" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxiva}]]></variableExpression>
+	</variable>
+	<variable name="v_ivaimp" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ivaimp}]]></variableExpression>
+	</variable>
+	<variable name="v_grandtotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+	</variable>
+	<variable name="v_taxret" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{taxret}]]></variableExpression>
+	</variable>
+	<variable name="col_0_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{col_0}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-4" x="0" y="7" width="732" height="19" uuid="e18b2215-2272-4fcf-b8ad-2fc91e7927be"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Libro de Compras al Contribuyente]]></text>
+			</staticText>
+			<textField pattern="MMMMM-yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="418" y="50" width="107" height="16" uuid="8db75edb-9b31-463c-ae4b-4447ca416147"/>
+				<textFieldExpression><![CDATA[$F{perioddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="522" y="78" width="205" height="20" uuid="92cd02a7-ef1b-4afc-ad6b-b56a9702feba"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Todas las cantidades en dolares americanos (USD)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement key="T_PaginaNo" x="497" y="1" width="60" height="13" uuid="e7e3f81f-5584-42bd-8605-84131baa3845"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Página No.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-5" x="5" y="7" width="21" height="60" uuid="cb379939-d914-4b07-bdc1-ba3a90e37caf"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No.
+Corr]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="26" y="7" width="37" height="60" uuid="a987e57d-e576-4838-aaf8-2a8a6487376a"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="63" y="7" width="45" height="60" uuid="34ea5035-1385-49d5-be2c-f7d0ccb7005d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No de
+Compro
+bante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="108" y="7" width="38" height="60" uuid="4f99b5e0-65b6-4b05-b838-726c6037197f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[NRC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="220" y="7" width="110" height="60" uuid="c8fa3825-e80d-4074-9858-ad1309460da3"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="330" y="7" width="57" height="20" uuid="5c38372f-a607-4431-b95b-e0be1373628f"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Compras Exentas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="330" y="27" width="36" height="40" uuid="ef4ee84c-f5b7-4fbb-94d2-7ee24d3faad0"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Internas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="366" y="27" width="21" height="40" uuid="d78635cb-6a2a-4206-a2db-227d1e73996b"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Imp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="387" y="7" width="294" height="20" uuid="2eff2f8e-3ceb-4d15-b4ad-5af1b4de9b8d"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Compras Gravadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="387" y="27" width="45" height="40" uuid="79d249e5-0cb6-44a4-a3b3-67b7df5dada2"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Internas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="432" y="27" width="96" height="20" uuid="d99f19e3-d05d-464c-add2-7645159f4782"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Importaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="432" y="47" width="48" height="20" uuid="36dfb95f-68ca-4a97-944d-39c514998844"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Region CA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="480" y="47" width="48" height="20" uuid="ab444252-1172-44fc-9027-0581fee48f1e"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fuera de CA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="528" y="27" width="35" height="40" uuid="594e9a27-8683-4c04-b651-28785d4a7f85"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IVA
+int.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="563" y="27" width="40" height="40" uuid="e9947cd5-706b-460d-b85f-9e3806f7dbef"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IVA
+Imp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-20" x="636" y="27" width="45" height="40" uuid="e65d48e8-5234-4b73-b177-da480fc21a3e"/>
+				<box>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="681" y="7" width="30" height="60" uuid="e9115659-62fe-435e-b234-7ffc80767c73"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IVA
+ret.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="146" y="7" width="75" height="60" uuid="4318f466-0af4-4b1f-8744-c4e99f0fefef"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[NIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-21" x="603" y="27" width="33" height="40" uuid="baa8e475-0fc1-47f7-a2bb-4b5818e3de18"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Contribuc. especiales]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="63" y="0" width="45" height="13" uuid="4dc5de36-4cb6-467e-8edb-5aaf063efcd4"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement x="296" y="4" width="415" height="1" uuid="00f06722-4ec6-4f79-bbd7-b95210b9d2a7"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<line>
+				<reportElement x="-1" y="36" width="168" height="1" uuid="7730a2c0-6dab-4fe4-8ff4-7a3facf28324"/>
+			</line>
+			<line>
+				<reportElement x="234" y="35" width="155" height="1" uuid="55391f29-4a9b-4a02-979f-4cbd7bfb12c5"/>
+			</line>
+			<line>
+				<reportElement x="524" y="34" width="191" height="1" uuid="9e8e7d33-4da1-4c2d-9cde-92eaf69d6a9d"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="40" width="167" height="10" uuid="66017290-a058-4a82-abfb-f09ebe96cdfe"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lugar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="40" width="167" height="10" uuid="7f58219d-91cb-45c1-8693-2c6682116cfe"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="40" width="167" height="10" uuid="d67110e8-a1f9-4f76-8e5c-7a91be23f708"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Firma]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>

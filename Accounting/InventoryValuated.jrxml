@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InventoryValuated" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" uuid="9a2733f9-f2b5-42b2-abe0-895d3a0b8291">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA.xml"/>
+	<subDataset name="DataSetLastPage" uuid="92999905-a08b-459b-8f2c-117d7d1b75b0">
+		<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+		<parameter name="Parameter1" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select name as user from ad_user where ad_user_ID=$P{AD_USER_ID}]]>
+		</queryString>
+		<field name="user" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="AD_PINSTANCE_ID" class="java.lang.Integer"/>
+	<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT p.value,t.datevalue,
+	p.name,
+	t.qtyonhand,
+	t.m_warehouse_id,
+	w.name AS warehouseName,
+	t.costamt AS currentCost,
+	cat.name AS categoryName,
+	(select max(datevalue) from t_Inventoryvalue where ad_Pinstance_ID=$P{AD_PINSTANCE_ID}) as maxdate
+FROM t_inventoryvalue t
+	INNER JOIN m_product p ON 
+	 t.m_product_id = p.m_product_id 
+	INNER JOIN m_product_category cat ON 
+	 p.m_product_category_id = cat.m_product_category_id 
+	INNER JOIN m_warehouse w ON 
+	 t.m_warehouse_id = w.m_warehouse_id 
+WHERE 
+	 p.isactive = 'Y' 
+	 AND p.producttype = 'I' AND qtyonhand<> 0
+	 AND t.ad_pinstance_id = $P{AD_PINSTANCE_ID}]]>
+	</queryString>
+	<field name="value" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value"/>
+		<property name="com.jaspersoft.studio.field.label" value="value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="datevalue" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="datevalue"/>
+		<property name="com.jaspersoft.studio.field.label" value="datevalue"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="t_inventoryvalue"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product"/>
+	</field>
+	<field name="qtyonhand" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="qtyonhand"/>
+		<property name="com.jaspersoft.studio.field.label" value="qtyonhand"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="t_inventoryvalue"/>
+	</field>
+	<field name="m_warehouse_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="m_warehouse_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="m_warehouse_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="t_inventoryvalue"/>
+	</field>
+	<field name="warehousename" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="warehousename"/>
+		<property name="com.jaspersoft.studio.field.label" value="warehousename"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_warehouse"/>
+	</field>
+	<field name="currentcost" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="currentcost"/>
+		<property name="com.jaspersoft.studio.field.label" value="currentcost"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="t_inventoryvalue"/>
+	</field>
+	<field name="categoryname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="categoryname"/>
+		<property name="com.jaspersoft.studio.field.label" value="categoryname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="m_product_category"/>
+	</field>
+	<field name="maxdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="maxdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="maxdate"/>
+	</field>
+	<sortField name="warehousename"/>
+	<sortField name="categoryname"/>
+	<sortField name="value"/>
+	<variable name="Total" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{currentcost}.setScale( 5, BigDecimal.ROUND_HALF_UP ).multiply($F{qtyonhand})]]></variableExpression>
+	</variable>
+	<variable name="TotalWarehouse" class="java.math.BigDecimal" resetType="Group" resetGroup="Warehouse" calculation="Sum">
+		<variableExpression><![CDATA[$F{currentcost}]]></variableExpression>
+	</variable>
+	<variable name="TotalCategory" class="java.math.BigDecimal" resetType="Group" resetGroup="CategoryName" calculation="Sum">
+		<variableExpression><![CDATA[$F{currentcost}]]></variableExpression>
+	</variable>
+	<group name="Warehouse" keepTogether="true" preventOrphanFooter="true">
+		<groupExpression><![CDATA[$F{warehousename}]]></groupExpression>
+		<groupHeader>
+			<band height="29">
+				<textField>
+					<reportElement x="0" y="0" width="572" height="29" uuid="00b3f5bf-9438-49eb-a2a7-acc84d5d0ca2"/>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bodega: ".concat($F{warehousename})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField evaluationTime="Group" evaluationGroup="Warehouse" pattern="#,##0.0000;(#,##0.0000-)">
+					<reportElement x="480" y="-2" width="90" height="30" uuid="81d6616f-e72f-436d-b36c-15249485372c"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{TotalWarehouse}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="0" width="480" height="20" uuid="04123753-858b-497d-a8fe-0ef7c95f5029"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Bodega: ".concat($F{warehousename})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="CategoryName" isReprintHeaderOnEachPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{categoryname}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<textField>
+					<reportElement x="30" y="0" width="290" height="20" uuid="82fbb6e7-d4c9-43d9-b158-7b6545b21b19"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Linea: ".concat($F{categoryname})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="320" y="0" width="70" height="20" uuid="f087bd76-41e8-4628-aaee-16fbee0e1224">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2d62d0f-434c-40b5-aa6a-a88d1b0b9665"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Cantidad]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="390" y="0" width="80" height="20" uuid="14e9fd90-375e-403e-9f05-28f754d416b9">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5fc08a9-808d-424e-b379-584c009f1968"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Costo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="470" y="0" width="100" height="20" uuid="bbe6eb7f-ce26-4c7d-b58b-218cf09052fd">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5fc08a9-808d-424e-b379-584c009f1968"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<textField evaluationTime="Group" evaluationGroup="CategoryName" pattern="#,##0.0000;(#,##0.0000-)">
+					<reportElement x="480" y="0" width="90" height="15" uuid="6cdb9bd7-8e61-4d3a-ac1c-0954b12e844c"/>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression><![CDATA[$V{TotalCategory}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="30" y="0" width="450" height="15" uuid="694f7042-2ec4-446c-b6a4-9cb1a16b0cb2"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					</box>
+					<textElement>
+						<font isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Linea: ".concat($F{categoryname})]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="30" uuid="6f2cd579-ffb3-48db-9e84-c4b87687d5c2"/>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Inventario Valorado ]]></text>
+			</staticText>
+			<textField pattern="dd/MMMMM/yyyy">
+				<reportElement x="106" y="70" width="100" height="15" uuid="9006b0f8-cb9d-4e6b-a5e9-d6e86e0ab274"/>
+				<textFieldExpression><![CDATA[$F{maxdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="100" height="15" uuid="1c4ff9eb-f301-4a41-b902-a55e22966261"/>
+				<text><![CDATA[Hasta: ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<staticText>
+				<reportElement stretchType="ContainerBottom" x="0" y="0" width="300" height="20" uuid="567ebc57-6db1-4431-bf75-bcc3a060846e"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Reporte de Inventario Valorado ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="VPaginaNo" x="450" y="0" width="88" height="13" uuid="61cb17ab-e857-4940-aa3a-643ca88c5e10"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página ".concat($V{PAGE_NUMBER}.toString()).concat(" de ")]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="VNoDePaginas" x="538" y="0" width="33" height="13" uuid="19b5a079-2e50-4196-a059-40f320f7c7e2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="0" width="70" height="12" uuid="537a3b55-a91c-4949-9dae-fb5503be10b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="98cc5506-9274-45b6-a285-dab22b244f09"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="190" height="12" uuid="e2a200de-d220-466a-a04c-556106d6e7d5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bdc7a2e0-5549-4e8f-b6fc-b4dbf047b776"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)">
+				<reportElement x="320" y="0" width="70" height="12" uuid="e247f8b2-d593-4ae7-a351-9ee4a0ba7ca2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2d62d0f-434c-40b5-aa6a-a88d1b0b9665"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyonhand}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000-)">
+				<reportElement x="390" y="0" width="80" height="12" uuid="9a182ede-e2ca-4eb4-b3f2-d9359842e96d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5fc08a9-808d-424e-b379-584c009f1968"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{currentcost}.floatValue()/$F{qtyonhand}.floatValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000-)">
+				<reportElement x="470" y="0" width="100" height="12" uuid="91d34fb8-d93e-4f2e-9b08-59d58029889d"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{currentcost}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="23">
+			<componentElement>
+				<reportElement x="0" y="0" width="572" height="20" uuid="f8bbb36c-4484-4571-b1ca-3bec7b22f184"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DataSetLastPage" uuid="0f597b0f-58d5-40e1-93cc-afbc71cc601d">
+						<datasetParameter name="AD_USER_ID">
+							<datasetParameterExpression><![CDATA[$P{AD_USER_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="572">
+						<textField pattern="dd-MMM-yy" isBlankWhenNull="false">
+							<reportElement key="textField" x="213" y="0" width="187" height="15" uuid="57d9092f-fbc6-4219-a608-0294ab290cc8"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Fecha de impresión: " .concat(
+new SimpleDateFormat("dd/MM/yyyy HH.mm").format(new Date()))]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="10" y="0" width="203" height="15" uuid="1c083e0a-a4ca-4302-95f4-4e89cee69df5"/>
+							<textElement verticalAlignment="Bottom">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Generado por ".concat($F{user})]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</pageFooter>
+</jasperReport>

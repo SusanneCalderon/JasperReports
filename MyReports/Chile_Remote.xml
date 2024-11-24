@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>Chile_remote</name><driver>org.postgresql.Driver</driver><username>adempiere</username><password>rFOL5QQGS9ec12</password><savePassword>true</savePassword><url>jdbc:postgresql://192.168.22.11:5432/adempiere</url><database></database><serverAddress></serverAddress></jdbcDataAdapter>

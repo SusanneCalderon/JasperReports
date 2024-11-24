@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.5.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Final Results Summary" pageWidth="572" pageHeight="150" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="34e245e8-ee20-4270-8403-26cfba25cf54">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Test Json Data"/>
+	<queryString language="json">
+		<![CDATA[data.MtmMeasurements]]>
+	</queryString>
+	<field name="measureDate" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="measureDate"/>
+		<fieldDescription><![CDATA[measureDate]]></fieldDescription>
+	</field>
+	<field name="measureValue" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="measureValue"/>
+		<fieldDescription><![CDATA[measureValue]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="150" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="572" height="150" forecolor="#FFFFFF" backcolor="#1F0BD9" uuid="22ac1a03-34ee-43ee-ac83-a398495dea3f"/>
+				<box padding="3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FINAL RESULTS SUMMARY"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="3" y="24" width="565" height="121" uuid="dbad2bcc-c965-4bad-8abc-856010d062f2">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement x="20" y="34" width="141" height="21" uuid="b8122203-e30f-464a-b3f0-76c3f5a44d7b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Test Results "+ ($F{measureValue}>10?"Postive":"Negative")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="34" width="141" height="30" uuid="651def4f-4733-40a8-837f-91cb012efffa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Date: "+$F{measureDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="34" width="210" height="60" uuid="357dd6ee-0b1b-4391-ac9d-7612ad2f9b54"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tristique neque. Aliquam gravida risus sapien, sed porttitor dolor bibendum quis."]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="55" y="55" width="50" height="50" uuid="0bc6c833-6943-4b4d-84c7-3acb8776abd1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{measureValue}>10]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:Positive.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="55" y="55" width="50" height="50" uuid="2cf1d2c0-f230-4d5c-ad1e-73fb9ca8bae3">
+					<printWhenExpression><![CDATA[$F{measureValue}<=10]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["repo:Negtive.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="194" y="59" width="141" height="30" uuid="fa3072d9-a918-4295-80be-0c60b8e582c7"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MTM/mL: "+$F{measureValue}.toString()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="110" width="565" height="1" uuid="bee82726-c917-4aa7-8b12-cc98ab1bb822">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="10" y="114" width="141" height="20" uuid="bc62441e-b724-41e4-b963-248a1d087eef"/>
+				<textFieldExpression><![CDATA["Test Clinical Notes"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

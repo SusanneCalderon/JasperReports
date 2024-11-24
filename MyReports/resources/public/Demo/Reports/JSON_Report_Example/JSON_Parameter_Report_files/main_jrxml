@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.5.0.final using JasperReports Library version 6.4.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MasterReport" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="00425e96-e54a-47e7-9a38-d87f453fdb19">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NO_DATA_ADAPTER"/>
+	<property name="ireport.jasperserver.url" value="http://localhost:8080/jasperserver-pro/"/>
+	<property name="ireport.jasperserver.user" value="superuser"/>
+	<property name="ireport.jasperserver.report.resource" value="/public/PoCs/Natera/JSON_Report_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/public/PoCs/Natera/JSON_Report"/>
+	<parameter name="jsonData" class="java.lang.String">
+		<defaultValueExpression><![CDATA["{\"data\": {\"patientInfo\": {\"SubjectName\":\"Doe, Jane\",\"DateOfBirth\":\"02/01/1980\",\"medicalRecord\":\"MR-12345\",\"caseFileId\":\"101\",\"CancerType\":\"TNBC\",\"TissueCollected\":\"01/29/2018\",\"TissueReceived\":\"01/31/2018\",\"PlasmaCollected\":\"01/29/2018\",\"PlasmaReceived\":\"01/31/2018\"},\"orderingPhysician\":{\"name\":\"Dr. Matthew Goodbirth, MD\",\"id\":\"G123456\",\"clinic\":\"Natera, Inc\",\"NPI\":\"123456789\",\"addr1\":\"201 Industrial Rd, Suite 410, San Carlos, CA, 94070\", \"additionalRpts\":\"Some Delivery Instructions\",\"reportDate\":\"02/04/2019\"},\"MtmMeasurements\":[ {\"measureDate\":\"01/31/2016\", \"measureValue\":1}, {\"measureDate\":\"04/15/2016\", \"measureValue\":7}, {\"measureDate\":\"03/06/2017\", \"measureValue\":42}, {\"measureDate\":\"09/17/2017\", \"measureValue\":137} ],\"Signature\":{\"Approver\": \"Two Signer, PhD\", \"signerId\":2}}}"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="JSON_INPUT_STREAM" class="java.io.InputStream" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.io.ByteArrayInputStream($P{jsonData}.getBytes("UTF-8"))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Parameter1" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="JSON">
+		<![CDATA[]]>
+	</queryString>
+	<field name="patientInfo" class="java.lang.String">
+		<property name="net.sf.jasperreports.jsonql.field.expression" value="data.patientInfo"/>
+		<fieldDescription><![CDATA[data.patientInfo]]></fieldDescription>
+	</field>
+	<field name="MtmMeasurements" class="java.lang.String">
+		<property name="net.sf.jasperreports.jsonql.field.expression" value="data.MtmMeasurements"/>
+		<fieldDescription><![CDATA[data.MtmMeasurements]]></fieldDescription>
+	</field>
+	<field name="orderingPhysician" class="java.lang.String">
+		<propertyExpression name="net.sf.jasperreports.jsonql.field.expression"><![CDATA["data.orderingDoc"]]></propertyExpression>
+		<fieldDescription><![CDATA[data.orderingPhysician]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="321">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement isPrintRepeatedValues="false" x="1" y="0" width="186" height="206" uuid="024303c7-b77f-433e-8237-99a11b9fc14e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{patientInfo}!=null]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource( new java.io.ByteArrayInputStream( $P{jsonData}.getBytes("UTF-8") ), "data.patientInfo")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["repo:Patient_Summary.jrxml"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="186" y="0" width="186" height="206" uuid="73e4e5e4-a58b-4f08-a340-080394f033e8">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{orderingPhysician} != null]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource( new java.io.ByteArrayInputStream( $P{jsonData}.getBytes("UTF-8") ), "data.orderingPhysician")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["repo:PhysicianDetail.jrxml"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="380" y="3" width="191" height="30" uuid="e52cd7ad-6991-4b99-a5f3-148cf4ee90ad"/>
+				<textElement markup="html">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<p>Test Name <sup style='font-size:8px;color:blue'><b>TM</b></sup></p>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="36" width="191" height="30" uuid="4724e761-3b89-463b-9f27-b456d9afd44d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Random test name"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="60" width="191" height="21" uuid="b02c4fdb-5304-4da5-b6c1-68846909398a"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["About This Test"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="81" width="191" height="125" uuid="302bad9a-d6df-4035-a65c-6eacdaf82272"/>
+				<textFieldExpression><![CDATA["Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget tristique neque. Aliquam gravida risus sapien, sed porttitor dolor bibendum quis. Proin id accumsan massa. Sed eu rutrum lorem. Proin ut nisi porttitor, tempor elit eget, convallis tellus."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="" x="0" y="0" width="1" height="206" uuid="709fcd75-e8f2-4531-9059-7cfd3371570f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#060B9E"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="" x="186" y="0" width="1" height="206" uuid="a0ef66a0-7ecd-4864-87a5-57c7bdcf0936">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#060B9E"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="" x="372" y="0" width="1" height="206" uuid="07ffffba-bc80-4e10-90d5-56e41c228981">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed" lineColor="#060B9E"/>
+				</graphicElement>
+			</line>
+			<subreport>
+				<reportElement x="0" y="210" width="572" height="111" uuid="61934a13-ea16-4c34-b3ac-5241586eb04d">
+					<printWhenExpression><![CDATA[$F{MtmMeasurements}!=null]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource( new java.io.ByteArrayInputStream( $P{jsonData}.getBytes("UTF-8") ), "data.MtmMeasurements")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["repo:Final_Results_Summary.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<summary>
+		<band height="530" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="0" width="572" height="300" uuid="56285cb4-3bd0-495a-aa01-40314329b789">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource( new java.io.ByteArrayInputStream( $P{jsonData}.getBytes("UTF-8") ), "data.MtmMeasurements")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["repo:Historic_Results.jrxml"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="0" y="300" width="571" height="230" uuid="a7d69457-9a72-47f7-b3c0-acf5d14147ae">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource( new java.io.ByteArrayInputStream( $P{jsonData}.getBytes("UTF-8") ), "data.Signature")]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA["repo:Signature.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
