@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_Resumen" pageWidth="277" pageHeight="120" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
+	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+Replace(resumen::jsonb->>'totalNoSuj', '"', '')::DECIMAL as totalNoSuj,
+Replace(resumen::jsonb->>'ivaPerci1', '"', '')::DECIMAL as ivaPerci1,
+Replace(resumen::jsonb->>'descuNoSuj', '"', '')::DECIMAL as descuNoSuj,
+
+Replace(resumen::jsonb->>'totalLetras', '"', '') as totalLetras,
+Replace(resumen::jsonb->>'ivaRete1', '"', '')::DECIMAL as ivaRete1,
+Replace(resumen::jsonb->>'subTotalVentas', '"', '')::DECIMAL as subTotalVentas,
+Replace(resumen::jsonb->>'subTotal', '"', '')::DECIMAL as subTotal,
+Replace(resumen::jsonb->>'reteRenta', '"', '')::DECIMAL as reteRenta,
+Replace(resumen::jsonb->>'descuExenta', '"', '')::DECIMAL as descuExenta,
+Replace(resumen::jsonb->>'totalDescu', '"', '')::DECIMAL as totalDescu,
+Replace(resumen::jsonb->>'descuGravada', '"', '')::DECIMAL as descuGravada,
+Replace(resumen::jsonb->>'porcentajeDescuento', '"', '')::DECIMAL as porcentajeDescuento,
+Replace(resumen::jsonb->>'totalGravada', '"', '')::DECIMAL as totalGravada,
+
+Replace(resumen::jsonb->>'montoTotalOperacion', '"', '')::DECIMAL as montoTotalOperacion,
+Replace(resumen::jsonb->>'saldoFavor', '"', '')::DECIMAL as saldoFavor,
+Replace(resumen::jsonb->>'totalExenta', '"', '')::DECIMAL as totalExenta,
+Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL as totalPagar
+from e_electronicInvoice_Json
+WHERE c_Invoice_ID= $P{RECORD_ID} 
+ORDER BY e_Invoiceelectronic_ID DESC
+LIMIT 1]]>
+	</queryString>
+	<field name="totalnosuj" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totalnosuj"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalnosuj"/>
+	</field>
+	<field name="ivaperci1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ivaperci1"/>
+		<property name="com.jaspersoft.studio.field.label" value="ivaperci1"/>
+	</field>
+	<field name="descunosuj" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="descunosuj"/>
+		<property name="com.jaspersoft.studio.field.label" value="descunosuj"/>
+	</field>
+	<field name="totalletras" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="totalletras"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalletras"/>
+	</field>
+	<field name="ivarete1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ivarete1"/>
+		<property name="com.jaspersoft.studio.field.label" value="ivarete1"/>
+	</field>
+	<field name="subtotalventas" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="subtotalventas"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotalventas"/>
+	</field>
+	<field name="subtotal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+	</field>
+	<field name="reterenta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="reterenta"/>
+		<property name="com.jaspersoft.studio.field.label" value="reterenta"/>
+	</field>
+	<field name="descuexenta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="descuexenta"/>
+		<property name="com.jaspersoft.studio.field.label" value="descuexenta"/>
+	</field>
+	<field name="totaldescu" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totaldescu"/>
+		<property name="com.jaspersoft.studio.field.label" value="totaldescu"/>
+	</field>
+	<field name="descugravada" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="descugravada"/>
+		<property name="com.jaspersoft.studio.field.label" value="descugravada"/>
+	</field>
+	<field name="porcentajedescuento" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="porcentajedescuento"/>
+		<property name="com.jaspersoft.studio.field.label" value="porcentajedescuento"/>
+	</field>
+	<field name="totalgravada" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totalgravada"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalgravada"/>
+	</field>
+	<field name="montototaloperacion" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="montototaloperacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="montototaloperacion"/>
+	</field>
+	<field name="saldofavor" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="saldofavor"/>
+		<property name="com.jaspersoft.studio.field.label" value="saldofavor"/>
+	</field>
+	<field name="totalexenta" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totalexenta"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalexenta"/>
+	</field>
+	<field name="totalpagar" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totalpagar"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalpagar"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="120" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="30" width="277" height="30" uuid="1477df16-2a51-4310-8335-12acb6c5bbe1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Valor en Letras: " + $F{totalletras}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="277" height="30" uuid="76e137da-aa61-46e8-a86d-39904066334d"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Todos los valores en USD $]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
