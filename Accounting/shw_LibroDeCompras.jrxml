@@ -9,20 +9,22 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="178"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="816"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SA_Remote.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<subDataset name="datasetClientDaten" uuid="41f0b7a9-0113-448c-a242-9bb7629e7bd0">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SA_Remote.xml"/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
 		<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
 		<parameter name="AD_Org_ID" class="java.math.BigDecimal"/>
 		<queryString>
-			<![CDATA[select ci.printname, ci.taxID, ci.duns, i.binarydata as logo
-from ad_clientinfo ci
+			<![CDATA[select ci.ad_Org_ID,ci.printname, ci.taxID, ci.duns, i.binarydata as logo
+from ad_ORGInfo ci
 left join ad_image i on ci.logo_ID = i.ad_image_ID
-where ci.AD_Client_ID= $P{AD_CLIENT_ID}]]>
+where ci.AD_Client_ID=  $P{AD_CLIENT_ID} 
+ORDER BY ad_Org_ID
+LIMIT 1]]>
 		</queryString>
 		<field name="printname" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="printname"/>
@@ -402,29 +404,14 @@ LEFT JOIN c_BPartner bp on td.c_Bpartner_ID=bp.c_BPartner_ID
 		<property name="com.jaspersoft.studio.field.label" value="ei_numerocontrol"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
 	</field>
-	<field name="dan_tipo_op" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="dan_tipo_op"/>
-		<property name="com.jaspersoft.studio.field.label" value="dan_tipo_op"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
-	</field>
-	<field name="dan_clasi" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="dan_clasi"/>
-		<property name="com.jaspersoft.studio.field.label" value="dan_clasi"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
-	</field>
-	<field name="dan_sect" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="dan_sect"/>
-		<property name="com.jaspersoft.studio.field.label" value="dan_sect"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
-	</field>
-	<field name="dan_tipo_cg" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="dan_tipo_cg"/>
-		<property name="com.jaspersoft.studio.field.label" value="dan_tipo_cg"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
-	</field>
 	<field name="comprasex" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="comprasex"/>
 		<property name="com.jaspersoft.studio.field.label" value="comprasex"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
+	</field>
+	<field name="shw_importtype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="shw_importtype"/>
+		<property name="com.jaspersoft.studio.field.label" value="shw_importtype"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="rv_taxdeclaration_details"/>
 	</field>
 	<field name="proveedor" class="java.lang.String">
@@ -443,8 +430,10 @@ LEFT JOIN c_BPartner bp on td.c_Bpartner_ID=bp.c_BPartner_ID
 	</field>
 	<sortField name="processedon"/>
 	<variable name="grandtotal1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{bplocal}.equals( "local")?$F{gravada}.add($F{iva})
-:$F{gravada}.add($F{iva}).add($F{taxbaseamtdeclared}).add($F{taxamtdeclared})]]></variableExpression>
+		<variableExpression><![CDATA[$F{shw_importtype}==null?
+$F{gravada}.add($F{iva}).add($F{comprasinternasexcluidas}).add($F{comprasinternas_ext})
+:$F{gravada}.add($F{iva}).add($F{taxbaseamtdeclared}).add($F{taxamtdeclared})
+.add($F{comprasinternaciones_ext})]]></variableExpression>
 	</variable>
 	<variable name="taxret1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{retencion}]]></variableExpression>
@@ -453,10 +442,10 @@ LEFT JOIN c_BPartner bp on td.c_Bpartner_ID=bp.c_BPartner_ID
 		<variableExpression><![CDATA[$F{creditofiscalcompras}]]></variableExpression>
 	</variable>
 	<variable name="ComprasInternacionales" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{bplocal}.equals("EXT")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></variableExpression>
+		<variableExpression><![CDATA[$F{shw_importtype}.equals("INL")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></variableExpression>
 	</variable>
 	<variable name="ComprasInternaciones" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{bplocal}.equals("CA")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></variableExpression>
+		<variableExpression><![CDATA[$F{shw_importtype}.equals("INC")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></variableExpression>
 	</variable>
 	<variable name="ComprasGravadasLocales" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{gravada}]]></variableExpression>
@@ -570,7 +559,7 @@ LEFT JOIN c_BPartner bp on td.c_Bpartner_ID=bp.c_BPartner_ID
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-7" x="56" y="0" width="60" height="40" uuid="34ea5035-1385-49d5-be2c-f7d0ccb7005d"/>
+				<reportElement key="staticText-7" x="56" y="0" width="104" height="40" uuid="34ea5035-1385-49d5-be2c-f7d0ccb7005d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -583,7 +572,9 @@ LEFT JOIN c_BPartner bp on td.c_Bpartner_ID=bp.c_BPartner_ID
 Comprobante / Retencion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="116" y="0" width="51" height="40" uuid="4f99b5e0-65b6-4b05-b838-726c6037197f"/>
+				<reportElement key="staticText-8" x="160" y="0" width="40" height="40" uuid="4f99b5e0-65b6-4b05-b838-726c6037197f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -595,7 +586,7 @@ Comprobante / Retencion]]></text>
 				<text><![CDATA[NRC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-9" x="237" y="0" width="122" height="40" uuid="c8fa3825-e80d-4074-9858-ad1309460da3"/>
+				<reportElement key="staticText-9" x="270" y="0" width="122" height="40" uuid="c8fa3825-e80d-4074-9858-ad1309460da3"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -607,7 +598,7 @@ Comprobante / Retencion]]></text>
 				<text><![CDATA[Proveedor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-10" x="359" y="0" width="64" height="20" uuid="5c38372f-a607-4431-b95b-e0be1373628f"/>
+				<reportElement key="staticText-10" x="392" y="0" width="69" height="20" uuid="5c38372f-a607-4431-b95b-e0be1373628f"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -619,30 +610,34 @@ Comprobante / Retencion]]></text>
 				<text><![CDATA[Compras Exentas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-11" x="359" y="20" width="20" height="20" uuid="ef4ee84c-f5b7-4fbb-94d2-7ee24d3faad0"/>
+				<reportElement key="staticText-11" x="392" y="20" width="30" height="20" uuid="ef4ee84c-f5b7-4fbb-94d2-7ee24d3faad0"/>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Locales]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-12" x="379" y="20" width="23" height="20" uuid="d78635cb-6a2a-4206-a2db-227d1e73996b"/>
+				<reportElement key="staticText-12" x="422" y="20" width="18" height="20" uuid="d78635cb-6a2a-4206-a2db-227d1e73996b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font size="8"/>
+					<font size="5"/>
 				</textElement>
-				<text><![CDATA[Internaciones]]></text>
+				<text><![CDATA[Inter-nacio-nes]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-13" x="423" y="0" width="197" height="20" uuid="2eff2f8e-3ceb-4d15-b4ad-5af1b4de9b8d"/>
+				<reportElement key="staticText-13" x="461" y="0" width="159" height="20" uuid="2eff2f8e-3ceb-4d15-b4ad-5af1b4de9b8d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -654,37 +649,37 @@ Comprobante / Retencion]]></text>
 				<text><![CDATA[Compras Gravadas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-14" x="423" y="20" width="55" height="20" uuid="79d249e5-0cb6-44a4-a3b3-67b7df5dada2"/>
+				<reportElement key="staticText-14" x="461" y="20" width="55" height="20" uuid="79d249e5-0cb6-44a4-a3b3-67b7df5dada2"/>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
 				<text><![CDATA[Locales]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-16" x="476" y="20" width="55" height="20" uuid="36dfb95f-68ca-4a97-944d-39c514998844"/>
+				<reportElement key="staticText-16" x="516" y="20" width="34" height="20" uuid="36dfb95f-68ca-4a97-944d-39c514998844"/>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Internaciones]]></text>
+				<text><![CDATA[Inter-naciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-17" x="531" y="20" width="55" height="20" uuid="ab444252-1172-44fc-9027-0581fee48f1e"/>
+				<reportElement key="staticText-17" x="550" y="20" width="35" height="20" uuid="ab444252-1172-44fc-9027-0581fee48f1e"/>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="6"/>
 				</textElement>
-				<text><![CDATA[Internacionales]]></text>
+				<text><![CDATA[Inter-nacionales]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-18" x="586" y="20" width="35" height="20" uuid="594e9a27-8683-4c04-b651-28785d4a7f85"/>
@@ -717,13 +712,13 @@ Comprobante / Retencion]]></text>
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Right">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Retención a terceros]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="167" y="0" width="70" height="40" uuid="4318f466-0af4-4b1f-8744-c4e99f0fefef"/>
+				<reportElement key="staticText-8" x="200" y="0" width="70" height="40" uuid="4318f466-0af4-4b1f-8744-c4e99f0fefef"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -735,15 +730,17 @@ Comprobante / Retencion]]></text>
 				<text><![CDATA[NIT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-12" x="402" y="20" width="21" height="20" uuid="052b61f0-509e-495b-a76c-6111b6036ae2"/>
+				<reportElement key="staticText-12" x="440" y="20" width="21" height="20" uuid="052b61f0-509e-495b-a76c-6111b6036ae2">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
 				<box>
 					<leftPen lineWidth="0.5"/>
 					<bottomPen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-					<font size="8"/>
+					<font size="5"/>
 				</textElement>
-				<text><![CDATA[Internacionales]]></text>
+				<text><![CDATA[Inter-nacionales]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-21" x="692" y="0" width="39" height="40" uuid="446fc6ba-4a95-460b-994b-b099f82c52c1"/>
@@ -761,12 +758,12 @@ Comprobante / Retencion]]></text>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band height="10" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement x="56" y="0" width="60" height="10" uuid="4dc5de36-4cb6-467e-8edb-5aaf063efcd4"/>
+				<reportElement x="56" y="0" width="104" height="10" uuid="4dc5de36-4cb6-467e-8edb-5aaf063efcd4"/>
 				<textElement>
-					<font size="6"/>
+					<font size="5"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
 			</textField>
@@ -785,60 +782,65 @@ Comprobante / Retencion]]></text>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="116" y="0" width="51" height="10" uuid="93302a26-bfc1-4afc-9139-14b2db38bf9a"/>
+				<reportElement x="160" y="0" width="40" height="10" uuid="93302a26-bfc1-4afc-9139-14b2db38bf9a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{duns}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="167" y="0" width="70" height="10" uuid="e04e80c7-0ece-4f68-8699-13aa8ae5e8ba"/>
+				<reportElement x="200" y="0" width="70" height="10" uuid="e04e80c7-0ece-4f68-8699-13aa8ae5e8ba"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{taxid}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="237" y="0" width="122" height="10" uuid="6fb742d2-2b89-42f4-a934-ca714ef19576"/>
+				<reportElement x="270" y="0" width="122" height="10" uuid="6fb742d2-2b89-42f4-a934-ca714ef19576"/>
 				<textElement>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bpartnername}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
-				<reportElement x="350" y="0" width="28" height="10" uuid="82d1cb7b-dcbc-4fa8-a79f-08b911a7ed55"/>
+				<reportElement x="392" y="0" width="30" height="10" uuid="82d1cb7b-dcbc-4fa8-a79f-08b911a7ed55"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{comprasinternas_ext}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
-				<reportElement x="382" y="0" width="20" height="10" uuid="0db54d99-e7a4-4e08-ab6b-a0ad71a3febc"/>
+				<reportElement x="422" y="0" width="18" height="10" uuid="0db54d99-e7a4-4e08-ab6b-a0ad71a3febc">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{comprasinternasexcluidas}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
-				<reportElement x="423" y="0" width="53" height="10" uuid="26325b86-edd7-4821-b4f8-2be00daece57"/>
+				<reportElement x="461" y="0" width="55" height="10" uuid="26325b86-edd7-4821-b4f8-2be00daece57"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{gravada}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
-				<reportElement x="476" y="0" width="55" height="10" uuid="451bc748-5913-4de4-b26f-b3b2e446d8e7"/>
+				<reportElement x="516" y="0" width="34" height="10" uuid="451bc748-5913-4de4-b26f-b3b2e446d8e7"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bplocal}.equals("CA")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{shw_importtype}.equals("INC")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
-				<reportElement x="531" y="0" width="55" height="10" uuid="1d092bc5-d3c2-4c5c-bc85-24e77a5f434c"/>
+				<reportElement x="550" y="0" width="36" height="10" uuid="1d092bc5-d3c2-4c5c-bc85-24e77a5f434c"/>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bplocal}.equals("EXT")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{shw_importtype}.equals("INL")?$F{taxbaseamtdeclared}:new BigDecimal(0.00)]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#" isBlankWhenNull="true">
 				<reportElement x="586" y="0" width="33" height="10" uuid="5e5063f5-75b0-4118-ae5c-1ebe413dbe5b"/>
@@ -859,7 +861,7 @@ Comprobante / Retencion]]></text>
 				<textElement textAlignment="Right">
 					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{bplocal}.equals( "local")?
+				<textFieldExpression><![CDATA[$F{shw_importtype}==null?
 $F{gravada}.add($F{iva}).add($F{comprasinternasexcluidas}).add($F{comprasinternas_ext})
 :$F{gravada}.add($F{iva}).add($F{taxbaseamtdeclared}).add($F{taxamtdeclared})
 .add($F{comprasinternaciones_ext})]]></textFieldExpression>
@@ -904,36 +906,36 @@ $F{gravada}.add($F{iva}).add($F{comprasinternasexcluidas}).add($F{comprasinterna
 				</textElement>
 				<textFieldExpression><![CDATA[$V{taxret1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
 				<reportElement x="586" y="5" width="35" height="15" uuid="3398607a-8617-4ca8-8275-6ba15693095f"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{creditofiscalcompras1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)">
-				<reportElement x="531" y="5" width="55" height="15" uuid="848ca430-118c-4867-8a41-1376da943ac8"/>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="550" y="5" width="36" height="15" uuid="848ca430-118c-4867-8a41-1376da943ac8"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{ComprasInternacionales}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)">
-				<reportElement x="478" y="5" width="53" height="15" uuid="7a7bbb00-433b-4069-a053-7ff33e602be8"/>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="516" y="5" width="34" height="15" uuid="7a7bbb00-433b-4069-a053-7ff33e602be8"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{ComprasInternaciones}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)">
-				<reportElement x="422" y="5" width="56" height="15" uuid="858fb511-af59-4869-bc91-6ff7bc59c5cc"/>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="460" y="5" width="56" height="15" uuid="858fb511-af59-4869-bc91-6ff7bc59c5cc"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{ComprasGravadasLocales}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;(#,##0.00#-)">
-				<reportElement x="340" y="5" width="38" height="15" uuid="cb03dd6c-0964-4e81-9620-a291ce36b5fa">
+				<reportElement x="392" y="5" width="30" height="15" uuid="cb03dd6c-0964-4e81-9620-a291ce36b5fa">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -943,7 +945,7 @@ $F{gravada}.add($F{iva}).add($F{comprasinternasexcluidas}).add($F{comprasinterna
 				<textFieldExpression><![CDATA[$V{comprasinternas_ext1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00#;(#,##0.00#-)">
-				<reportElement x="382" y="5" width="20" height="15" uuid="31ee2281-9dfd-472b-85a3-47807b910cdd">
+				<reportElement x="422" y="5" width="18" height="15" uuid="31ee2281-9dfd-472b-85a3-47807b910cdd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -953,7 +955,7 @@ $F{gravada}.add($F{iva}).add($F{comprasinternasexcluidas}).add($F{comprasinterna
 				</textElement>
 				<textFieldExpression><![CDATA[$V{comprasinternasexcluidas1}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00#;(#,##0.00#-)">
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
 				<reportElement x="692" y="5" width="39" height="15" uuid="691c3138-b99a-4913-97c8-0e976900ac01">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
