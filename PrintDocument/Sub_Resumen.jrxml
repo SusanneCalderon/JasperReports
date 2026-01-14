@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_Resumen" pageWidth="277" pageHeight="120" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_Resumen" language="javascript" pageWidth="277" pageHeight="150" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KaltmannLocal.xml"/>
 	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -25,9 +25,18 @@ Replace(resumen::jsonb->>'totalGravada', '"', '')::DECIMAL as totalGravada,
 Replace(resumen::jsonb->>'montoTotalOperacion', '"', '')::DECIMAL as montoTotalOperacion,
 Replace(resumen::jsonb->>'saldoFavor', '"', '')::DECIMAL as saldoFavor,
 Replace(resumen::jsonb->>'totalExenta', '"', '')::DECIMAL as totalExenta,
-Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL as totalPagar
-from e_electronicInvoice_Json
-WHERE c_Invoice_ID= $P{RECORD_ID} 
+Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL as totalPagar,
+Replace(resumen::jsonb->>'totalNoGravado', '"', '')::DECIMAL as totalNoGravado,
+it.taxamt AS totalIVA, dt.e_doctype_ID, edt.value
+FROM e_electronicInvoice_Json ij
+
+LEFT JOIN c_Invoicetax it ON it.c_Invoice_ID=ij.c_Invoice_ID
+LEFT JOIN C_INvoice i ON it.c_Invoice_ID=i.c_Invoice_ID
+LEFT JOIN C_Doctype dt ON dt.c_Doctype_ID=i.c_Doctype_ID
+LEFT JOIN e_Doctype edt ON dt.e_Doctype_ID=edt.e_Doctype_ID
+LEFT JOIN c_Tax t ON it.c_Tax_ID=t.c_Tax_ID
+WHERE t.taxindicator = 'IVA' 
+AND ij.c_Invoice_ID= $P{RECORD_ID} 
 ORDER BY e_Invoiceelectronic_ID DESC
 LIMIT 1]]>
 	</queryString>
@@ -99,11 +108,30 @@ LIMIT 1]]>
 		<property name="com.jaspersoft.studio.field.name" value="totalpagar"/>
 		<property name="com.jaspersoft.studio.field.label" value="totalpagar"/>
 	</field>
+	<field name="totalnogravado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totalnogravado"/>
+		<property name="com.jaspersoft.studio.field.label" value="totalnogravado"/>
+	</field>
+	<field name="totaliva" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="totaliva"/>
+		<property name="com.jaspersoft.studio.field.label" value="totaliva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoicetax"/>
+	</field>
+	<field name="e_doctype_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="e_doctype_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="e_doctype_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_doctype"/>
+	</field>
+	<field name="value" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="value"/>
+		<property name="com.jaspersoft.studio.field.label" value="value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="e_doctype"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<summary>
-		<band height="120" splitType="Stretch">
+		<band height="150" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="0" y="0" width="214" height="15" uuid="961e5568-3d77-4563-bb21-522e5903931f">
@@ -168,7 +196,7 @@ LIMIT 1]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textField pattern="#,##0.###;(#,##0.###-)">
+				<textField pattern="#,##0.00#;(#,##0.00#-)">
 					<reportElement x="2" y="0" width="61" height="15" uuid="cefb3b53-6f9f-49aa-a6fb-4ae6c1ce29e5">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -306,7 +334,7 @@ LIMIT 1]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{ivaperci1}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{value}.equals( "01" )? new BigDecimal(0.00):$F{totaliva}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<staticText>
@@ -349,7 +377,7 @@ LIMIT 1]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[ IVA Percibido:]]></text>
+				<text><![CDATA[ IVA:]]></text>
 			</staticText>
 			<frame>
 				<reportElement x="214" y="105" width="63" height="15" uuid="9ce940ef-1726-424b-bf8a-c37086e7a547">
@@ -370,7 +398,7 @@ LIMIT 1]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{montototaloperacion}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{montototaloperacion}.subtract($F{ivarete1})]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -393,6 +421,78 @@ LIMIT 1]]>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="120" width="214" height="15" uuid="c61e513e-f2fc-4c7d-bf62-76da14804660">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Otros Montos no afectos:]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="215" y="120" width="63" height="15" uuid="80a3567f-0373-4bfe-af05-ab63fd42dec3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textField pattern="#,##0.00#;(#,##0.00#-)">
+					<reportElement x="0" y="0" width="63" height="15" uuid="e0b7134e-f9e5-4e45-9d37-fb15d0bb9407">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalnogravado}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="135" width="214" height="15" uuid="f5d4faa6-6833-4522-aa4f-97ed42bef1bc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Total a Pagar:]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="215" y="135" width="63" height="15" uuid="0d2351e7-8810-40a2-90f5-0a355fc5ee4a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textField pattern="#,##0.00#;(#,##0.00#-)">
+					<reportElement x="-1" y="0" width="63" height="15" uuid="5b6f337c-b8b6-412c-ac55-e130779abb7a">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{totalpagar}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
