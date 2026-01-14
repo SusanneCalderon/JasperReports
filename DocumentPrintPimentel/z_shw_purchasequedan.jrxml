@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="562" leftMargin="20" rightMargin="30" topMargin="20" bottomMargin="20" uuid="05bed529-c6b7-45e9-9c2a-9907cbb29acf">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="873"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="VITAE_ES.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<subDataset name="datasetLines" uuid="f032d0d8-f0c3-47b0-a93c-5dfe92f64eee">
+		<parameter name="RECORD_ID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select i.c_invoice_ID, i.documentno, i.grandtotal, dt.printname as doctype from c_invoicebatchline ibl
+inner join c_invoice i on i.c_invoice_ID = ibl.c_invoice_ID
+inner join c_doctype dt on i.c_doctype_ID = dt.c_doctype_ID
+
+
+ where c_invoicebatch_ID=$P{RECORD_ID}]]>
+		</queryString>
+		<field name="c_invoice_id" class="java.math.BigDecimal"/>
+		<field name="documentno" class="java.lang.String"/>
+		<field name="grandtotal" class="java.math.BigDecimal"/>
+		<field name="doctype" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="datasetClientDaten" uuid="07f5429a-ce0f-4e71-a013-4a98268e53ea">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="VITAE_ES.xml"/>
+		<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select cl.name as printname, l1.city, l1.address1, cli.phone, cli.fax, cli.taxid, cli.duns
+,binarydata as logo, c1.name as country
+from
+ad_orginfo cli
+INNER JOIN ad_Client cl on cli.ad_Client_ID=cl.ad_Client_ID
+left JOIN adempiere.c_location l1 ON cli.c_location_id = l1.c_location_id
+left join c_country c1 on l1.c_country_ID = c1.c_country_ID
+left join ad_image ai on cli.logo_ID = ai.ad_image_ID
+where cli.isDefault = 'Y']]>
+		</queryString>
+		<field name="printname" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="printname"/>
+		</field>
+		<field name="city" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="city"/>
+		</field>
+		<field name="address1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="address1"/>
+		</field>
+		<field name="phone" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="phone"/>
+		</field>
+		<field name="fax" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="fax"/>
+		</field>
+		<field name="taxid" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="taxid"/>
+		</field>
+		<field name="duns" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="duns"/>
+		</field>
+		<field name="logo" class="java.lang.Object">
+			<property name="com.jaspersoft.studio.field.label" value="logo"/>
+		</field>
+		<field name="country" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="country"/>
+		</field>
+	</subDataset>
+	<subDataset name="dataset1" uuid="755da5fa-c2f2-4d60-94e0-cadf87ec1f55"/>
+	<subDataset name="dataset2" uuid="928d4f57-5efe-4c0b-84b3-e69bc1144cf5"/>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select i.ad_client_id, bp.name, getquedan_invoices($P{RECORD_ID}) as invoiceNo,
+i.documentno, i.dateconfirm as duedate, i.documentamt, i.datedoc
+from c_invoicebatch i
+inner join c_bpartner bp on i.c_bpartner_id = bp.c_bpartner_id
+where C_Invoicebatch_ID=$P{RECORD_ID}]]>
+	</queryString>
+	<field name="ad_client_id" class="java.math.BigDecimal"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="invoiceno" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="duedate" class="java.sql.Timestamp"/>
+	<field name="documentamt" class="java.math.BigDecimal"/>
+	<field name="datedoc" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="562" height="50" uuid="8c57c5fd-abb4-40f9-b806-22b8955702dd"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetClientDaten" uuid="747322dc-8d57-4194-ae5b-9650398183c7">
+						<datasetParameter name="AD_CLIENT_ID">
+							<datasetParameterExpression><![CDATA[$P{AD_CLIENT_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="50" width="562">
+						<image>
+							<reportElement x="0" y="0" width="228" height="38" uuid="d4d9c02b-d01d-42f2-84a1-6c48389f0f78"/>
+							<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="289" y="22" width="273" height="11" uuid="d9d1a239-6d57-4ac6-b0cc-0763b370c36b"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{city}.concat(" ").concat($F{address1})
+.concat(" ").concat($F{country})]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="289" y="33" width="273" height="11" uuid="b9176d9e-b24f-4849-87f1-e0089833ec0c"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Teléfono: ".concat($F{phone}).concat(" Fax:").concat($F{fax})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="289" y="11" width="273" height="11" uuid="6f50f1df-1563-4a7e-90bd-40c049a07dd0"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["No de Registro: "
+.concat($F{duns})
+.concat(" NIT: ")
+.concat($F{taxid})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="289" y="0" width="273" height="11" uuid="f4319c0c-8924-49f3-a570-1b632312a8f3"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{printname}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="647" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="306" width="562" height="1" uuid="2a43d93c-372a-4fee-ba2b-8bfa450f87ab"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="2" y="180" width="236" height="20" uuid="c8064982-d1f9-4116-8992-309b18ce12bc"/>
+				<text><![CDATA[para revisión y pago en:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="0" width="71" height="20" uuid="4b86718f-443a-4fd8-ae07-a741d447fbce"/>
+				<text><![CDATA[San Salvador,]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="73" y="0" width="100" height="20" uuid="1d85b4a8-b5a1-46c1-96bf-f10990cb62f7"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="0" width="60" height="20" uuid="194af747-1227-411c-8554-3f817cd956cc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quedan No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="440" y="0" width="100" height="20" uuid="dd52d1b8-69c4-4029-abf1-29566a2001cc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="286" width="100" height="20" uuid="1987353e-0372-4e2a-9230-08e3c57884f1"/>
+				<text><![CDATA[ORIGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="544" width="217" height="20" uuid="c333b7a7-8fa3-4a89-a306-2e32f6ca7c29"/>
+				<text><![CDATA[para revisión y pago en:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="627" width="100" height="20" uuid="f901af84-ef58-4f43-9265-25a030bcb0c8"/>
+				<text><![CDATA[COPIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="356" width="60" height="20" uuid="6dd78e51-8847-434b-85f4-ba5165c185a9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quedan No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="356" width="71" height="20" uuid="1e01aed7-d2b7-45cf-9a3e-208c25b01ee8"/>
+				<text><![CDATA[San Salvador,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="440" y="356" width="100" height="20" uuid="839156e9-5f26-4982-80d7-b88dbd1a7d93"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="73" y="356" width="100" height="20" uuid="7399d813-cc8f-43f0-aa0e-b8030491f574"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="221" y="180" width="119" height="20" uuid="5660fe20-1649-49d0-84aa-639c7d34045e">
+					<printWhenExpression><![CDATA[$F{duedate} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="221" y="180" width="299" height="20" uuid="4d675833-3917-4578-9c79-c8e87fdf1cce">
+					<printWhenExpression><![CDATA[$F{duedate}==null]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[Se avisará (en base a término de crédito)]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="54" width="562" height="13" uuid="f1e2c752-24cd-4bac-953f-54fbec2ef6c3"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetLines" uuid="426f3c59-62ba-40b7-bfc3-509cdece24bf">
+						<datasetParameter name="RECORD_ID">
+							<datasetParameterExpression><![CDATA[$P{RECORD_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="13" width="562">
+						<textField>
+							<reportElement x="221" y="0" width="150" height="13" uuid="e554246e-9213-48f7-92f4-b0a37165f511"/>
+							<textElement>
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="482" y="0" width="49" height="13" uuid="ba820a5d-e858-4772-8885-3d2e4524de23"/>
+							<textElement textAlignment="Right">
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="371" y="0" width="99" height="13" uuid="87b78ede-3815-47bb-a0f8-c7817f9a7bc9"/>
+							<textElement textAlignment="Right"/>
+							<text><![CDATA[Por un monto de $]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="21" y="0" width="196" height="13" uuid="f6518399-7977-4eed-a0a0-61f7c1702c8c"/>
+							<textElement>
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{doctype}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="0" y="306" width="562" height="50" uuid="83da67da-bbe4-45ac-9829-3c7f4f70f8da"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetClientDaten" uuid="1d546444-a20b-4225-a92a-bc029d49738b">
+						<datasetParameter name="AD_CLIENT_ID">
+							<datasetParameterExpression><![CDATA[$P{AD_CLIENT_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="50" width="562">
+						<image>
+							<reportElement x="0" y="0" width="228" height="38" uuid="12e9f3b2-a6ec-423e-90b3-9d574542a6bd"/>
+							<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="289" y="22" width="273" height="11" uuid="067fade1-f599-4c9f-9a0a-cbc33e23a670"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{city}.concat(" ").concat($F{address1})
+.concat(" ").concat($F{country})]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="289" y="33" width="273" height="11" uuid="2a8242b8-5fd9-4ae2-a6b4-5663b5bc8c5f"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Teléfono: ".concat($F{phone}).concat(" Fax:").concat($F{fax})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="289" y="11" width="273" height="11" uuid="e0d6df3f-dd52-4173-a055-cc4debb4da26"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["No de Registro: "
+.concat($F{duns})
+.concat(" NIT: ")
+.concat($F{taxid})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="289" y="0" width="273" height="11" uuid="d628821d-06c7-44a3-8a1a-feffc124b8d4"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{printname}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="217" y="544" width="299" height="20" uuid="2d54e4ac-0553-4f11-b696-89bd6217af71">
+					<printWhenExpression><![CDATA[$F{duedate}==null]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[Se avisará (en base a término de crédito)]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="217" y="544" width="119" height="20" uuid="6340c371-1a44-456b-a0e3-f357e29ec967">
+					<printWhenExpression><![CDATA[$F{duedate} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="20" width="562" height="34" uuid="bb72a5ac-e6d7-4700-a1d2-0019bc135540"/>
+				<textFieldExpression><![CDATA["Quedan en nuestro poder para la correspondencia revisión correspondiente trámite de pago los documentos abajo detallados a favor de "
+.concat($F{name})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="200" width="560" height="20" uuid="599acca7-4339-4258-bd04-212d099f019b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Entrega de cheques: Unicamente Lunes de 2:00 PM a 4:30 PM	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="249" width="162" height="20" uuid="a089e61a-df7e-4eab-a459-68dd761b10a6"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Elaborado por	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="249" width="162" height="20" uuid="31541090-5acd-4fc3-b43d-b33dc57680c7"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma del proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="249" width="162" height="20" uuid="3e5bf9e6-0c4a-4866-a5b3-2c0d98ce42cf"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nombre y DUI del proveedor	]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="2" y="410" width="562" height="13" uuid="a1235a5a-434a-4ec6-a56c-23a6bd7da682"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetLines" uuid="f0bda51d-9a7f-47fa-a560-71a1840917bd">
+						<datasetParameter name="RECORD_ID">
+							<datasetParameterExpression><![CDATA[$P{RECORD_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="13" width="562">
+						<textField>
+							<reportElement x="221" y="0" width="150" height="13" uuid="a29fd812-e28b-4452-98fc-e84a207d8cce"/>
+							<textElement>
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="482" y="0" width="49" height="13" uuid="87cfd199-8b7a-4e36-8331-bd9123a1feee"/>
+							<textElement textAlignment="Right">
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="371" y="0" width="99" height="13" uuid="2506d64a-75f8-4eac-acae-1e17ed908c95"/>
+							<textElement textAlignment="Right"/>
+							<text><![CDATA[Por un monto de $]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="21" y="0" width="196" height="13" uuid="2798d883-1aa1-4a1b-9277-e6e82e356e2e"/>
+							<textElement>
+								<font size="9"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{doctype}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement x="2" y="376" width="562" height="34" uuid="6eaf68bc-827d-4082-b341-2084d91e848c"/>
+				<textFieldExpression><![CDATA["Quedan en nuestro poder para la correspondencia revisión correspondiente trámite de pago los documentos abajo detallados a favor de "
+.concat($F{name})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="564" width="560" height="20" uuid="c8f760a3-04f8-4605-ad0c-6e2ac2b2a212"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Entrega de cheques: Unicamente Lunes de 2:00 PM a 4:30 PM	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="607" width="162" height="20" uuid="f1f353fb-362c-4afa-b73d-ab3dca42d782"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Nombre y DUI del proveedor	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="607" width="162" height="20" uuid="2387698e-d9c1-49e8-8f57-69a60d4e38a2"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Elaborado por	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="607" width="162" height="20" uuid="a758ac13-cd07-4cac-a5f2-d171622b6711"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma del proveedor]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

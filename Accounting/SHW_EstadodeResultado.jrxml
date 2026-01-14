@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.11.0.final using JasperReports Library version 6.11.0-0c4056ccaa4d25a5a8c45672d2f764ea3498bebb  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BalanceComprobacion" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96bd3d16-1769-4b47-806d-7e3d7d0b7e05">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="8"/>
+	<property name="ireport.y" value="72"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SA_Remote.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="style1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[]]></conditionExpression>
+			<style fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{linetype}.equals( "C" )]]></conditionExpression>
+			<style fontSize="8" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false">
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Double"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<subDataset name="datasetClientDaten" uuid="03a5d601-0697-4da8-9fb0-6c931bd5679f">
+		<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select cli.printname, l1.city, l1.address1, cli.phone, cli.fax, cli.taxid, cli.duns
+,binarydata as logo, c1.name as country
+from
+ad_clientinfo cli
+left JOIN adempiere.c_location l1 ON cli.c_location_id = l1.c_location_id
+left join c_country c1 on l1.c_country_ID = c1.c_country_ID
+left join ad_image ai on cli.logo_ID = ai.ad_image_ID
+where cli.AD_Client_ID = $P{AD_CLIENT_ID}]]>
+		</queryString>
+		<field name="printname" class="java.lang.String"/>
+		<field name="city" class="java.lang.String"/>
+		<field name="address1" class="java.lang.String"/>
+		<field name="phone" class="java.lang.String"/>
+		<field name="fax" class="java.lang.String"/>
+		<field name="taxid" class="java.lang.String"/>
+		<field name="duns" class="java.lang.String"/>
+		<field name="logo" class="java.io.InputStream"/>
+		<field name="country" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Product" uuid="7e322e2e-38b4-407b-a556-7b083ec0de87">
+		<parameter name="M_Product_ID" class="java.math.BigDecimal"/>
+		<queryString>
+			<![CDATA[select value || ' ' || name as product from m_product
+where m_product_id = $P{M_Product_ID}]]>
+		</queryString>
+		<field name="product" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="dataset1" uuid="ce9d64be-b19e-4e26-a24d-d082ee68f8da"/>
+	<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
+	<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Period_ID" class="java.math.BigDecimal"/>
+	<parameter name="GL_Journal_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[select t.seqno, t.name,t.description,col_0, t.pa_reportline_id, rl.linetype,rl.tablevel,t.levelno,
+getdate() as getdate
+, (select name from ad_user where ad_user_ID =$P{AD_USER_ID}) as user,
+(select enddate from c_period where ad_client_ID= $P{AD_CLIENT_ID}
+and c_period_ID = $P{C_Period_ID}) as enddate
+ from t_report t
+ left join pa_reportline rl on t.pa_reportline_ID = rl.pa_reportline_ID
+
+where t.ad_pinstance_ID = $P{T_Report_AD_PInstance_ID} AND rl.IsPrinted = 'Y'
+UNION ALL
+select  jl.seqno + 1000000 as seqno, 
+CASE WHEN ev.name = 'Del presente Ejercicio' THEN '= ' || ev.value else
+'- ' || ev.value end as name, 
+ev.name as description, 
+acctbalance(account_ID, amtacctdr, amtacctcr) As col_0,
+null as pa_reportline_id, 
+CASE WHEN ev.name = 'Del presente Ejercicio' THEN 'C' ELSE 'S' END AS linetype, 
+0 as tablevel, 0 as levelno, getdate() as getdate,
+(select name from ad_user where ad_user_ID =  $P{AD_USER_ID}) as user,
+(select enddate from c_period where c_period_ID =  $P{C_Period_ID} ) as enddate
+
+from gl_JOurnalline jl 
+INNER JOIN c_Elementvalue ev ON jl.account_ID=ev.c_elementvalue_ID
+where gl_Journal_ID= $P{GL_Journal_ID}  and seqno is not null]]>
+	</queryString>
+	<field name="seqno" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="seqno"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+	</field>
+	<field name="col_0" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="col_0"/>
+	</field>
+	<field name="pa_reportline_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="pa_reportline_id"/>
+	</field>
+	<field name="linetype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="linetype"/>
+	</field>
+	<field name="tablevel" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tablevel"/>
+	</field>
+	<field name="levelno" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="levelno"/>
+	</field>
+	<field name="getdate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="getdate"/>
+	</field>
+	<field name="user" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="user"/>
+	</field>
+	<field name="enddate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="enddate"/>
+	</field>
+	<sortField name="seqno"/>
+	<sortField name="levelno"/>
+	<sortField name="name"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="95" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="569" height="49" uuid="35281186-787a-4dbb-a688-9360da70665a"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetClientDaten" uuid="c757c0ee-90c4-4754-8b0e-826bf380b085">
+						<datasetParameter name="AD_CLIENT_ID">
+							<datasetParameterExpression><![CDATA[$P{AD_CLIENT_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="49" width="569">
+						<image>
+							<reportElement x="0" y="0" width="228" height="38" uuid="b1717d31-cc9a-4b38-8e6f-87c5e4d5d115"/>
+							<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="393" y="3" width="176" height="11" uuid="9f9f1dcc-6a97-467e-ac2a-21bb18aadd6b"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{printname}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement x="383" y="25" width="186" height="11" uuid="0d24a870-b1b8-4a2d-8e95-b1e1f512deb1"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{city}.concat(" ").concat($F{address1})
+.concat(" ").concat($F{country})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="383" y="14" width="186" height="11" uuid="db72a7e3-9652-479e-bb57-31d1fd27fa0c"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["No de Registro: "
+.concat($F{duns})
+.concat(" NIT: ")
+.concat($F{taxid})]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="14" width="572" height="24" uuid="7dec5d81-97c6-412f-bceb-c238a02c734e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado de Resultado]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="49" width="572" height="15" uuid="97fc085b-8bbc-4631-a137-ff0350cf2735"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Al ".concat(
+new SimpleDateFormat("MMMM/yyyy").format($F{enddate}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="64" width="572" height="15" uuid="7ca45b2a-2dae-47d5-9a33-54a96318c448"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(Expresados en Dolares Americanos de los Estado Unidos)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="433" height="20" uuid="07c3698f-5c18-4173-b728-d90812831c07"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Cuentas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="0" width="67" height="20" uuid="064c70f4-513b-4259-9233-df698ec9d6ff"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Subtotales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="502" y="0" width="67" height="20" uuid="6190c20a-0a93-48b9-8b1c-0ad03a69aff1"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{tablevel}.intValue()==0]]></printWhenExpression>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="style1" x="5" y="0" width="145" height="15" uuid="bb9c2a50-6873-4528-9f4a-41b595ffe3ca"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement style="style1" x="502" y="0" width="67" height="15" uuid="f0466fad-4115-48b6-9bcc-dfb0c2a4d8cc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="style1" x="150" y="0" width="285" height="15" uuid="b0441828-a57e-4630-a75d-f2df18ea3c45"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[$F{tablevel}.intValue()>0]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement style="style1" x="89" y="0" width="346" height="15" uuid="07e9a4ab-cb4c-4d2d-9cb5-4fb5d51bbcb8"/>
+				<textElement>
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}.concat(" ").concat($F{description})]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="435" y="0" width="67" height="15" uuid="5ac63612-5701-481a-8930-a63298001b8d"/>
+				<textElement textAlignment="Right">
+					<font size="10" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="0" width="546" height="15" uuid="3e1c962e-7079-4480-9495-6f68fd292d70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Generado por ".concat($F{user}).concat(" Fecha: ")
+.concat(new SimpleDateFormat("dd/MM/yyyy HH.mm").format(new Date()) )]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="389" y="0" width="180" height="20" uuid="8256f53e-d1cf-4c38-b8b6-29f83f505243"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Evila Esperanza Guardado Cardenas
+Contador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="0" width="163" height="20" uuid="b957457f-35e6-4d91-b7dc-0a2206259d36"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nestor Edgardo Pacheco Moral
+Auditor Externo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="20" uuid="18f92cf0-4dab-4b08-aca7-317549c7eb2d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Roger Ronald Sibrian Callejas
+Representante Legal]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

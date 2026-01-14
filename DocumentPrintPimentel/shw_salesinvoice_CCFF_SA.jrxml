@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Print_CreditoFiscal" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="86457a4d-4047-4529-a279-6338a76d8b91">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="DSHeader" uuid="5cbb76a7-49bb-45cc-8f6f-644fdaa37ab2">
+		<parameter name="RECORD_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select *
+from shw_c_invoice_header_vt
+where c_invoice_id = $P{RECORD_ID}
+and ad_language = 'es_SV']]>
+		</queryString>
+		<field name="logo_id" class="java.math.BigDecimal"/>
+		<field name="ad_client_id" class="java.math.BigDecimal"/>
+		<field name="ad_org_id" class="java.math.BigDecimal"/>
+		<field name="isactive" class="java.lang.String"/>
+		<field name="created" class="java.sql.Timestamp"/>
+		<field name="createdby" class="java.math.BigDecimal"/>
+		<field name="updated" class="java.sql.Timestamp"/>
+		<field name="updatedby" class="java.math.BigDecimal"/>
+		<field name="ad_language" class="java.lang.String"/>
+		<field name="c_invoice_id" class="java.math.BigDecimal"/>
+		<field name="issotrx" class="java.lang.String"/>
+		<field name="documentno" class="java.lang.String"/>
+		<field name="docstatus" class="java.lang.String"/>
+		<field name="c_doctype_id" class="java.math.BigDecimal"/>
+		<field name="c_bpartner_id" class="java.math.BigDecimal"/>
+		<field name="c_order_id" class="java.math.BigDecimal"/>
+		<field name="salesrep_id" class="java.math.BigDecimal"/>
+		<field name="dateinvoiced" class="java.sql.Timestamp"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="poreference" class="java.lang.String"/>
+		<field name="dateordered" class="java.sql.Timestamp"/>
+		<field name="c_currency_id" class="java.math.BigDecimal"/>
+		<field name="c_charge_id" class="java.math.BigDecimal"/>
+		<field name="chargeamt" class="java.math.BigDecimal"/>
+		<field name="c_campaign_id" class="java.math.BigDecimal"/>
+		<field name="c_project_id" class="java.math.BigDecimal"/>
+		<field name="c_activity_id" class="java.math.BigDecimal"/>
+		<field name="ispaid" class="java.lang.String"/>
+		<field name="m_pricelist_id" class="java.math.BigDecimal"/>
+		<field name="istaxincluded" class="java.lang.String"/>
+		<field name="totallines" class="java.math.BigDecimal"/>
+		<field name="grandtotal" class="java.math.BigDecimal"/>
+		<field name="taxtotal" class="java.math.BigDecimal"/>
+		<field name="amtinwords" class="java.math.BigDecimal"/>
+		<field name="ventaext" class="java.math.BigDecimal"/>
+		<field name="taxiva" class="java.math.BigDecimal"/>
+		<field name="taxret" class="java.math.BigDecimal"/>
+		<field name="bpvalue" class="java.lang.String"/>
+		<field name="bptaxid" class="java.lang.String"/>
+		<field name="naics" class="java.lang.String"/>
+		<field name="duns" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="name2" class="java.lang.String"/>
+		<field name="bpdescription" class="java.lang.String"/>
+		<field name="bpreferenceno" class="java.lang.String"/>
+		<field name="documenttype" class="java.lang.String"/>
+		<field name="documenttypenote" class="java.lang.String"/>
+		<field name="z_shw_docnodruck" class="java.lang.String"/>
+		<field name="salesrep_name" class="java.lang.String"/>
+		<field name="salesrepname" class="java.lang.String"/>
+		<field name="salesrepvalue" class="java.lang.String"/>
+		<field name="vendorvalue" class="java.lang.String"/>
+		<field name="vendorname" class="java.lang.String"/>
+		<field name="c_location_id" class="java.math.BigDecimal"/>
+		<field name="postal" class="java.lang.String"/>
+		<field name="phone" class="java.lang.String"/>
+		<field name="city" class="java.lang.String"/>
+		<field name="street" class="java.lang.String"/>
+		<field name="colonia" class="java.lang.String"/>
+		<field name="municipio" class="java.lang.String"/>
+		<field name="l_info" class="java.lang.String"/>
+		<field name="c_region_id" class="java.math.BigDecimal"/>
+		<field name="paymentterm" class="java.lang.String"/>
+		<field name="paymenttermnote" class="java.lang.String"/>
+		<field name="ret" class="java.math.BigDecimal"/>
+		<field name="ajenootros" class="java.math.BigDecimal"/>
+		<field name="ajenoalmacenaje" class="java.math.BigDecimal"/>
+		<field name="ajenopoliza" class="java.math.BigDecimal"/>
+		<field name="ventnosujeta" class="java.math.BigDecimal"/>
+		<field name="paydate" class="java.sql.Timestamp"/>
+		<variable name="AmtInWords" class="java.lang.String">
+			<variableExpression><![CDATA[org.compiere.util.Msg.getAmtInWords(org.compiere.util.Language.getLoginLanguage(), $F{grandtotal}.toString())
+.concat(new java.lang.String(' dolares'))]]></variableExpression>
+		</variable>
+		<variable name="V_TOTALIVA" class="java.math.BigDecimal">
+			<variableExpression><![CDATA[$F{taxiva}.add($F{totallines} )]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select c_invoice_ID, linenetamt, name,
+ventagravada, ventaex, ventanosuj, priceactual,qtyinvoiced
+
+
+ from shw_c_invoice_linetax_vt
+where c_invoice_id = $P{RECORD_ID}
+and ad_language = 'es_SV']]>
+	</queryString>
+	<field name="c_invoice_id" class="java.math.BigDecimal"/>
+	<field name="linenetamt" class="java.math.BigDecimal"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="ventagravada" class="java.math.BigDecimal"/>
+	<field name="ventaex" class="java.math.BigDecimal"/>
+	<field name="ventanosuj" class="java.math.BigDecimal"/>
+	<field name="priceactual" class="java.math.BigDecimal"/>
+	<field name="qtyinvoiced" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="135" splitType="Stretch">
+			<componentElement>
+				<reportElement x="3" y="0" width="569" height="110" uuid="791c7410-bf85-4666-817b-e339e2e253a6"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DSHeader" uuid="5bae84c0-0185-4c80-9e61-ccef23b47dfb">
+						<datasetParameter name="RECORD_ID">
+							<datasetParameterExpression><![CDATA[$P{RECORD_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="110" width="569">
+						<textField isBlankWhenNull="true">
+							<reportElement x="41" y="56" width="180" height="12" uuid="d85c5fe5-bc3c-40c6-bfba-fa66bd5134d9"/>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="40" y="68" width="230" height="12" uuid="cc19c2a0-a09e-49a2-8d83-c3177f1fad1d"/>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{street}.concat(", ").concat($F{colonia})]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="63" y="80" width="230" height="12" uuid="a025269f-6ce4-4ac5-89ee-6de3eab7e682"/>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{municipio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="108" y="92" width="185" height="12" uuid="22222a73-8246-47ca-8221-6b082ba86d6c"/>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{paymentterm}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd-MMM-yyyy" isBlankWhenNull="true">
+							<reportElement x="392" y="56" width="100" height="12" uuid="cfbbc0c8-f51a-4f0d-a6f2-dca46ab3e5d2"/>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="392" y="80" width="136" height="12" uuid="a8fc4572-e274-41e8-bd97-415a97dec2fc"/>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{name2}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="392" y="68" width="100" height="12" uuid="3e53e01d-5db0-4edf-8bf8-8f16c1af70e1"/>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{duns}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="392" y="92" width="100" height="12" uuid="135dbde9-8dad-40ec-b08d-def8457089bf"/>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{naics}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="392" y="0" width="68" height="13" uuid="c7883ecb-c685-47db-b4b6-319bc8bb3dcd">
+					<printWhenExpression><![CDATA[java.lang.Boolean.valueOf(($F{ventaex}.compareTo(new java.math.BigDecimal(0.0))!=0))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventaex}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="60" height="13" uuid="1d71f2fe-1ac5-4eef-ba0a-2e955c8c4f03"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{priceactual}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="4" y="0" width="28" height="13" uuid="8c45ddb2-57b5-444b-b27f-80cf33b4b9ab"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="460" y="0" width="100" height="13" uuid="97ee4f28-45cb-4b65-bca1-2345e074827a"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{linenetamt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="33" y="0" width="200" height="13" uuid="37a3ae2f-db12-41a2-9e22-4e0abcbbbced"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="340" y="0" width="52" height="13" uuid="376530a8-4684-4c15-9bca-3d45223fcf52"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventaex}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="202">
+			<componentElement>
+				<reportElement x="0" y="0" width="572" height="202" uuid="d9ab0195-fa67-4c7b-abc1-719cd9066c28"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="DSHeader" uuid="4ef3fb69-bee2-4a09-b356-f2053d6657a0">
+						<datasetParameter name="RECORD_ID">
+							<datasetParameterExpression><![CDATA[$P{RECORD_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="202" width="572">
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="60" width="100" height="12" uuid="b1648a03-f0d3-4437-923e-d44cf047c071"/>
+							<textElement textAlignment="Right" verticalAlignment="Top">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ventaext}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="460" y="72" width="100" height="12" uuid="1f13b7a8-120a-4648-a862-e1dea4584e6d"/>
+							<textElement textAlignment="Right">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ajenootros}.add($F{ajenoalmacenaje}).add($F{ajenopoliza})]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="0" width="100" height="12" uuid="11af6c17-428b-4724-9e88-8db82fd877bc">
+								<printWhenExpression><![CDATA[java.lang.Boolean.valueOf(($F{totallines}.compareTo(new java.math.BigDecimal(0.0))!=0))]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{totallines}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="84" width="100" height="12" uuid="95db462e-a3f9-4eb6-9dcd-d3a1be4e4028"/>
+							<textElement textAlignment="Right" verticalAlignment="Top">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="460" y="24" width="100" height="12" uuid="39df76ab-4d98-45cf-86d0-67f254a53574">
+								<printWhenExpression><![CDATA[java.lang.Boolean.valueOf(($V{V_TOTALIVA}.compareTo(new java.math.BigDecimal(0.0))!=0))]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{V_TOTALIVA}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="12" width="100" height="12" uuid="b912bf45-4da8-497e-95d8-36409cc15701">
+								<printWhenExpression><![CDATA[java.lang.Boolean.valueOf(($F{taxiva}.compareTo(new java.math.BigDecimal(0.0))!=0))]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{taxiva}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="48" width="100" height="12" uuid="e10f43d0-25c1-40b6-a564-da22c3913f47"/>
+							<textElement textAlignment="Right" verticalAlignment="Top">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ventnosujeta}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00" isBlankWhenNull="true">
+							<reportElement x="460" y="36" width="100" height="12" uuid="48266dcb-5456-44b0-b7ca-0b76ea3f0d50"/>
+							<textElement textAlignment="Right" verticalAlignment="Top">
+								<font fontName="Courier New" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{taxret}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="70" y="33" width="100" height="12" uuid="452dd107-6afb-403c-a574-29e865572db7"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ajenopoliza}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="70" y="45" width="100" height="12" uuid="f0912bca-feb5-49f5-9149-c4c65bfee387"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ajenoalmacenaje}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="70" y="69" width="100" height="12" uuid="61fbdbb5-c752-40fa-8466-d467f0db52b5"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ajenootros}.add($F{ajenoalmacenaje}).add($F{ajenopoliza})]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.00">
+							<reportElement x="70" y="57" width="100" height="12" uuid="bd857646-0a05-4e07-a25e-7940f3da7cc6"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ajenootros}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement stretchType="RelativeToBandHeight" x="0" y="128" width="303" height="12" uuid="e90429b2-2d31-4996-88cc-0c865a59ca67"/>
+							<textElement>
+								<font size="9" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{AmtInWords}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd">
+							<reportElement x="44" y="116" width="100" height="11" uuid="e5177f15-f213-4230-a7a8-e0271b5759bb"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{paydate}]]></textFieldExpression>
+						</textField>
+						<textField pattern="MMMMM">
+							<reportElement x="144" y="116" width="100" height="11" uuid="a81fd2eb-8c3c-43f1-8a5f-c2525b8dac53"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{paydate}]]></textFieldExpression>
+						</textField>
+						<textField pattern="yyyy">
+							<reportElement x="244" y="116" width="100" height="11" uuid="d9baf02d-9c6b-40af-b916-d0042c50a3fc"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{paydate}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</pageFooter>
+</jasperReport>

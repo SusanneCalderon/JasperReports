@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_identificador" pageWidth="60" pageHeight="60" columnWidth="60" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Remote.xml"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+CASE WHEN 
+Replace(identificacion::jsonb->>'tipoOperacion', '"', '') = '0' THEN 
+'Transmisión Normal' ELSE 'Transmisión por contingencia 'End AS tipoOperacion,
+'Facturacion Previa' as tipoModelo,
+Replace(identificacion::jsonb->>'tipoContingencia', '"', '') as tipoContingencia,
+Replace(identificacion::jsonb->>'fecEmi', '"', '') as fecEmi,
+Replace(identificacion::jsonb->>'horEmi', '"', '') as horEmi,
+Replace(identificacion::jsonb->>'codigoGeneracion', '"', '') as codigoGeneracion,
+Replace(identificacion::jsonb->>'tipoMoneda', '"', '') as tipoMoneda
+FROM e_electronicInvoice_Json
+WHERE c_Invoice_ID= $P{RECORD_ID} 
+ORDER BY e_Invoiceelectronic_ID DESC
+LIMIT 1]]>
+	</queryString>
+	<field name="tipooperacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipooperacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipooperacion"/>
+	</field>
+	<field name="tipomodelo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipomodelo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipomodelo"/>
+	</field>
+	<field name="tipocontingencia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipocontingencia"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipocontingencia"/>
+	</field>
+	<field name="fecemi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fecemi"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecemi"/>
+	</field>
+	<field name="horemi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="horemi"/>
+		<property name="com.jaspersoft.studio.field.label" value="horemi"/>
+	</field>
+	<field name="codigogeneracion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigogeneracion"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigogeneracion"/>
+	</field>
+	<field name="tipomoneda" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipomoneda"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipomoneda"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="46" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement x="0" y="0" width="60" height="46" uuid="b42c2ebb-3d28-4e84-91d3-1f94fbcbd284"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$F{codigogeneracion}]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>

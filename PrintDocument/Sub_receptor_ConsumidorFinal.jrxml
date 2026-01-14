@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_receptor" pageWidth="250" pageHeight="200" columnWidth="250" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Remote.xml"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
+	<parameter name="RECORD_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+Replace(receptor::jsonb->>'descActividad', '"', '') as descActividad,
+Replace(receptor::jsonb->>'correo', '"', '') as correo,
+Replace(receptor::jsonb->>'numDocumento', '"', '') as numDocumento,
+Replace(receptor::jsonb->>'nit', '"', '') as nit,
+Replace(receptor::jsonb->>'nrc', '"', '') as nrc,
+Replace(receptor::jsonb->>'nombre', '"', '') as nombre,
+Replace(receptor::jsonb->>'telefono', '"', '') as telefono,
+Replace(receptor::jsonb->>'direccion', '"', '') as direccion,
+Replace(receptor::json->'direccion'->>'complemento', '"', '') as complemento,
+Replace(receptor::json->'direccion'->>'municipio', '"', '') as municipio,
+ei_CityName(receptor::json->'direccion'->>'municipio',
+		   receptor::json->'direccion'->>'departamento') as cityName, pt.name as paymentterm
+,paymenttermduedate(i.c_paymentterm_id, i.dateinvoiced::timestamp with time zone) AS duedate
+
+from e_electronicInvoice_Json ej
+INNER JOIN C_Invoice i ON ej.c_Invoice_ID=i.c_Invoice_ID
+INNER JOIN C_PaymentTerm pt ON i.c_Paymentterm_ID=pt.C_PaymentTerm_ID
+WHERE ej.c_Invoice_ID=  $P{RECORD_ID} 
+ORDER BY e_Invoiceelectronic_ID DESC
+LIMIT 1]]>
+	</queryString>
+	<field name="descactividad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descactividad"/>
+		<property name="com.jaspersoft.studio.field.label" value="descactividad"/>
+	</field>
+	<field name="correo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="correo"/>
+		<property name="com.jaspersoft.studio.field.label" value="correo"/>
+	</field>
+	<field name="numdocumento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numdocumento"/>
+		<property name="com.jaspersoft.studio.field.label" value="numdocumento"/>
+	</field>
+	<field name="nit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nit"/>
+		<property name="com.jaspersoft.studio.field.label" value="nit"/>
+	</field>
+	<field name="nrc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nrc"/>
+		<property name="com.jaspersoft.studio.field.label" value="nrc"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+	</field>
+	<field name="complemento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="complemento"/>
+		<property name="com.jaspersoft.studio.field.label" value="complemento"/>
+	</field>
+	<field name="municipio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="municipio"/>
+		<property name="com.jaspersoft.studio.field.label" value="municipio"/>
+	</field>
+	<field name="cityname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cityname"/>
+		<property name="com.jaspersoft.studio.field.label" value="cityname"/>
+	</field>
+	<field name="paymentterm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="paymentterm"/>
+		<property name="com.jaspersoft.studio.field.label" value="paymentterm"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_paymentterm"/>
+	</field>
+	<field name="duedate" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="duedate"/>
+		<property name="com.jaspersoft.studio.field.label" value="duedate"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="200" splitType="Stretch">
+			<textField>
+				<reportElement x="70" y="9" width="179" height="30" uuid="b41c27f7-a520-4d30-9d1c-faa9ee402fae"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="39" width="179" height="15" uuid="7464f907-15ad-4073-8256-dc708ca16b81"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nit} == null?$F{numdocumento}:$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="54" width="179" height="15" uuid="8401dde5-0ac0-49f5-b6a5-10a300d8ab17"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nrc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="70" width="179" height="15" uuid="f1914ef9-294e-4aeb-8a6e-0929d0127fb6"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="9" width="60" height="31" uuid="36be536a-a74f-4c6a-a534-0ec60c2c2abc"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendido a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="39" width="60" height="16" uuid="961e5568-3d77-4563-bb21-522e5903931f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="54" width="60" height="16" uuid="85e756a3-f0d8-4976-9901-53f5f889d6ba">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NRC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="70" width="60" height="14" uuid="dd8b1732-a21c-41fa-bea0-528277eae716">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Correo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="130" width="60" height="34" uuid="bd1c1e13-9f6d-41d9-bcd3-6e0c0d5c92b2"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="70" y="131" width="179" height="33" uuid="2728e29e-7b7b-4e65-bde7-e333fca2a90c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{complemento} + ", " + $F{cityname}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="117" width="60" height="12" uuid="fadb97e3-527c-4ce5-8893-687fbd20472b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vence:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="70" y="118" width="179" height="12" uuid="3952ea4b-2714-4569-9695-6c68779797ff">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="101" width="60" height="15" uuid="a6f1a82d-c47a-404a-8e8c-783b77346161">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Term. Pago:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="101" width="179" height="15" uuid="29c8f9f8-a521-4b9a-b37a-ab3e9b4dd46f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentterm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="85" width="60" height="16" uuid="9e1e203c-7675-47fa-9063-f63d196fb8a2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel. :	]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="86" width="179" height="15" uuid="0ccdaf68-24c1-4ee8-bb02-5128dc67284e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>
