@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BalanceComprobacion" language="groovy" columnCount="2" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="376" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96bd3d16-1769-4b47-806d-7e3d7d0b7e05">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="6"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Pimentel_local.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="StyleBalance" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{length}.intValue() == 3]]></conditionExpression>
+			<style fontSize="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{length}.intValue()<=2]]></conditionExpression>
+			<style fontSize="8" isBold="true" isItalic="false" isUnderline="false"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="datasetClientDaten" uuid="03a5d601-0697-4da8-9fb0-6c931bd5679f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Pimentel_local.xml"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="AD_Client_ID" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[select o.ad_org_ID, o.name as printname, taxid, duns, binarydata as logo,
+
+coalesce(l1.address1, '') as org_address1,
+coalesce(l1.city, '') as org_city,
+coalesce(l1.address2, '') as org_address2,
+coalesce(c1.name, '') as org_country,
+coalesce(oi.phone, '') as  org_phon, coalesce(oi.fax, '') as org_fax
+from ad_Orginfo oi
+inner join ad_org o on oi.ad_Org_ID = o.AD_Org_ID
+left join ad_image im on oi.logo_ID = im.ad_image_ID
+left JOIN adempiere.c_location l1 ON oi.c_location_id = l1.c_location_id
+left join c_country c1 on l1.c_country_ID = c1.c_country_ID
+where oi.ad_client_ID = $P{AD_Client_ID} and o.isdefault = 'Y']]>
+		</queryString>
+		<field name="ad_org_id" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.label" value="ad_org_id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ad_org"/>
+		</field>
+		<field name="printname" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="printname"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ad_org"/>
+		</field>
+		<field name="taxid" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="taxid"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+		</field>
+		<field name="duns" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="duns"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ad_orginfo"/>
+		</field>
+		<field name="logo" class="java.lang.Object">
+			<property name="com.jaspersoft.studio.field.label" value="logo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="ad_image"/>
+		</field>
+		<field name="org_address1" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_address1"/>
+		</field>
+		<field name="org_city" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_city"/>
+		</field>
+		<field name="org_address2" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_address2"/>
+		</field>
+		<field name="org_country" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_country"/>
+		</field>
+		<field name="org_phon" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_phon"/>
+		</field>
+		<field name="org_fax" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="org_fax"/>
+		</field>
+	</subDataset>
+	<subDataset name="Product" uuid="7e322e2e-38b4-407b-a556-7b083ec0de87">
+		<parameter name="M_Product_ID" class="java.math.BigDecimal"/>
+		<queryString>
+			<![CDATA[select value || ' ' || name as product from m_product
+where m_product_id = $P{M_Product_ID}]]>
+		</queryString>
+		<field name="product" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="dataset2" uuid="1eeb3992-e837-4b50-acd1-2c13c43d0510">
+		<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select distinct ad_pinstance_id , t.name, t.description, col_0, length(ev.value) as length,ev.value,
+substr(ev.value, 1,1),
+case when substr(ev.value, 1,1) = '1' or substr(ev.value, 1,1) = '4' then 1
+else 2 end as group, t.seqno,
+getdate() as getdate
+ from t_report t
+left join pa_reportsource rs on t.pa_reportline_ID = rs.pa_reportline_ID
+left join c_elementvalue ev on rs.c_elementvalue_ID = ev.c_elementvalue_ID
+where ad_pinstance_id = $P{T_Report_AD_PInstance_ID} and
+(substr(ev.value, 1,1) = '1')]]>
+		</queryString>
+		<field name="ad_pinstance_id" class="java.math.BigDecimal"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="col_0" class="java.math.BigDecimal"/>
+		<field name="length" class="java.lang.Integer"/>
+		<field name="value" class="java.lang.String"/>
+		<field name="substr" class="java.lang.String"/>
+		<field name="group" class="java.lang.Integer"/>
+		<field name="seqno" class="java.math.BigDecimal"/>
+		<field name="getdate" class="java.sql.Timestamp"/>
+		<sortField name="group"/>
+		<sortField name="seqno"/>
+	</subDataset>
+	<subDataset name="dataset3" uuid="f101242e-373e-407f-95ce-44a5c245ff06">
+		<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select distinct ad_pinstance_id , t.name, t.description, col_0, length(ev.value) as length,ev.value,
+substr(ev.value, 1,1),
+case when substr(ev.value, 1,1) = '2' then 1
+else 2 end as group, t.seqno,
+getdate() as getdate
+ from t_report t
+left join pa_reportsource rs on t.pa_reportline_ID = rs.pa_reportline_ID
+left join c_elementvalue ev on rs.c_elementvalue_ID = ev.c_elementvalue_ID
+where ad_pinstance_id = $P{T_Report_AD_PInstance_ID} and
+(substr(ev.value, 1,1) = '2' or substr(ev.value, 1,1) = '3')]]>
+		</queryString>
+		<field name="ad_pinstance_id" class="java.math.BigDecimal"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="col_0" class="java.math.BigDecimal"/>
+		<field name="length" class="java.lang.Integer"/>
+		<field name="value" class="java.lang.String"/>
+		<field name="substr" class="java.lang.String"/>
+		<field name="group" class="java.lang.Integer"/>
+		<field name="seqno" class="java.math.BigDecimal"/>
+		<field name="getdate" class="java.sql.Timestamp"/>
+		<sortField name="group"/>
+		<sortField name="seqno"/>
+	</subDataset>
+	<subDataset name="dataset4" uuid="8c52b419-5a71-41f5-a28e-5bc7d8bee830">
+		<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select distinct ad_pinstance_id , t.name, t.description, col_0, length(ev.value) as length,ev.value,
+substr(ev.value, 1,1),
+case when substr(ev.value, 1,1) = '1' or substr(ev.value, 1,1) = '4' then 1
+else 2 end as group, t.seqno,
+getdate() as getdate
+ from t_report t
+left join pa_reportsource rs on t.pa_reportline_ID = rs.pa_reportline_ID
+left join c_elementvalue ev on rs.c_elementvalue_ID = ev.c_elementvalue_ID
+where ad_pinstance_id = $P{T_Report_AD_PInstance_ID} and
+ev.value = '1']]>
+		</queryString>
+		<field name="ad_pinstance_id" class="java.math.BigDecimal"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="description" class="java.lang.String"/>
+		<field name="col_0" class="java.math.BigDecimal"/>
+		<field name="length" class="java.lang.Integer"/>
+		<field name="value" class="java.lang.String"/>
+		<field name="substr" class="java.lang.String"/>
+		<field name="group" class="java.lang.Integer"/>
+		<field name="seqno" class="java.math.BigDecimal"/>
+		<field name="getdate" class="java.sql.Timestamp"/>
+	</subDataset>
+	<subDataset name="dataset5" uuid="bb868b4c-9ffd-4cbe-b48b-ecbc930d7dd9"/>
+	<subDataset name="dataset6" uuid="cef10610-718f-49de-873c-f17033720eb5">
+		<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select sum(col_0) as col_0
+ from t_report t
+left join pa_reportsource rs on t.pa_reportline_ID = rs.pa_reportline_ID
+left join c_elementvalue ev on rs.c_elementvalue_ID = ev.c_elementvalue_ID
+where ad_pinstance_id = $P{T_Report_AD_PInstance_ID} and
+(ev.value = '2' or ev.value = '3')]]>
+		</queryString>
+		<field name="col_0" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="AD_Client_ID" class="java.lang.Integer"/>
+	<parameter name="titel" class="java.lang.String"/>
+	<parameter name="T_Report_AD_PInstance_ID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.Integer"/>
+	<parameter name="C_Period_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[select distinct ad_pinstance_id , t.name, t.description, col_0, length(ev.value) as length,ev.value,
+substr(ev.value, 1,1),
+case when substr(ev.value, 1,1) = '1' or substr(ev.value, 1,1) = '4' then 1
+else 2 end as group, t.seqno,
+getdate() as getdate
+, (select name from ad_user where ad_user_ID = $P{AD_USER_ID}) as user,
+(select enddate from c_period where ad_client_ID= $P{AD_Client_ID}
+and c_period_ID = $P{C_Period_ID}) as enddate
+ from t_report t
+left join pa_reportsource rs on t.pa_reportline_ID = rs.pa_reportline_ID
+left join c_elementvalue ev on rs.c_elementvalue_ID = ev.c_elementvalue_ID
+where ad_pinstance_id = $P{T_Report_AD_PInstance_ID}
+order by seqno]]>
+	</queryString>
+	<field name="ad_pinstance_id" class="java.math.BigDecimal"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="col_0" class="java.math.BigDecimal"/>
+	<field name="length" class="java.lang.Integer"/>
+	<field name="value" class="java.lang.String"/>
+	<field name="substr" class="java.lang.String"/>
+	<field name="group" class="java.lang.Integer"/>
+	<field name="seqno" class="java.math.BigDecimal"/>
+	<field name="getdate" class="java.sql.Timestamp"/>
+	<field name="user" class="java.lang.String"/>
+	<field name="enddate" class="java.sql.Timestamp"/>
+	<sortField name="seqno"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="752" height="50" uuid="35281186-787a-4dbb-a688-9360da70665a"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="datasetClientDaten" uuid="0ffed955-31dc-4e6b-9439-2f3f9202a8c7">
+						<datasetParameter name="AD_Client_ID">
+							<datasetParameterExpression><![CDATA[$P{AD_Client_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="50" width="752">
+						<image>
+							<reportElement x="0" y="0" width="91" height="45" uuid="238ca7a9-7ef8-4aa6-a970-2cafdbbd9846"/>
+							<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+						</image>
+						<textField>
+							<reportElement x="527" y="22" width="225" height="11" uuid="e02cf951-e46f-4fde-8a03-1ce1284e063a"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{org_city}.concat(" ").concat($F{org_address1})
+.concat(" ").concat($F{org_country})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="527" y="11" width="225" height="11" uuid="9db5b5e8-96cd-4a60-8266-df02c1be2e28"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["No de Registro: "
+.concat($F{duns})
+.concat(" NIT: ")
+.concat($F{taxid})]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="527" y="0" width="225" height="11" uuid="5e612cfa-bb87-4e99-b0d1-8eb5cfe6fb0c"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{printname}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="527" y="32" width="225" height="11" uuid="4e25e9bd-fd60-4b3a-a30f-caf361febf41"/>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Teléfono: ".concat($F{org_phon}).concat(" Fax:").concat($F{org_fax})]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<textField>
+				<reportElement x="0" y="11" width="752" height="21" uuid="d755691e-41fd-4d5b-a177-5bee32267db5"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Balance General"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="83" width="753" height="15" uuid="7f76575a-b688-499e-b030-9df20a0bf202"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Generado por ".concat($F{user}).concat(" Fecha: ")
+.concat(new SimpleDateFormat("dd/MM/yyyy HH.mm").format(new Date()) )]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="32" width="752" height="20" uuid="3f559798-eb7e-4b0d-aaf8-2c6fa4319c8d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Al ".concat(
+new SimpleDateFormat("dd/MMMM/yyyy").format($F{enddate}))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="752" height="20" uuid="f62e80ba-8727-4934-8af9-5bfa693d190b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(Expresados en Dolares Americanos de los Estado Unidos)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="430" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="376" height="14" uuid="f6e88f9a-acea-41b5-a42e-49e1e2dd9ffd"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<componentElement>
+					<reportElement x="0" y="0" width="367" height="14" uuid="173cb7d6-c30a-476e-902b-dd8d1004050f"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="dataset2" uuid="992c0dea-0c38-487a-91f0-cdb1d28cdbc4">
+							<datasetParameter name="T_Report_AD_PInstance_ID">
+								<datasetParameterExpression><![CDATA[$P{T_Report_AD_PInstance_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="14" width="367">
+							<textField>
+								<reportElement style="StyleBalance" x="5" y="0" width="183" height="13" uuid="75c9e5d3-4f35-49c0-ae01-beb7d6c08d12"/>
+								<textElement verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00" isBlankWhenNull="true">
+								<reportElement x="183" y="0" width="62" height="13" uuid="51e5284c-5317-4cfc-a052-7b33d28ba525">
+									<printWhenExpression><![CDATA[$F{length}.intValue()>2]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7" isBold="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00" isBlankWhenNull="true">
+								<reportElement x="300" y="0" width="62" height="13" uuid="92514101-1335-48ac-ab82-dfe682526a5f">
+									<printWhenExpression><![CDATA[$F{length}.intValue() == 2]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+							</textField>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+			</frame>
+			<frame>
+				<reportElement x="377" y="0" width="376" height="14" uuid="8b9fa347-0cae-46ad-ae11-f652635bae57"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<componentElement>
+					<reportElement x="0" y="0" width="376" height="14" uuid="02d2fa8d-628f-4fca-9ef9-34d2cadc2b8c"/>
+					<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+						<datasetRun subDataset="dataset3" uuid="e6de4059-3e41-4d31-ac47-318c07dc10c6">
+							<datasetParameter name="T_Report_AD_PInstance_ID">
+								<datasetParameterExpression><![CDATA[$P{T_Report_AD_PInstance_ID}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:listContents height="14" width="376">
+							<textField>
+								<reportElement style="StyleBalance" x="5" y="0" width="183" height="13" uuid="b5e6e52f-83ce-4237-acf0-d7d5fcd722f5"/>
+								<textElement verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00" isBlankWhenNull="true">
+								<reportElement x="238" y="0" width="52" height="13" uuid="1cb55898-c06e-4f63-ac82-88f8dd1d8904">
+									<printWhenExpression><![CDATA[$F{length}.intValue()>2]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+							</textField>
+							<textField pattern="#,##0.00" isBlankWhenNull="true">
+								<reportElement x="295" y="0" width="62" height="13" uuid="c0397e5e-0ca5-4030-abc0-569469018949">
+									<printWhenExpression><![CDATA[$F{length}.intValue() == 2]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+							</textField>
+							<line>
+								<reportElement x="0" y="0" width="376" height="1" uuid="e546fa97-9890-4a5d-ad09-9a0fc1597393">
+									<printWhenExpression><![CDATA[$F{description}.equals("PATRIMONIO")]]></printWhenExpression>
+								</reportElement>
+							</line>
+						</jr:listContents>
+					</jr:list>
+				</componentElement>
+			</frame>
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="0" width="367" height="416" uuid="fb5a79b1-8839-4606-876d-a37d3934752f"/>
+			</rectangle>
+			<componentElement>
+				<reportElement x="1" y="416" width="376" height="14" uuid="fdf2fe6d-b211-460e-918e-a3425de3a62b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset4" uuid="b53b93c9-e555-4b9c-bacd-cf2c4c610525">
+						<datasetParameter name="T_Report_AD_PInstance_ID">
+							<datasetParameterExpression><![CDATA[$P{T_Report_AD_PInstance_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="14" width="376">
+						<textField pattern="#,##0.00">
+							<reportElement x="267" y="0" width="100" height="14" uuid="964d99cd-dfc7-4b9e-9606-bedef77664ac"/>
+							<textElement textAlignment="Right">
+								<font size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="5" y="0" width="145" height="14" uuid="9fe9b6cc-aa5d-47eb-9251-bea569449aa6"/>
+							<textElement>
+								<font size="7" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Total Activo]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<rectangle>
+				<reportElement mode="Transparent" x="377" y="0" width="375" height="416" uuid="2501452a-d1e3-4adc-8d3d-50cbdcda588c"/>
+			</rectangle>
+			<componentElement>
+				<reportElement x="380" y="416" width="376" height="14" uuid="4187749b-681f-4707-acbc-c11e5b651e65"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset6" uuid="e4c5c23a-9a18-4b39-be24-c31e1c217caa">
+						<datasetParameter name="T_Report_AD_PInstance_ID">
+							<datasetParameterExpression><![CDATA[$P{T_Report_AD_PInstance_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="14" width="376">
+						<textField pattern="#,##0.00">
+							<reportElement x="257" y="0" width="100" height="14" uuid="a7488e9b-34d4-4a4e-84a9-f99ca9b6b485"/>
+							<textElement textAlignment="Right">
+								<font size="7" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{col_0}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="5" y="0" width="145" height="14" uuid="5531f2ab-57de-49a9-b7c3-ce053c03dd8f"/>
+							<textElement>
+								<font size="7" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Total Pasivo y Patrimonio]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>
