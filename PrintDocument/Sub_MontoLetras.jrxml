@@ -108,7 +108,7 @@ LIMIT 1]]>
 			<textField textAdjust="StretchHeight">
 				<reportElement x="0" y="30" width="277" height="30" uuid="1477df16-2a51-4310-8335-12acb6c5bbe1"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA["Valor en Letras: " + $F{totalletras}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Valor en Letras: " + $F{totalletras} + "  USD"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="0" width="277" height="30" uuid="76e137da-aa61-46e8-a86d-39904066334d"/>

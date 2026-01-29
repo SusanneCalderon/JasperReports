@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_CCFF_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KaltmannLocal.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Kaltmann.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="270"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="723"/>
 	<subDataset name="DatasetLogo" uuid="dea33f1f-0c74-4bb2-a4fd-4aa2ac3c6eaa">
@@ -687,8 +687,8 @@ Exenta]]></text>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
-				<reportElement x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b6d3b19-f33c-4a87-8e25-c4e488294fd3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -704,8 +704,8 @@ Exenta]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{numitem}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="30" y="0" width="42" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="30" y="0" width="42" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4573327-188c-4267-9dd1-e3dd4e976d5f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -721,8 +721,8 @@ Exenta]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qtyentered}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="72" y="0" width="68" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="72" y="0" width="68" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83fcc1d5-63cc-4cf5-b900-125f8eec05f1"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -738,8 +738,8 @@ Exenta]]></text>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{uom_line}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="140" y="0" width="182" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="140" y="0" width="182" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -756,7 +756,7 @@ Exenta]]></text>
 				<textFieldExpression><![CDATA[" " + $F{descripcion}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement x="322" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="322" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
@@ -765,7 +765,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;(#,##0.00#-)">
 					<reportElement x="0" y="0" width="40" height="15" uuid="48b910f8-2f55-4c47-8dc4-5a3213faf631">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -778,7 +778,7 @@ Exenta]]></text>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="362" y="0" width="30" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="362" y="0" width="30" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -787,7 +787,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="30" height="15" uuid="7494875f-32b8-4479-9a47-f234b56814e6">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -800,13 +800,13 @@ Exenta]]></text>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="392" y="0" width="40" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="392" y="0" width="40" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
 				<box>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="40" height="15" uuid="be085635-681e-4bc5-afca-fd1bd891756c">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -819,7 +819,29 @@ Exenta]]></text>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="486" y="0" width="40" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="432" y="0" width="54" height="15" uuid="cb317f2c-5fb4-4160-9529-4ecc7c90cd3e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;#,##0.00#-">
+					<reportElement x="0" y="0" width="54" height="15" uuid="6749e2b4-40af-42f7-8af3-6f42a3133f5f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nogravado}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="486" y="0" width="40" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -828,7 +850,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="40" height="15" uuid="bd685ae7-1342-408c-9735-f24d9efdbf8d">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -841,7 +863,7 @@ Exenta]]></text>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="526" y="0" width="40" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="526" y="0" width="40" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -852,7 +874,7 @@ Exenta]]></text>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textField pattern="#,##0.00#;#,##0.00#-">
+				<textField textAdjust="StretchHeight" pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="40" height="15" uuid="0c03b4e2-d361-48c9-a175-6dfdc750c871">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -862,28 +884,6 @@ Exenta]]></text>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{ventagravada}]]></textFieldExpression>
-				</textField>
-			</frame>
-			<frame>
-				<reportElement x="432" y="0" width="54" height="15" uuid="cb317f2c-5fb4-4160-9529-4ecc7c90cd3e">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-				</box>
-				<textField pattern="#,##0.00#;(#,##0.00#-)">
-					<reportElement x="0" y="0" width="54" height="15" uuid="6749e2b4-40af-42f7-8af3-6f42a3133f5f">
-						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{nogravado}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -900,7 +900,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="40" height="15" uuid="2e472afd-b61e-4df6-9ab5-5b087de206d1">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -922,7 +922,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="40" height="15" uuid="cd9f6d72-51a7-4556-9e36-3e3f6639204d">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -985,7 +985,7 @@ Exenta]]></text>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="54" height="15" uuid="13092779-0c6e-4480-8e12-937b0babe666">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
