@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_ConFinal_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Kaltmann.xml"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<subDataset name="DatasetLogo" uuid="dea33f1f-0c74-4bb2-a4fd-4aa2ac3c6eaa">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
@@ -369,6 +369,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 	<columnHeader>
 		<band height="24" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="0" y="0" width="30" height="24" uuid="ea885452-53a4-417b-b5d7-b59a444f5961">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b6d3b19-f33c-4a87-8e25-c4e488294fd3"/>
@@ -532,7 +533,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b6d3b19-f33c-4a87-8e25-c4e488294fd3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -549,7 +550,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{numitem}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="0" width="42" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="30" y="0" width="42" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4573327-188c-4267-9dd1-e3dd4e976d5f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -566,7 +567,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{qtyentered}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="72" y="0" width="84" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="72" y="0" width="84" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83fcc1d5-63cc-4cf5-b900-125f8eec05f1"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -582,8 +583,8 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textElement>
 				<textFieldExpression><![CDATA[$F{uom_line}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="156" y="0" width="154" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="156" y="0" width="154" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -600,7 +601,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[" " + $F{descripcion}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement x="310" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="310" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
@@ -609,8 +610,8 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
-					<reportElement x="0" y="0" width="38" height="15" uuid="48b910f8-2f55-4c47-8dc4-5a3213faf631">
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="38" height="15" uuid="48b910f8-2f55-4c47-8dc4-5a3213faf631">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -622,7 +623,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="350" y="0" width="42" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="350" y="0" width="42" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -631,8 +632,8 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
-					<reportElement x="0" y="0" width="42" height="15" uuid="7494875f-32b8-4479-9a47-f234b56814e6">
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="42" height="15" uuid="7494875f-32b8-4479-9a47-f234b56814e6">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -644,14 +645,14 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="392" y="0" width="48" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="392" y="0" width="48" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
 				<box>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
-					<reportElement x="0" y="0" width="46" height="12" uuid="be085635-681e-4bc5-afca-fd1bd891756c">
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="46" height="12" uuid="be085635-681e-4bc5-afca-fd1bd891756c">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -663,7 +664,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="440" y="0" width="62" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="440" y="0" width="62" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -672,8 +673,8 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
-					<reportElement x="0" y="0" width="60" height="15" uuid="bd685ae7-1342-408c-9735-f24d9efdbf8d">
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="bd685ae7-1342-408c-9735-f24d9efdbf8d">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -685,7 +686,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="503" y="0" width="63" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="503" y="0" width="63" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -697,7 +698,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement x="0" y="0" width="61" height="15" uuid="0c03b4e2-d361-48c9-a175-6dfdc750c871">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="61" height="15" uuid="0c03b4e2-d361-48c9-a175-6dfdc750c871">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -711,8 +712,25 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="150">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		<band height="50">
+			<staticText>
+				<reportElement x="288" y="0" width="104" height="15" uuid="b7ad7533-4a49-4530-8018-42ff98907790">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ SUMA DE VENTAS]]></text>
+			</staticText>
 			<frame>
 				<reportElement x="392" y="0" width="48" height="15" uuid="57639470-fbc3-43db-ade8-4f1e33bf6c8f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -722,7 +740,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="46" height="15" uuid="2e472afd-b61e-4df6-9ab5-5b087de206d1">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -744,7 +762,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
-				<textField>
+				<textField pattern="#,##0.00#;#,##0.00#-">
 					<reportElement x="0" y="0" width="60" height="15" uuid="cd9f6d72-51a7-4556-9e36-3e3f6639204d">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -780,26 +798,34 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<textFieldExpression><![CDATA[$V{ventagravada1}]]></textFieldExpression>
 				</textField>
 			</frame>
-			<staticText>
-				<reportElement x="288" y="0" width="104" height="15" uuid="b7ad7533-4a49-4530-8018-42ff98907790">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="150">
+			<frame>
+				<reportElement stretchType="ContainerHeight" x="0" y="48" width="281" height="102" uuid="703ed90b-a791-4e75-975b-c7600f989cc1"/>
 				<box>
-					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[ SUMA DE VENTAS]]></text>
-			</staticText>
+				<subreport>
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="281" height="102" uuid="a13abfd3-9999-4bdf-9b28-228b6513785b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="RECORD_ID">
+						<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["Sub_MontoLetras.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
 			<frame>
-				<reportElement x="288" y="15" width="278" height="120" uuid="01231695-5c0b-496c-a65d-c04790a81f58">
+				<reportElement stretchType="ContainerHeight" x="281" y="48" width="284" height="102" uuid="01231695-5c0b-496c-a65d-c04790a81f58">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -812,9 +838,11 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<subreport>
-					<reportElement x="0" y="0" width="278" height="120" uuid="d8a9d4a0-8fa3-4f71-93fd-4f077ec95400">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="284" height="102" uuid="170e3659-b84b-4a97-a5a3-e0e115b6b6f6">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<subreportParameter name="RECORD_ID">
 						<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
@@ -823,23 +851,6 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<subreportExpression><![CDATA["Sub_Resumen.jasper"]]></subreportExpression>
 				</subreport>
 			</frame>
-			<frame>
-				<reportElement x="0" y="15" width="281" height="120" uuid="703ed90b-a791-4e75-975b-c7600f989cc1"/>
-				<box>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<subreport>
-					<reportElement x="0" y="0" width="271" height="120" uuid="d74a11ed-41a6-4bfb-bd55-0cb4d9cb99c8"/>
-					<subreportParameter name="RECORD_ID">
-						<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
-					</subreportParameter>
-					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA["Sub_MontoLetras.jasper"]]></subreportExpression>
-				</subreport>
-			</frame>
 		</band>
-	</columnFooter>
+	</summary>
 </jasperReport>
