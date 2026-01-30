@@ -711,8 +711,8 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 			</frame>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="50">
+	<summary>
+		<band height="150">
 			<staticText>
 				<reportElement x="288" y="0" width="104" height="15" uuid="b7ad7533-4a49-4530-8018-42ff98907790">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
@@ -798,10 +798,6 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<textFieldExpression><![CDATA[$V{ventagravada1}]]></textFieldExpression>
 				</textField>
 			</frame>
-		</band>
-	</columnFooter>
-	<summary>
-		<band height="150">
 			<frame>
 				<reportElement stretchType="ContainerHeight" x="0" y="48" width="281" height="102" uuid="703ed90b-a791-4e75-975b-c7600f989cc1"/>
 				<box>
