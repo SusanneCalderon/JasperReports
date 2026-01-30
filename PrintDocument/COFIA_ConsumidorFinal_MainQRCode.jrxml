@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_ConFinal_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Kaltmann.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<subDataset name="DatasetLogo" uuid="dea33f1f-0c74-4bb2-a4fd-4aa2ac3c6eaa">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
@@ -359,7 +359,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 			<textField isBlankWhenNull="true">
 				<reportElement x="430" y="32" width="140" height="16" uuid="2a1c5476-0122-4ac7-8edf-957515be9db5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<printWhenExpression><![CDATA[$F{poreference} != null]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{poreference}.length() > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA["No OcC: " + $F{poreference}]]></textFieldExpression>
@@ -584,7 +584,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{uom_line}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="156" y="0" width="154" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="156" y="0" width="154" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>

@@ -15,7 +15,8 @@
 	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT 
+		<![CDATA[SELECT l.city,
+l.address1 as complemento,
 Replace(receptor::jsonb->>'descActividad', '"', '') as descActividad,
 Replace(receptor::jsonb->>'correo', '"', '') as correo,
 Replace(receptor::jsonb->>'numDocumento', '"', '') as numDocumento,
@@ -24,7 +25,7 @@ Replace(receptor::jsonb->>'nrc', '"', '') as nrc,
 Replace(receptor::jsonb->>'nombre', '"', '') as nombre,
 Replace(receptor::jsonb->>'telefono', '"', '') as telefono,
 Replace(receptor::jsonb->>'direccion', '"', '') as direccion,
-Replace(receptor::json->'direccion'->>'complemento', '"', '') as complemento,
+Replace(receptor::jsonb->>'nombrePais', '"', '') as nombrePais,
 Replace(receptor::json->'direccion'->>'municipio', '"', '') as municipio,
 ei_CityName(receptor::json->'direccion'->>'municipio',
 		   receptor::json->'direccion'->>'departamento') as cityName, pt.name as paymentterm
@@ -33,10 +34,22 @@ ei_CityName(receptor::json->'direccion'->>'municipio',
 from e_electronicInvoice_Json ej
 INNER JOIN C_Invoice i ON ej.c_Invoice_ID=i.c_Invoice_ID
 INNER JOIN C_PaymentTerm pt ON i.c_Paymentterm_ID=pt.C_PaymentTerm_ID
+INNER JOIN c_Bpartner_Location bpl ON i.c_Bpartner_ID=bpl.c_bPartner_ID 
+INNER JOIN c_Location l ON bpl.c_Location_ID=l.c_Location_ID
 WHERE ej.c_Invoice_ID=  $P{RECORD_ID} 
 ORDER BY e_Invoiceelectronic_ID DESC
 LIMIT 1]]>
 	</queryString>
+	<field name="city" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="city"/>
+		<property name="com.jaspersoft.studio.field.label" value="city"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
+	<field name="complemento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="complemento"/>
+		<property name="com.jaspersoft.studio.field.label" value="complemento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_location"/>
+	</field>
 	<field name="descactividad" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="descactividad"/>
 		<property name="com.jaspersoft.studio.field.label" value="descactividad"/>
@@ -69,9 +82,9 @@ LIMIT 1]]>
 		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
 		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
 	</field>
-	<field name="complemento" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="complemento"/>
-		<property name="com.jaspersoft.studio.field.label" value="complemento"/>
+	<field name="nombrepais" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombrepais"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombrepais"/>
 	</field>
 	<field name="municipio" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="municipio"/>
@@ -263,7 +276,7 @@ LIMIT 1]]>
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{complemento} + ", " + $F{cityname}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{city} + ", " + $F{complemento} + ", " + $F{nombrepais}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

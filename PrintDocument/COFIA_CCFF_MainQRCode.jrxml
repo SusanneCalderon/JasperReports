@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_CCFF_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Kaltmann.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="270"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="723"/>
 	<subDataset name="DatasetLogo" uuid="dea33f1f-0c74-4bb2-a4fd-4aa2ac3c6eaa">
@@ -217,7 +217,7 @@ ORDER BY e_Invoiceelectronic_ID DESC]]>
 		<band height="370" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="200" y="-1" width="201" height="31" uuid="0deee5e1-79f6-4e12-b7b4-30ebd55e45e4">
+				<reportElement x="229" y="-1" width="172" height="31" uuid="0deee5e1-79f6-4e12-b7b4-30ebd55e45e4">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
@@ -439,7 +439,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{ei_sellorecibido}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="200" y="-1" width="201" height="31" uuid="620e713c-a407-4e46-b68b-8f831947fbde">
+				<reportElement x="210" y="-1" width="191" height="31" uuid="620e713c-a407-4e46-b68b-8f831947fbde">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
@@ -472,7 +472,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<printWhenExpression><![CDATA[$F{poreference} != null]]></printWhenExpression>
+					<printWhenExpression><![CDATA[$F{poreference}.length() > 0]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["OdC: " + $F{poreference}]]></textFieldExpression>
@@ -739,7 +739,7 @@ Exenta]]></text>
 				<textFieldExpression><![CDATA[$F{uom_line}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight">
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="140" y="0" width="182" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="140" y="0" width="182" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
