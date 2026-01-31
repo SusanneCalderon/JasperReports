@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_ConFinal_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="COFIA_ConFinal_Main" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="239984c9-84c2-4ab7-b388-d0accf8b8c4f">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KaltmannLocal.xml"/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<subDataset name="DatasetLogo" uuid="dea33f1f-0c74-4bb2-a4fd-4aa2ac3c6eaa">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIA_Local.xml"/>
@@ -26,46 +26,55 @@ WHERE cli.AD_Client_ID= $P{AD_CLIENT_ID}]]>
 	<parameter name="AD_CLIENT_ID" class="java.lang.Integer"/>
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
-		<![CDATA[Select  numItem ,i.ad_Client_ID,i.dateinvoiced,ei_fechaEmi(i.c_Invoice_ID ) as fechaEmi,
+		<![CDATA[Select  numItem ,COUNT(*) OVER() as total_rows_count,
+
+i.ad_Client_ID,i.dateinvoiced,
 to_Date(trim(ei_datereceived), 'DD/MM/YYYY HH24:MI:SS')  as datereceived,
+ei_fechaEmi(i.c_Invoice_ID ) as fechaEmi,
    cantidad,
    uniMedida,
-   (SELECT COALESCE(u.description, u.name, '') from c_INvoiceline il
-   INNER JOIN M_Product p ON il.m_Product_ID=p.m_Product_ID
-   INNER JOIN c_UOM u ON il.c_UOM_ID=u.c_uom_ID
-   where il.c_Invoice_ID =i.c_INvoice_ID and  trim(j.codigo)= trim(p.value) LIMIT 1) as uom_Line,
-   (SELECT il.priceentered from c_INvoiceline il
-   INNER JOIN M_Product p ON il.m_Product_ID=p.m_Product_ID
-   where il.c_Invoice_ID =i.c_INvoice_ID and   trim(j.codigo)= trim(p.value) LIMIT 1) as priceentered,
-   (SELECT il.qtyentered from c_INvoiceline il
-   INNER JOIN M_Product p ON il.m_Product_ID=p.m_Product_ID
-   where il.c_Invoice_ID =i.c_INvoice_ID and   trim(j.codigo)= trim(p.value) LIMIT 1) as qtyentered,
+    
+   uomt.name as uom_Line,
+   il_ordered.priceentered as priceentered,     
+  il_ordered.qtyentered as qtyentered,
    descripcion,
    precioUni::DECIMAL,
    montoDescu ::DECIMAL,
    ventaNoSuj::DECIMAL ,
   ventaExenta::DECIMAL, 
   ventaGravada::DECIMAL ,
+  nogravado::DECIMAL ,
   codigo,
   i.c_Invoice_ID ,e_Invoiceelectronic_ID,
   i.ei_sellorecibido,
   i.ei_dateReceived,
   i.ei_codigogeneracion, ei_numerocontrol, 
   COALESCE(o.documentno, '') as o_Documentno, I.documentno, im.binarydata as logo,
-  o.description as orderDescription, i.poreference
+  COALESCE(o.description, '') as orderDescription, i.poreference
 from
 Json_CuerpoDocumento  j
 INNER JOIN C_Invoice i ON i.c_INvoice_ID=j.c_INvoice_ID
 INNER join ad_orginfo cf on i.ad_org_ID = cf.ad_org_ID
 left join ad_image im on cf.logo_ID = im.ad_image_ID
 LEFT JOIN C_Order o ON i.c_Order_ID=o.c_Order_ID
+LEFT JOIN (
+    SELECT *, 
+    row_number() OVER (PARTITION BY c_invoice_id ORDER BY c_invoiceline_id ASC) as row_seq
+    FROM c_invoiceline
+) il_ordered ON il_ordered.c_invoice_id = i.c_invoice_id 
+             AND il_ordered.row_seq = CAST(j.numItem AS INTEGER)
+LEFT JOIN c_UOM_Trl uomt ON il_ordered.c_UOM_ID=uomt.c_UOM_ID AND uomt.ad_Language = 'es_SV'
 WHERE j.c_Invoice_ID=  $P{RECORD_ID} 
-ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
+ORDER BY e_Invoiceelectronic_ID]]>
 	</queryString>
 	<field name="numitem" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="numitem"/>
 		<property name="com.jaspersoft.studio.field.label" value="numitem"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="json_cuerpodocumento"/>
+	</field>
+	<field name="total_rows_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_rows_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_rows_count"/>
 	</field>
 	<field name="ad_client_id" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="ad_client_id"/>
@@ -77,13 +86,13 @@ ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
 		<property name="com.jaspersoft.studio.field.label" value="dateinvoiced"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
 	</field>
-	<field name="fechaemi" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="fechaemi"/>
-		<property name="com.jaspersoft.studio.field.label" value="fechaemi"/>
-	</field>
 	<field name="datereceived" class="java.sql.Date">
 		<property name="com.jaspersoft.studio.field.name" value="datereceived"/>
 		<property name="com.jaspersoft.studio.field.label" value="datereceived"/>
+	</field>
+	<field name="fechaemi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fechaemi"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaemi"/>
 	</field>
 	<field name="cantidad" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
@@ -98,14 +107,17 @@ ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
 	<field name="uom_line" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="uom_line"/>
 		<property name="com.jaspersoft.studio.field.label" value="uom_line"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_uom_trl"/>
 	</field>
 	<field name="priceentered" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="priceentered"/>
 		<property name="com.jaspersoft.studio.field.label" value="priceentered"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
 	</field>
 	<field name="qtyentered" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="qtyentered"/>
 		<property name="com.jaspersoft.studio.field.label" value="qtyentered"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoiceline"/>
 	</field>
 	<field name="descripcion" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
@@ -131,6 +143,10 @@ ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
 	<field name="ventagravada" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="ventagravada"/>
 		<property name="com.jaspersoft.studio.field.label" value="ventagravada"/>
+	</field>
+	<field name="nogravado" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="nogravado"/>
+		<property name="com.jaspersoft.studio.field.label" value="nogravado"/>
 	</field>
 	<field name="codigo" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
@@ -192,20 +208,138 @@ ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
 		<property name="com.jaspersoft.studio.field.label" value="poreference"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="c_invoice"/>
 	</field>
-	<variable name="ventanosuj1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+	<variable name="ventanosuj1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ventanosuj}]]></variableExpression>
 	</variable>
-	<variable name="ventaexenta1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+	<variable name="ventaexenta1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ventaexenta}]]></variableExpression>
 	</variable>
-	<variable name="ventagravada1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+	<variable name="ventagravada1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{ventagravada}]]></variableExpression>
 	</variable>
+	<variable name="ventanogravada1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{nogravado}]]></variableExpression>
+	</variable>
+	<group name="TotalGroup">
+		<groupExpression><![CDATA[$F{c_invoice_id}]]></groupExpression>
+		<groupFooter>
+			<band height="15">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<staticText>
+					<reportElement x="200" y="0" width="140" height="15" uuid="33964832-696d-4c3d-b8cd-0f15f5462364">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.0"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[ SUMA DE VENTAS]]></text>
+				</staticText>
+				<frame>
+					<reportElement x="465" y="0" width="45" height="15" uuid="90b3127a-c378-4f0a-b4b0-f1cbbe28fb7f">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textField pattern="#,##0.00#;#,##0.00#-">
+						<reportElement x="0" y="0" width="42" height="15" uuid="0d5ef1dd-3d39-4ede-8e2f-648475ac1c30">
+							<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ventaexenta1}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="509" y="0" width="63" height="15" uuid="288f9533-ba7d-4642-ae14-73ebc081620d">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textField pattern="#,##0.00#;#,##0.00#-">
+						<reportElement x="0" y="0" width="63" height="15" uuid="38e198b6-8753-48f4-a611-65feb5597319">
+							<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ventagravada1}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="340" y="0" width="57" height="15" uuid="1fe1dd0a-26a7-406b-bcc2-b3085ff99300">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textField pattern="#,##0.00#;#,##0.00#-">
+						<reportElement x="0" y="0" width="57" height="15" uuid="4e504ffc-787b-4842-a302-680460316a79">
+							<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ventanosuj1}]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="397" y="0" width="68" height="15" uuid="3f9f1896-d872-4bed-a8be-fb4d5a224fcd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textField pattern="#,##0.00#;#,##0.00#-">
+						<reportElement x="0" y="0" width="68" height="15" uuid="3007a8f0-f007-4f94-abf5-0b14a1f45e75">
+							<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font size="8"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$V{ventanogravada1}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="400" splitType="Stretch">
+		<band height="354" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="170" y="-1" width="260" height="40" uuid="0deee5e1-79f6-4e12-b7b4-30ebd55e45e4">
@@ -265,7 +399,7 @@ ORDER BY e_Invoiceelectronic_ID DESC LIMIT 20]]>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{ei_numerocontrol}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement x="90" y="55" width="210" height="15" uuid="47fabf28-1813-4131-8585-05fa66830db3"/>
 					<textElement>
 						<font size="6"/>
@@ -282,7 +416,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</componentElement>
 			</frame>
 			<frame>
-				<reportElement x="1" y="131" width="565" height="200" uuid="d51f9940-75d8-4de9-8e75-4b3878ba3d49">
+				<reportElement x="1" y="131" width="571" height="200" uuid="d51f9940-75d8-4de9-8e75-4b3878ba3d49">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -293,12 +427,12 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<subreport>
-					<reportElement stretchType="ContainerHeight" x="280" y="0" width="285" height="200" uuid="20b789c4-04f4-426e-a2fb-1b3ba32a8d2d"/>
+					<reportElement stretchType="ContainerHeight" x="286" y="0" width="285" height="200" uuid="20b789c4-04f4-426e-a2fb-1b3ba32a8d2d"/>
 					<subreportParameter name="RECORD_ID">
 						<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA["Sub_receptor_ConsumidorFinal.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA["Sub_receptor.jasper"]]></subreportExpression>
 				</subreport>
 				<subreport>
 					<reportElement x="0" y="0" width="280" height="200" uuid="5faea5e0-b7bd-46e1-a6d9-6db4d5d02bfd"/>
@@ -310,21 +444,21 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</subreport>
 			</frame>
 			<staticText>
-				<reportElement x="316" y="110" width="248" height="20" uuid="ddd30ec2-d396-4c7a-a353-9d6d6d3f47db"/>
+				<reportElement x="283" y="110" width="289" height="20" uuid="ddd30ec2-d396-4c7a-a353-9d6d6d3f47db"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Receptor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="110" width="250" height="20" uuid="6b1dbbd7-98bb-4d06-8046-099af48c0e1b"/>
+				<reportElement x="0" y="110" width="281" height="20" uuid="6b1dbbd7-98bb-4d06-8046-099af48c0e1b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Emisor]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="340" y="50" width="234" height="60" uuid="3aaa4d33-bab8-4233-bd3c-52891831ee02">
+				<reportElement x="360" y="50" width="212" height="60" uuid="3aaa4d33-bab8-4233-bd3c-52891831ee02">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<subreportParameter name="RECORD_ID">
@@ -351,25 +485,134 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA["No Orden: " + $F{o_documentno}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="331" width="572" height="69" uuid="8c78decc-f22d-4dcd-af55-a2800c57fd24"/>
-				<textElement verticalAlignment="Middle"/>
+			<textField textAdjust="StretchHeight" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement stretchType="ContainerHeight" x="0" y="331" width="572" height="20" uuid="8c78decc-f22d-4dcd-af55-a2800c57fd24"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{orderdescription}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="430" y="32" width="140" height="16" uuid="2a1c5476-0122-4ac7-8edf-957515be9db5">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<printWhenExpression><![CDATA[$F{poreference}.length() > 0]]></printWhenExpression>
+			<textField>
+				<reportElement x="430" y="32" width="140" height="18" uuid="6bac0937-35c2-408b-80de-b7e16252a6bb">
+					<printWhenExpression><![CDATA[$F{poreference}.length()>0]]></printWhenExpression>
 				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Top"/>
-				<textFieldExpression><![CDATA["No OcC: " + $F{poreference}]]></textFieldExpression>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["OdC: " + $F{poreference}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
-	<columnHeader>
-		<band height="24" splitType="Stretch">
+	<pageHeader>
+		<band height="123">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<image>
+				<reportElement x="0" y="0" width="170" height="65" uuid="cc6cb66d-fd8a-4c9f-93e5-0bebc4891a5a"/>
+				<imageExpression><![CDATA[$F{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="170" y="-1" width="260" height="40" uuid="5c2b577b-8dd0-4001-86c6-64214521db83">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento Tributario Electrónico <br/> Comprobante de Consumidor Final]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="0" width="140" height="16" uuid="b76f8611-e631-4e9d-9457-e06b4daa7a78">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="347" y="50" width="227" height="60" uuid="2fba9929-e6a5-4838-bf7b-9e4461ec5c9d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="RECORD_ID">
+					<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Sub_identificador.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="90" y="70" width="210" height="15" uuid="6e38bf1d-d364-4cb0-8bc8-62377a6c5896"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ei_codigogeneracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="90" height="15" uuid="4e510fbd-57aa-43d1-8470-b00bdfc51894">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cód. Gener.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="85" width="89" height="15" uuid="06ae5299-7b49-4e07-abf1-761b9501b661">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número de Control:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="85" width="210" height="15" uuid="4081db55-035a-4819-bb46-c493d2048903"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ei_numerocontrol}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="100" width="89" height="15" uuid="08c38886-1214-40fe-a299-4fd7881cc3b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sello de Recepción:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="100" width="210" height="15" uuid="755eeba9-4f38-44b9-98cf-bcb89a2bded2"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ei_sellorecibido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="108" width="100" height="15" uuid="d6b4811f-7747-4a86-a164-1aba34710fd9"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina: " + $V{PAGE_NUMBER}.toString( )]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="210" y="38" width="138" height="85" uuid="5cd90438-13ef-4e47-961a-cc28bf93828d"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA["https://admin.factura.gob.sv/consultaPublica?ambiente=01&codGen=" +
+$F{ei_codigogeneracion}+ "&fechaEmi=" 
++ $F{fechaemi}]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
 				<reportElement x="0" y="0" width="30" height="24" uuid="ea885452-53a4-417b-b5d7-b59a444f5961">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b6d3b19-f33c-4a87-8e25-c4e488294fd3"/>
@@ -388,7 +631,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[No Item]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="30" y="0" width="42" height="24" uuid="31747699-1d4d-44c1-a0d0-3ec0e7e56327">
+				<reportElement x="30" y="0" width="30" height="24" uuid="31747699-1d4d-44c1-a0d0-3ec0e7e56327">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4573327-188c-4267-9dd1-e3dd4e976d5f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -402,12 +645,13 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Cantidad]]></text>
+				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="72" y="0" width="84" height="24" uuid="6c549122-4c8f-44ed-9360-23fe9997af14">
+				<reportElement x="60" y="0" width="50" height="24" uuid="6c549122-4c8f-44ed-9360-23fe9997af14">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83fcc1d5-63cc-4cf5-b900-125f8eec05f1"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25"/>
@@ -422,7 +666,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[Unid. Medida]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="156" y="0" width="154" height="24" uuid="96aac874-e232-4b39-9e6f-53da44f0130f">
+				<reportElement x="110" y="0" width="160" height="24" uuid="96aac874-e232-4b39-9e6f-53da44f0130f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -439,7 +683,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="310" y="0" width="40" height="24" uuid="4d7de219-6022-40ee-8136-4a6bad0fae15">
+				<reportElement x="270" y="0" width="40" height="24" uuid="4d7de219-6022-40ee-8136-4a6bad0fae15">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ac6a1497-295a-444a-a24d-559eb4845f97"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -457,10 +701,11 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[Precio Unitario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="0" width="42" height="24" uuid="a5133cd9-4b50-4486-b090-f763f3f92e3a">
+				<reportElement x="310" y="0" width="30" height="24" uuid="a5133cd9-4b50-4486-b090-f763f3f92e3a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25"/>
@@ -472,10 +717,10 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Descuento]]></text>
+				<text><![CDATA[Desc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="392" y="0" width="48" height="24" uuid="c3f6b4dc-2268-4754-9aed-19d13711478f">
+				<reportElement x="340" y="0" width="57" height="24" uuid="c3f6b4dc-2268-4754-9aed-19d13711478f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b230032-b987-4f44-9b6f-d4a7bb2d34fa"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -494,9 +739,10 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[Venta No Sujeta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="0" width="63" height="24" uuid="ecc5a865-bc81-4294-860a-58070c064501">
+				<reportElement x="465" y="0" width="45" height="24" uuid="ecc5a865-bc81-4294-860a-58070c064501">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f087cd3c-7832-40ef-ae82-c18cb44ba453"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25"/>
@@ -511,7 +757,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[Venta Exenta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="503" y="0" width="63" height="24" uuid="49c75a5c-9926-4373-86fd-64b165b6971f">
+				<reportElement x="510" y="0" width="61" height="24" uuid="49c75a5c-9926-4373-86fd-64b165b6971f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fa9e4f85-5fe3-4d53-9a82-386e80392e04"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -527,13 +773,32 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textElement>
 				<text><![CDATA[Venta Gravada]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="397" y="0" width="68" height="24" uuid="663e37ba-ede5-4fea-b764-eb713008aea6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b230032-b987-4f44-9b6f-d4a7bb2d34fa"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Otros montos no afectados]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="30" height="15" uuid="67930460-3533-4366-bb90-ffa41cd72fcb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b6d3b19-f33c-4a87-8e25-c4e488294fd3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -550,7 +815,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{numitem}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="30" y="0" width="42" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="30" y="0" width="30" height="15" uuid="f92cf8fd-90ec-472d-b5ba-d1eb40a70785">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4573327-188c-4267-9dd1-e3dd4e976d5f"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -567,7 +832,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{qtyentered}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="72" y="0" width="84" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="60" y="0" width="50" height="15" uuid="2dd52835-e806-4cbb-8fc0-477b2fdbb38d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="83fcc1d5-63cc-4cf5-b900-125f8eec05f1"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -584,7 +849,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{uom_line}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight">
-				<reportElement positionType="Float" stretchType="ContainerHeight" x="156" y="0" width="154" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="110" y="0" width="160" height="15" uuid="a032acaa-00ed-4ca0-bc3c-837e3fcb4c53">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="69bc29b2-46ca-46d5-8b0a-e97097a3e6ea"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -601,7 +866,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[" " + $F{descripcion}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="310" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="270" y="0" width="40" height="15" uuid="eae98f7b-fcec-4d66-9205-d730fc15bae8">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
@@ -611,7 +876,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="38" height="15" uuid="48b910f8-2f55-4c47-8dc4-5a3213faf631">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="40" height="15" uuid="48b910f8-2f55-4c47-8dc4-5a3213faf631">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -623,7 +888,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="350" y="0" width="42" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="310" y="0" width="30" height="15" uuid="818c7e0a-bfbc-41c1-833f-17565b043100">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -633,7 +898,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="42" height="15" uuid="7494875f-32b8-4479-9a47-f234b56814e6">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="30" height="15" uuid="7494875f-32b8-4479-9a47-f234b56814e6">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -645,14 +910,14 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="392" y="0" width="48" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="340" y="0" width="55" height="15" uuid="4dcfeb1b-4089-4a76-9b5f-d739c7b2f13d"/>
 				<box>
 					<topPen lineWidth="0.25"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="46" height="12" uuid="be085635-681e-4bc5-afca-fd1bd891756c">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="55" height="15" uuid="be085635-681e-4bc5-afca-fd1bd891756c">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -664,9 +929,10 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="440" y="0" width="62" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="465" y="0" width="45" height="15" uuid="296400bc-cc2e-442b-8c78-36567e99ad9f">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.25"/>
@@ -674,7 +940,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="60" height="15" uuid="bd685ae7-1342-408c-9735-f24d9efdbf8d">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="45" height="15" uuid="bd685ae7-1342-408c-9735-f24d9efdbf8d">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -686,7 +952,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="503" y="0" width="63" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="510" y="0" width="61" height="15" uuid="14687388-714e-461b-87d5-96783444349d">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -709,15 +975,37 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<textFieldExpression><![CDATA[$F{ventagravada}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<frame>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="397" y="0" width="68" height="15" uuid="4a92d8f2-c701-43d6-a23e-fb760d7e2765">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="68" height="15" uuid="aa7af7ae-a318-4d50-8c72-d2fdbff18e28">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nogravado}]]></textFieldExpression>
+				</textField>
+			</frame>
 		</band>
 	</detail>
-	<summary>
-		<band height="150">
+	<columnFooter>
+		<band height="18">
 			<staticText>
-				<reportElement x="288" y="0" width="104" height="15" uuid="b7ad7533-4a49-4530-8018-42ff98907790">
+				<reportElement x="200" y="0" width="140" height="15" uuid="473fea87-1308-4e06-a8c0-900057b234b5">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9aee2ec-7c36-4b7a-a5ba-7dc6b377c8f6"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} < $F{total_rows_count}]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<pen lineWidth="0.25"/>
@@ -732,8 +1020,9 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<text><![CDATA[ SUMA DE VENTAS]]></text>
 			</staticText>
 			<frame>
-				<reportElement x="392" y="0" width="48" height="15" uuid="57639470-fbc3-43db-ade8-4f1e33bf6c8f">
+				<reportElement x="340" y="0" width="57" height="15" printWhenGroupChanges="TotalGroup" uuid="8adb8293-ac39-4f89-969d-081f37474eb5">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} < $F{total_rows_count}]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.25"/>
@@ -741,7 +1030,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement x="0" y="0" width="46" height="15" uuid="2e472afd-b61e-4df6-9ab5-5b087de206d1">
+					<reportElement x="0" y="0" width="57" height="15" uuid="8fc55cc2-f2b2-4c0a-8fe0-773b22a504ed">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -753,9 +1042,10 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="440" y="0" width="62" height="15" uuid="75726ae1-5ae6-43c1-b64b-16907121b0b6">
+				<reportElement x="465" y="0" width="42" height="15" uuid="99df84f6-a8f7-40ea-b87a-1745a6e8a0de">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} < $F{total_rows_count}]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.25"/>
@@ -763,7 +1053,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement x="0" y="0" width="60" height="15" uuid="cd9f6d72-51a7-4556-9e36-3e3f6639204d">
+					<reportElement x="0" y="0" width="42" height="15" uuid="5c08e4cd-2c97-4e47-b1d7-a9327b55e794">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -775,10 +1065,11 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="503" y="0" width="63" height="15" uuid="37b38405-f9eb-452e-a3aa-e1e0beb702c2">
+				<reportElement x="509" y="0" width="63" height="15" uuid="44c4226d-715e-4e2b-9d43-99ee171c661f">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} < $F{total_rows_count}]]></printWhenExpression>
 				</reportElement>
 				<box>
 					<topPen lineWidth="0.25"/>
@@ -787,7 +1078,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textField pattern="#,##0.00#;#,##0.00#-">
-					<reportElement x="0" y="0" width="61" height="15" uuid="ecdf3f4e-f858-4000-b3f0-d76ae84db455">
+					<reportElement x="0" y="0" width="63" height="15" uuid="5c0c0cd1-efb8-4e99-ae95-df8dbadfe258">
 						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -798,6 +1089,32 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<textFieldExpression><![CDATA[$V{ventagravada1}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<frame>
+				<reportElement x="397" y="0" width="68" height="15" uuid="40ea6c53-3ebc-4da9-8246-d542bf61b8a3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} < $F{total_rows_count}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+				</box>
+				<textField pattern="#,##0.00#;#,##0.00#-">
+					<reportElement x="0" y="0" width="68" height="15" uuid="c19bc7dd-e8d0-4121-a9eb-2b521b69df76">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="462f375f-e29f-417f-b189-e8caee281647"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{ventanogravada1}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="150">
 			<frame>
 				<reportElement stretchType="ContainerHeight" x="0" y="48" width="281" height="102" uuid="703ed90b-a791-4e75-975b-c7600f989cc1"/>
 				<box>
@@ -821,7 +1138,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				</subreport>
 			</frame>
 			<frame>
-				<reportElement stretchType="ContainerHeight" x="281" y="48" width="284" height="102" uuid="01231695-5c0b-496c-a65d-c04790a81f58">
+				<reportElement stretchType="ContainerHeight" x="281" y="48" width="290" height="102" uuid="01231695-5c0b-496c-a65d-c04790a81f58">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
