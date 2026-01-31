@@ -493,7 +493,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{orderdescription}]]></textFieldExpression>
 			</textField>
 			<textField>
