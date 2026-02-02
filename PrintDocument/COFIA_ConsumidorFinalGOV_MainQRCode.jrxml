@@ -347,8 +347,9 @@ ORDER BY e_Invoiceelectronic_ID]]>
 		<band height="356" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="170" y="-1" width="230" height="40" uuid="0deee5e1-79f6-4e12-b7b4-30ebd55e45e4">
+				<reportElement x="170" y="0" width="230" height="40" uuid="0deee5e1-79f6-4e12-b7b4-30ebd55e45e4">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -491,7 +492,7 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<subreportExpression><![CDATA["Sub_identificador.jasper"]]></subreportExpression>
 			</subreport>
 			<image>
-				<reportElement stretchType="ContainerHeight" x="0" y="0" width="170" height="60" uuid="4becd834-ed84-4d91-a987-166e00a587da"/>
+				<reportElement x="0" y="0" width="170" height="40" uuid="4becd834-ed84-4d91-a987-166e00a587da"/>
 				<imageExpression><![CDATA[$F{logo}]]></imageExpression>
 			</image>
 			<textField>
