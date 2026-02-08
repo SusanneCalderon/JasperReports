@@ -71,9 +71,25 @@ Each `.xml` file defines a JDBC PostgreSQL adapter for a specific environment (a
 | `SA_Remote.xml` | Remote adempiere (192.168.0.94) |
 | `PimentelLokal.xml` | Client-specific (Pimentel) |
 
+## Team Shared Memory
+
+The `.claude-memory/` directory contains shared knowledge across team members:
+- **recent-work.md** — Latest changes, ongoing work, current context
+- **known-issues.md** — Bugs, gotchas, workarounds discovered
+- **learned-patterns.md** — Best practices, tips for JasperReports/Jaspersoft
+
+**When to update:**
+- After solving a non-trivial problem
+- When discovering database quirks or JSONB patterns
+- After significant changes to report structure
+- When finding workarounds for Jaspersoft Studio issues
+
+Always check these files at the start of work for recent team context.
+
 ## Key Conventions
 
 - Main COFIA reports reference compiled subreports by `.jasper` extension (not `.jrxml`), so subreports must be compiled before the main report renders.
 - The `RECORD_ID` parameter is the primary key passed from the calling Adempiere application to select which invoice/document to print.
 - JSON fields are extracted from PostgreSQL JSONB columns using `::jsonb` casting and `->>` operators within SQL queries, then passed to subreports.
 - Report language is primarily Spanish; commit messages mix German ("Anpassungen") and English.
+- Both `.jrxml` and `.jasper` files are committed to git to maintain version synchronization and avoid compilation mismatches.
