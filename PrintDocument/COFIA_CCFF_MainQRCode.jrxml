@@ -1138,7 +1138,7 @@ Exenta]]></text>
 		</band>
 	</columnFooter>
 	<summary>
-		<band height="170">
+		<band height="235" splitType="Prevent">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
 				<reportElement x="5" y="5" width="281" height="150" uuid="b399226f-78a6-4b2d-b5fc-1b9d07fe6dfc"/>
@@ -1177,6 +1177,39 @@ Exenta]]></text>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression><![CDATA["Sub_Resumen.jasper"]]></subreportExpression>
+				</subreport>
+			</frame>
+			<frame>
+				<reportElement positionType="Float" x="5" y="160" width="567" height="70" isRemoveLineWhenBlank="true" uuid="e7f8d9a0-1b2c-3d4e-5f6a-7b8c9d0e1f2a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<staticText>
+					<reportElement x="0" y="0" width="567" height="20" uuid="a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observaciones]]></text>
+				</staticText>
+				<subreport isUsingCache="false">
+					<reportElement stretchType="ElementGroupHeight" isPrintRepeatedValues="false" x="0" y="20" width="567" height="50" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f8e9d0a1-2b3c-4d5e-6f7a-8b9c0d1e2f3b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<subreportParameter name="RECORD_ID">
+						<subreportParameterExpression><![CDATA[$P{RECORD_ID}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["Sub_extension.jasper"]]></subreportExpression>
 				</subreport>
 			</frame>
 		</band>
