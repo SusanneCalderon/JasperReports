@@ -76,3 +76,67 @@ All COFIA_*.jrxml main reports → Sub_*.jasper subreports
 - PimentelLokal.xml → client-specific instance
 
 **Date learned:** 2026-02-08
+
+## JasperReports Layout Patterns (Added 2026-02-08)
+
+### Dynamic Subreport Sizing (Zero Height When Empty)
+**Context:**
+- Need subreports that take 0 pixels when they have no data
+- Common for optional sections like "Observaciones" or "Notes"
+
+**Approach:**
+1. In main report:
+   - Wrap subreport in frame with `isRemoveLineWhenBlank="true"`
+   - Frame should ONLY contain the subreport element (no static text/borders)
+   - Use `positionType="Float"` so it adjusts based on content above
+2. In subreport:
+   - Set `whenNoDataType="NoPages"` on jasperReport element
+   - Include title/borders INSIDE the subreport (not in main report)
+
+**Example:**
+See COFIA_CCFF_MainQRCode.jrxml (Sub_extension subreport in summary band)
+
+**Date learned:** 2026-02-08
+
+---
+
+### Border Alignment Between Components
+**Context:**
+- Multiple frames/components stacked vertically need aligned borders
+- Misaligned borders (even 1px) look unprofessional
+
+**Approach:**
+- Use same x-position and width for all vertically stacked components
+- Common pattern: x="1" width="571" for full-width components
+- Use frames with borders for consistency
+
+**Example:**
+COFIA_CCFF_MainQRCode.jrxml: Emisor/Receptor and orderdescription aligned at x="1" width="571"
+
+**Date learned:** 2026-02-08
+
+---
+
+### Preventing Content Overlap from Stretching Subreports
+**Context:**
+- Subreports with stretchType="ContainerHeight" can extend beyond frame height
+
+**Approach:**
+- Add 10-15px vertical spacing after stretching frames
+- Use positionType="Float" on following components
+
+**Date learned:** 2026-02-08
+
+---
+
+### PostgreSQL MCP Server Setup
+**Context:**
+- Enable direct database queries in Claude Code for debugging
+
+**Approach:**
+```bash
+npm install -g @modelcontextprotocol/server-postgres
+claude mcp add [name] -- node [server-path] postgresql://user:pass@host:port/db
+```
+
+**Date learned:** 2026-02-08
