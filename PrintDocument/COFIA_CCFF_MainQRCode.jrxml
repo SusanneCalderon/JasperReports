@@ -341,7 +341,7 @@ ORDER BY e_Invoiceelectronic_ID]]>
 		<band height="370">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="170" y="-1" width="260" height="40" uuid="a69fd76c-5f3f-434c-8b17-bc98fcc3015a">
+				<reportElement x="170" y="-1" width="231" height="40" uuid="a69fd76c-5f3f-434c-8b17-bc98fcc3015a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<box>
@@ -495,7 +495,10 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textField textAdjust="StretchHeight" evaluationTime="Auto" isBlankWhenNull="true">
-					<reportElement stretchType="ContainerHeight" x="0" y="0" width="571" height="20" uuid="c8f4e2a1-3b5d-4f18-9c8e-8a4f5e6d7c9b"/>
+					<reportElement stretchType="ContainerHeight" x="1" y="0" width="570" height="20" uuid="c8f4e2a1-3b5d-4f18-9c8e-8a4f5e6d7c9b">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
 					<textElement textAlignment="Left" verticalAlignment="Middle"/>
 					<textFieldExpression><![CDATA[$F{orderdescription}]]></textFieldExpression>
 				</textField>
@@ -1180,29 +1183,11 @@ Exenta]]></text>
 				</subreport>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="5" y="160" width="567" height="70" isRemoveLineWhenBlank="true" uuid="e7f8d9a0-1b2c-3d4e-5f6a-7b8c9d0e1f2a">
+				<reportElement positionType="Float" x="5" y="160" width="567" height="50" isRemoveLineWhenBlank="true" uuid="e7f8d9a0-1b2c-3d4e-5f6a-7b8c9d0e1f2a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
-				<box>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<staticText>
-					<reportElement x="0" y="0" width="567" height="20" uuid="a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					</reportElement>
-					<box>
-						<bottomPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="10" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Observaciones]]></text>
-				</staticText>
 				<subreport isUsingCache="false">
-					<reportElement stretchType="ElementGroupHeight" isPrintRepeatedValues="false" x="0" y="20" width="567" height="50" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f8e9d0a1-2b3c-4d5e-6f7a-8b9c0d1e2f3b">
+					<reportElement stretchType="ElementGroupHeight" isPrintRepeatedValues="false" x="0" y="0" width="567" height="50" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f8e9d0a1-2b3c-4d5e-6f7a-8b9c0d1e2f3b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<subreportParameter name="RECORD_ID">
