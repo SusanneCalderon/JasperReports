@@ -478,23 +478,28 @@ $F{ei_codigogeneracion}+ "&fechaEmi="
 				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="430" y="16" width="140" height="16" uuid="71443c91-c682-4764-a3e0-bd6ac303c4e4">
+				<reportElement x="410" y="16" width="162" height="16" uuid="71443c91-c682-4764-a3e0-bd6ac303c4e4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA["No Orden: " + $F{o_documentno}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" evaluationTime="Auto" isBlankWhenNull="true">
-				<reportElement stretchType="ContainerHeight" x="0" y="331" width="572" height="20" uuid="20c15753-29ad-41de-9907-f45832515eea"/>
+			<frame>
+				<reportElement x="1" y="345" width="571" height="20" uuid="20c15753-29ad-41de-9907-f45832515eea">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.25"/>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{orderdescription}]]></textFieldExpression>
-			</textField>
+				<textField textAdjust="StretchHeight" evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement stretchType="ContainerHeight" x="0" y="0" width="571" height="20" uuid="c8f4e2a1-3b5d-4f18-9c8e-8a4f5e6d7c9b"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{orderdescription}]]></textFieldExpression>
+				</textField>
+			</frame>
 			<textField>
 				<reportElement x="430" y="32" width="140" height="18" uuid="b252eecf-1177-4f02-8d74-38121902d6c6">
 					<printWhenExpression><![CDATA[$F{poreference}.length()>0]]></printWhenExpression>

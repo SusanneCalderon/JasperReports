@@ -2,31 +2,31 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_Resumen" pageWidth="277" pageHeight="150" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KaltmannLocal.xml"/>
 	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT
-Replace(resumen::jsonb->>'totalNoSuj', '"', '')::DECIMAL as totalNoSuj,
-Replace(resumen::jsonb->>'ivaPerci1', '"', '')::DECIMAL as ivaPerci1,
-Replace(resumen::jsonb->>'descuNoSuj', '"', '')::DECIMAL as descuNoSuj,
+COALESCE(Replace(resumen::jsonb->>'totalNoSuj', '"', '')::DECIMAL,0.00) as totalNoSuj,
+COALESCE(Replace(resumen::jsonb->>'ivaPerci1', '"', '')::DECIMAL,0.00) as ivaPerci1,
+COALESCE(Replace(resumen::jsonb->>'descuNoSuj', '"', '')::DECIMAL,0.00) as descuNoSuj,
 
 Replace(resumen::jsonb->>'totalLetras', '"', '') as totalLetras,
-Replace(resumen::jsonb->>'ivaRete1', '"', '')::DECIMAL as ivaRete1,
-Replace(resumen::jsonb->>'subTotalVentas', '"', '')::DECIMAL as subTotalVentas,
-Replace(resumen::jsonb->>'subTotal', '"', '')::DECIMAL as subTotal,
-Replace(resumen::jsonb->>'reteRenta', '"', '')::DECIMAL as reteRenta,
-Replace(resumen::jsonb->>'descuExenta', '"', '')::DECIMAL as descuExenta,
-Replace(resumen::jsonb->>'totalDescu', '"', '')::DECIMAL as totalDescu,
-Replace(resumen::jsonb->>'descuGravada', '"', '')::DECIMAL as descuGravada,
-Replace(resumen::jsonb->>'porcentajeDescuento', '"', '')::DECIMAL as porcentajeDescuento,
-Replace(resumen::jsonb->>'totalGravada', '"', '')::DECIMAL as totalGravada, 
+COALESCE(Replace(resumen::jsonb->>'ivaRete1', '"', '')::DECIMAL,0.00) as ivaRete1,
+COALESCE(Replace(resumen::jsonb->>'subTotalVentas', '"', '')::DECIMAL,0.00) as subTotalVentas,
+COALESCE(Replace(resumen::jsonb->>'subTotal', '"', '')::DECIMAL,0.00) as subTotal,
+COALESCE(Replace(resumen::jsonb->>'reteRenta', '"', '')::DECIMAL,0.00) as reteRenta,
+COALESCE(Replace(resumen::jsonb->>'descuExenta', '"', '')::DECIMAL,0.00) as descuExenta,
+COALESCE(Replace(resumen::jsonb->>'totalDescu', '"', '')::DECIMAL,0.00) as totalDescu,
+COALESCE(Replace(resumen::jsonb->>'descuGravada', '"', '')::DECIMAL,0.00) as descuGravada,
+COALESCE(Replace(resumen::jsonb->>'porcentajeDescuento', '"', '')::DECIMAL,0.00) as porcentajeDescuento,
+COALESCE(Replace(resumen::jsonb->>'totalGravada', '"', '')::DECIMAL,0.00) as totalGravada, 
 
-Replace(resumen::jsonb->>'montoTotalOperacion', '"', '')::DECIMAL as montoTotalOperacion,
-Replace(resumen::jsonb->>'saldoFavor', '"', '')::DECIMAL as saldoFavor,
-Replace(resumen::jsonb->>'totalExenta', '"', '')::DECIMAL as totalExenta,
-Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL as totalPagar,
-Replace(resumen::jsonb->>'totalNoGravado', '"', '')::DECIMAL as totalNoGravado,
+COALESCE(Replace(resumen::jsonb->>'montoTotalOperacion', '"', '')::DECIMAL,0.00) as montoTotalOperacion,
+COALESCE(Replace(resumen::jsonb->>'saldoFavor', '"', '')::DECIMAL,0.00) as saldoFavor,
+COALESCE(Replace(resumen::jsonb->>'totalExenta', '"', '')::DECIMAL ,0.00) as totalExenta,
+COALESCE(Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL,0.00) as totalPagar,
+COALESCE(Replace(resumen::jsonb->>'totalNoGravado', '"', '')::DECIMAL,0.00) as totalNoGravado,
 it.taxamt AS totalIVA, dt.e_doctype_ID, edt.value
 FROM e_electronicInvoice_Json ij
 
@@ -168,11 +168,11 @@ LIMIT 1]]>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{totalgravada}.add( $F{totalnosuj})]]></textFieldExpression>
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="90" width="214" height="15" uuid="8361024a-a81a-479f-8fa0-d39ef03a2462">
+				<reportElement x="0" y="75" width="214" height="15" uuid="8361024a-a81a-479f-8fa0-d39ef03a2462">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -244,7 +244,7 @@ LIMIT 1]]>
 				</textField>
 			</frame>
 			<frame>
-				<reportElement x="214" y="90" width="63" height="15" uuid="8a720928-31b6-4ec2-a5a9-505da62f078e">
+				<reportElement x="214" y="75" width="63" height="15" uuid="8a720928-31b6-4ec2-a5a9-505da62f078e">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -266,7 +266,7 @@ LIMIT 1]]>
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="105" width="214" height="15" uuid="1ce6d2a0-8177-46b9-a432-17b05e3a3b25">
+				<reportElement x="0" y="90" width="214" height="15" uuid="1ce6d2a0-8177-46b9-a432-17b05e3a3b25">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -326,16 +326,6 @@ LIMIT 1]]>
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.0"/>
 				</box>
-				<textField evaluationTime="Report" pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
-					<reportElement x="2" y="0" width="61" height="15" uuid="fd2a4768-cfe1-4c29-9a00-2f3f77955037">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8"/>
-					</textElement>
-					<textFieldExpression><![CDATA[("01".equals($F{value})) ? new java.math.BigDecimal("0.00") : ($F{totaliva} == null ? new java.math.BigDecimal("0.00") : $F{totaliva})]]></textFieldExpression>
-				</textField>
 			</frame>
 			<staticText>
 				<reportElement x="0" y="45" width="214" height="15" uuid="3fc725bb-84e5-4411-93db-ee88d53ff21e">
@@ -365,22 +355,8 @@ LIMIT 1]]>
 				</textElement>
 				<text><![CDATA[ Sub-Total:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="0" y="75" width="214" height="15" uuid="416ae474-d89c-4932-a678-d34c82e191e3">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="8" isBold="false"/>
-				</textElement>
-				<text><![CDATA[ IVA:]]></text>
-			</staticText>
 			<frame>
-				<reportElement x="214" y="105" width="63" height="15" uuid="9ce940ef-1726-424b-bf8a-c37086e7a547">
+				<reportElement x="215" y="90" width="63" height="15" uuid="9ce940ef-1726-424b-bf8a-c37086e7a547">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -391,14 +367,14 @@ LIMIT 1]]>
 					<rightPen lineWidth="0.0"/>
 				</box>
 				<textField pattern="#,##0.00#;(#,##0.00#-)">
-					<reportElement x="2" y="0" width="61" height="15" uuid="9dedb32f-7078-418e-a86d-43297eb68e5a">
+					<reportElement x="0" y="0" width="63" height="15" uuid="9dedb32f-7078-418e-a86d-43297eb68e5a">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{montototaloperacion}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{montototaloperacion}.subtract($F{ivarete1})]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -424,7 +400,7 @@ LIMIT 1]]>
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="120" width="214" height="15" uuid="c61e513e-f2fc-4c7d-bf62-76da14804660">
+				<reportElement x="0" y="105" width="214" height="15" uuid="c61e513e-f2fc-4c7d-bf62-76da14804660">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -438,7 +414,7 @@ LIMIT 1]]>
 				<text><![CDATA[Otros Montos no afectos:]]></text>
 			</staticText>
 			<frame>
-				<reportElement x="215" y="120" width="63" height="15" uuid="80a3567f-0373-4bfe-af05-ab63fd42dec3">
+				<reportElement x="215" y="105" width="63" height="15" uuid="80a3567f-0373-4bfe-af05-ab63fd42dec3">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -460,12 +436,12 @@ LIMIT 1]]>
 				</textField>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="135" width="214" height="15" uuid="f5d4faa6-6833-4522-aa4f-97ed42bef1bc">
+				<reportElement x="0" y="120" width="214" height="15" uuid="f5d4faa6-6833-4522-aa4f-97ed42bef1bc">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
 					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -474,7 +450,7 @@ LIMIT 1]]>
 				<text><![CDATA[Total a Pagar:]]></text>
 			</staticText>
 			<frame>
-				<reportElement x="215" y="135" width="63" height="15" uuid="0d2351e7-8810-40a2-90f5-0a355fc5ee4a">
+				<reportElement x="215" y="120" width="63" height="15" uuid="0d2351e7-8810-40a2-90f5-0a355fc5ee4a">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -489,9 +465,6 @@ LIMIT 1]]>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<box>
-						<bottomPen lineWidth="0.0"/>
-					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
