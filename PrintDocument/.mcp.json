@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "adempiere-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://adempiere:adempiere@192.168.0.94:55432/adempiere"
+      ]
+    },
+    "chile-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub",
+        "--dsn",
+        "postgresql://adempiere:rFOL5QQGS9ec12@ad2211.prolinux.cl:5432/adempiere"
+      ]
+    }
+  }
+}

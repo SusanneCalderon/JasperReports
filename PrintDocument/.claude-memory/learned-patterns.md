@@ -131,12 +131,64 @@ COFIA_CCFF_MainQRCode.jrxml: Emisor/Receptor and orderdescription aligned at x="
 
 ### PostgreSQL MCP Server Setup
 **Context:**
-- Enable direct database queries in Claude Code for debugging
+- Enable direct database queries in Claude Code for debugging and development
+- Support both local and remote database connections
+- Handle different database names across team members
 
 **Approach:**
+
+**1. Find your local database name:**
 ```bash
-npm install -g @modelcontextprotocol/server-postgres
-claude mcp add [name] -- node [server-path] postgresql://user:pass@host:port/db
+psql -U adempiere -l | grep adempiere
 ```
+
+**2. Configure LOCAL database MCP server:**
+```bash
+# Replace DB_NAME with your actual local database name
+# Examples: kaltmann, kaltmann_dev, kaltmann_test, adempiere, etc.
+claude mcp add kaltmann-local -- npx -y @bytebase/dbhub --dsn postgresql://adempiere:adempiere@localhost:5432/DB_NAME
+```
+
+**3. Configure REMOTE database MCP server (when needed):**
+```bash
+# For shared remote database (e.g., testing server, staging)
+# Replace HOST and DB_NAME with actual remote values
+claude mcp add kaltmann-remote -- npx -y @bytebase/dbhub --dsn postgresql://adempiere:adempiere@HOST:5432/DB_NAME
+
+# Example for SA_Remote.xml equivalent (192.168.0.94):
+claude mcp add kaltmann-remote -- npx -y @bytebase/dbhub --dsn postgresql://adempiere:adempiere@192.168.0.94:5432/kaltmann
+```
+
+**4. Verify connections:**
+```bash
+claude mcp list
+# Should show: kaltmann-local ✓ Connected
+#              kaltmann-remote ✓ Connected (if configured)
+```
+
+**5. Using remote connections in Claude Code:**
+When working with Claude, specify which database to query:
+```
+"Query the kaltmann-remote database to check production invoice data"
+"Compare the schema between kaltmann-local and kaltmann-remote"
+```
+
+Claude will automatically use the appropriate MCP server based on your request.
+
+**Team Convention:**
+- **kaltmann-local** → Your local development database (name may vary by developer)
+- **kaltmann-remote** → Shared remote database for testing/staging
+- **Never commit** `.claude.json` or `.mcp.json` to git (database names differ per environment)
+
+**Common database names by environment:**
+- `kaltmann` - Main production/local
+- `cofia` - COFIA-specific instance
+- `adempiere` - Generic Adempiere installation
+- Check `.xml` JDBC config files in repo for reference (COFIA_Local.xml, SA_Remote.xml, etc.)
+
+**Troubleshooting:**
+- If connection fails, verify database is running: `pg_isready -h localhost -p 5432`
+- Check credentials match: `psql -U adempiere -d kaltmann -h localhost`
+- For remote connections, ensure firewall/network access to remote host
 
 **Date learned:** 2026-02-08
