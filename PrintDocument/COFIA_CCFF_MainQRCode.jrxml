@@ -1183,11 +1183,12 @@ Exenta]]></text>
 				</subreport>
 			</frame>
 			<frame>
-				<reportElement positionType="Float" x="5" y="160" width="567" height="50" isRemoveLineWhenBlank="true" uuid="e7f8d9a0-1b2c-3d4e-5f6a-7b8c9d0e1f2a">
+				<reportElement positionType="Float" x="5" y="160" width="567" height="1" isRemoveLineWhenBlank="true" uuid="e7f8d9a0-1b2c-3d4e-5f6a-7b8c9d0e1f2a">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<subreport isUsingCache="false">
-					<reportElement stretchType="ElementGroupHeight" isPrintRepeatedValues="false" x="0" y="0" width="567" height="50" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f8e9d0a1-2b3c-4d5e-6f7a-8b9c0d1e2f3b">
+					<reportElement positionType="Float" stretchType="ElementGroupHeight" isPrintRepeatedValues="false" x="0" y="0" width="567" height="1" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="f8e9d0a1-2b3c-4d5e-6f7a-8b9c0d1e2f3b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<subreportParameter name="RECORD_ID">

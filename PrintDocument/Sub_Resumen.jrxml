@@ -2,7 +2,7 @@
 <!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sub_Resumen" pageWidth="277" pageHeight="150" columnWidth="277" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c69d1556-4a48-4de9-b080-5ecf6e89f227">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="COFIALocal.xml"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="KaltmannLocal.xml"/>
 	<parameter name="C_Invoice_ID" class="java.math.BigDecimal"/>
 	<parameter name="RECORD_ID" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -27,16 +27,19 @@ Replace(resumen::jsonb->>'saldoFavor', '"', '')::DECIMAL as saldoFavor,
 Replace(resumen::jsonb->>'totalExenta', '"', '')::DECIMAL as totalExenta,
 Replace(resumen::jsonb->>'totalPagar', '"', '')::DECIMAL as totalPagar,
 Replace(resumen::jsonb->>'totalNoGravado', '"', '')::DECIMAL as totalNoGravado,
-it.taxamt AS totalIVA, dt.e_doctype_ID, edt.value
-FROM e_electronicInvoice_Json ij
+(trib.elem ->> 'valor')::DECIMAL AS totalIVA, 
+dt.e_doctype_ID, edt.value
+FROM adempiere.e_electronicinvoice_json ij
+-- Zuerst ALLE Joins
+CROSS JOIN LATERAL jsonb_array_elements(ij.resumen_tributos_jsonb) AS trib(elem)
+LEFT JOIN C_Invoice i ON ij.c_Invoice_ID = i.c_Invoice_ID
+-- Ich nehme an, it ist C_InvoiceTax
+LEFT JOIN C_Doctype dt ON dt.c_Doctype_ID = i.c_Doctype_ID
+LEFT JOIN e_Doctype edt ON dt.e_Doctype_ID = edt.e_Doctype_ID
 
-LEFT JOIN c_Invoicetax it ON it.c_Invoice_ID=ij.c_Invoice_ID
-LEFT JOIN C_INvoice i ON it.c_Invoice_ID=i.c_Invoice_ID
-LEFT JOIN C_Doctype dt ON dt.c_Doctype_ID=i.c_Doctype_ID
-LEFT JOIN e_Doctype edt ON dt.e_Doctype_ID=edt.e_Doctype_ID
-LEFT JOIN c_Tax t ON it.c_Tax_ID=t.c_Tax_ID AND  t.taxindicator = 'IVA' 
-WHERE
- ij.c_Invoice_ID= $P{RECORD_ID} 
+-- Dann erst die WHERE-Bedingungen
+WHERE trib.elem ->> 'codigo' = '20'  
+ AND ij.c_Invoice_ID= $P{RECORD_ID} 
 ORDER BY e_Invoiceelectronic_ID DESC
 LIMIT 1]]>
 	</queryString>
